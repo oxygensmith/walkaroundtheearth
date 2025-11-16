@@ -197,7 +197,8 @@ export class Journey {
 
   // Cycle to next throttle level
   cycleThrottle() {
-    this.currentThrottleIndex = (this.currentThrottleIndex + 1) % this.throttleLevels.length;
+    this.currentThrottleIndex =
+      (this.currentThrottleIndex + 1) % this.throttleLevels.length;
     return this.getCurrentThrottle();
   }
 
@@ -222,7 +223,8 @@ export class Journey {
 
   // Cycle to next cruise mode
   cycleCruiseMode() {
-    this.currentCruiseModeIndex = (this.currentCruiseModeIndex + 1) % this.cruiseModes.length;
+    this.currentCruiseModeIndex =
+      (this.currentCruiseModeIndex + 1) % this.cruiseModes.length;
     return this.getCurrentCruiseMode();
   }
 
@@ -252,8 +254,17 @@ export class Journey {
       markers.push({
         km,
         offset: this.kmToPixels(km),
-        type: isOrigin ? "origin" : isAntipodal ? "antipodal" : isMajor ? "major" : "minor",
-        label: isMajor || isAntipodal || isOrigin ? Math.abs(km).toLocaleString() : null,
+        type: isOrigin
+          ? "origin"
+          : isAntipodal
+          ? "antipodal"
+          : isMajor
+          ? "major"
+          : "minor",
+        label:
+          isMajor || isAntipodal || isOrigin
+            ? Math.abs(km).toLocaleString()
+            : null,
       });
     }
 

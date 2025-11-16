@@ -27,8 +27,9 @@
           </div>
         </div>
 
+        <div class="horizon-line"></div>
+
         <div class="journey-line" id="journey-line">
-          <div class="horizon-line"></div>
           <div class="distance-markers" id="distance-markers"></div>
         </div>
 
@@ -42,7 +43,7 @@
             <span class="distance-unit writing-font">km from home</span>
           </div>
           <div class="instructions writing-font">
-            Click and drag to walk • Scroll to travel
+            Click and drag to move • Scroll to travel
           </div>
         </div>
 
@@ -55,23 +56,55 @@
         </div>
 
         <div class="travel-controls">
-          <div class="mode-switcher">
-            <button
-              class="mode-btn active"
-              id="mode-freescroll"
-              data-mode="freeScroll"
-            >
-              Free Scroll
-            </button>
-            <button class="mode-btn" id="mode-cruise" data-mode="cruiseControl">
-              Cruise Control
+          <div class="travel-controls-container">
+            <div class="mode-switcher">
+              <button
+                class="mode-btn active"
+                id="mode-freescroll"
+                data-mode="freeScroll"
+              >
+                Free Scroll
+              </button>
+              <button
+                class="mode-btn"
+                id="mode-cruise"
+                data-mode="cruiseControl"
+              >
+                Cruise Control
+              </button>
+            </div>
+            <button class="control-btn" id="control-btn">
+              <span id="control-label"
+                ><i class="fa-brands fa-space-awesome"></i> No Limit</span
+              >
             </button>
           </div>
-          <button class="control-btn" id="control-btn">
-            <span id="control-label"
-              ><i class="fa-brands fa-space-awesome"></i> No Limit</span
-            >
-          </button>
+
+          <div class="credits-container" id="credits-container">
+            <button class="credits-toggle" id="credits-toggle">
+              <i class="fas fa-chevron-down" id="credits-icon"></i>
+              <span>credits</span>
+            </button>
+            <div class="credits-content" id="credits-content">
+              <p class="mb-0 pb-0">
+                2025,
+                <a
+                  href="https://robbutz.com"
+                  target="_blank"
+                  title="Visit my site"
+                  >Rob Butz</a
+                >,
+                <a
+                  href="https://moonjoule.com"
+                  target="_blank"
+                  title="Visit Moonjoule"
+                  >Moonjoule</a
+                ><br />
+                Made with <i class="fa-solid fa-heart"></i> for Morley and the
+                Earth
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </main>

@@ -26,6 +26,14 @@ class WalkAroundTheEarth {
     const controlLabel = document.getElementById("control-label");
     const instructions = document.querySelector(".instructions");
 
+    // Credits toggle
+    const creditsToggle = document.getElementById("credits-toggle");
+    const creditsContainer = document.getElementById("credits-container");
+
+    creditsToggle.addEventListener("click", () => {
+      creditsContainer.classList.toggle("expanded");
+    });
+
     freeScrollBtn.addEventListener("click", () => {
       this.journey.setTravelMode("freeScroll");
       freeScrollBtn.classList.add("active");
