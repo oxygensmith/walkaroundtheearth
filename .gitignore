@@ -20,8 +20,9 @@ Thumbs.db
 *.swp
 *.swo
 
-# Fonts
+# Fonts (but allow src/fonts for self-hosted web fonts)
 fonts/
+!src/fonts/
 
 # Logs
 npm-debug.log*
