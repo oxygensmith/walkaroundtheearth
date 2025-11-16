@@ -246,7 +246,19 @@ export class Renderer {
   createMessageElement(message) {
     const div = document.createElement("div");
     div.className = "journey-message";
-    div.textContent = message.text;
+
+    // Split text by pipe character and create paragraphs
+    const paragraphs = message.text.split('|');
+
+    paragraphs.forEach((paragraph, index) => {
+      const p = document.createElement("p");
+      p.textContent = paragraph.trim();
+      if (index > 0) {
+        p.style.marginTop = "1em"; // Add spacing for subsequent paragraphs
+      }
+      div.appendChild(p);
+    });
+
     return div;
   }
 }

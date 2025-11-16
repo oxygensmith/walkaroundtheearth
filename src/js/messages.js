@@ -11,7 +11,7 @@ export const journeyMessages = [
   },
   {
     km: 500,
-    text: "Later, you'll be able to set waypoints and your angle of travel.<br /><br />But for now, this journey is equatorial.",
+    text: "Later, you'll be able to set waypoints and your angle of travel. | But for now, this journey is equatorial.",
   },
   {
     km: 800,
