@@ -1,0 +1,393 @@
+/* walter-turncoat-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: "Walter Turncoat";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/walter-turncoat-v24-latin-regular.woff2") format("woff2");
+}
+
+:root {
+  // Colors
+  --color-bg: #0a0a0a;
+  --color-earth: #2a5a8a;
+  --color-horizon: #ffffff;
+  --color-marker-minor: #666666;
+  --color-marker-major: #cccccc;
+  --color-text: #ffffff;
+  --color-text-dim: #999999;
+  --color-origin: #ff6b6b;
+
+  // Spacing
+  --viewport-height: 100vh;
+  --origin-size: 40px;
+  --horizon-thickness: 2px;
+
+  // Scale: 10px = 1km
+  --scale: 10;
+  --script-font: "Walter Turncoat", cursive;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.writing-font {
+  font-family: var(--script-font);
+  text-transform: lowercase;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.journey-container {
+  width: 100vw;
+  height: var(--viewport-height);
+  position: relative;
+  overflow: hidden;
+}
+
+.journey-viewport {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.origin-marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.origin-circle {
+  width: var(--origin-size);
+  height: var(--origin-size);
+  border-radius: 50%;
+  background: var(--color-origin);
+  border: 3px solid var(--color-horizon);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 18px;
+    color: var(--color-horizon);
+  }
+}
+
+.origin-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.journey-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.horizon-line {
+  position: absolute;
+  left: -100000px;
+  right: -100000px;
+  top: 50%;
+  height: var(--horizon-thickness);
+  background: var(--color-horizon);
+  transform: translateY(-50%);
+  opacity: 0.3;
+}
+
+.distance-markers {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 200px;
+  pointer-events: none;
+}
+
+.journey-message {
+  position: absolute;
+  top: calc(50% + 125px);
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: 90vw;
+  padding: 20px 24px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  font-family: var(--script-font);
+  text-transform: none;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  &.minor {
+    width: 1px;
+    height: 20px;
+    background: var(--color-marker-minor);
+  }
+
+  &.major {
+    width: 2px;
+    height: 40px;
+    background: var(--color-marker-major);
+
+    .marker-label {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--color-text-dim);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &.antipodal {
+    width: 3px;
+    height: 60px;
+    background: var(--color-earth);
+
+    .marker-label {
+      color: var(--color-earth);
+      font-weight: 700;
+      font-size: 14px;
+      top: -35px;
+    }
+  }
+
+  &.origin {
+    width: var(--origin-size);
+    height: var(--origin-size);
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 2px solid var(--color-marker-major);
+
+    .marker-label {
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 12px;
+      top: calc(-1 * (var(--origin-size) / 2) - 30px);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .marker-subtitle {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--color-text-dim);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  }
+}
+
+.controls {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.distance-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.distance-value {
+  font-size: 48px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.distance-unit {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.instructions {
+  font-size: 14px;
+  color: var(--color-text-dim);
+  opacity: 0.6;
+}
+
+.project-title {
+  position: fixed;
+  left: 40px;
+  top: 40px;
+  font-family: "Walter Turncoat", cursive;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 150;
+  text-transform: uppercase;
+  transition: transform 0.3s ease-out;
+}
+
+.info-display {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 150;
+}
+
+.coordinates-display,
+.speed-display,
+.time-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.speed-display {
+  opacity: 0.8;
+}
+
+.time-display {
+  font-size: 12px;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.travel-controls {
+  position: fixed;
+  bottom: 40px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 150;
+  pointer-events: auto;
+}
+
+.mode-switcher {
+  display: flex;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+
+  &.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-text);
+  }
+
+  &:hover:not(.active) {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.control-btn {
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-marker-major);
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--color-text);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 768px) {
+  .distance-value {
+    font-size: 36px;
+  }
+
+  .origin-label {
+    font-size: 12px;
+  }
+}

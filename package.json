@@ -1,0 +1,22 @@
+{
+  "name": "walkaroundtheearth",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "keywords": [
+    "earth",
+    "geography",
+    "interactive",
+    "visualization"
+  ],
+  "author": "Rob Butz",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.1",
+    "parcel": "^2.16.1"
+  }
+}
