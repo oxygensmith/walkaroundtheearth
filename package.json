@@ -7,6 +7,10 @@
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html"
   },
+  "staticFiles": {
+      "staticPath": "static",
+      "staticOutPath": ""
+  },
   "keywords": [
     "earth",
     "geography",
@@ -17,6 +21,10 @@
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.16.1",
-    "parcel": "^2.16.1"
+    "parcel": "^2.16.1",
+    "parcel-reporter-static-files-copy": "^1.5.3"
+  },
+  "dependencies": {
+    "@turf/boolean-point-in-polygon": "^7.2.0"
   }
 }

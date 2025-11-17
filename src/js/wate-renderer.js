@@ -19,6 +19,7 @@ export class Renderer {
     this.meterValue = document.getElementById("meter-value");
     this.timeDisplay = document.getElementById("time-display");
     this.originIcon = document.getElementById("origin-icon");
+    this.terrainDisplay = document.getElementById("terrain-display");
     this.viewportWidth = window.innerWidth;
 
     // Track which markers are currently rendered
@@ -48,6 +49,8 @@ export class Renderer {
     const currentSpeed = this.journey.getSpeed();
     this.updateSpeed(currentSpeed);
     this.updateTimeToCircumnavigate(currentSpeed);
+
+    this.updateTerrainDisplay();
   }
 
   // Update the journey line position
@@ -151,6 +154,14 @@ export class Renderer {
       position.lat,
       position.lng
     );
+  }
+
+  updateTerrainDisplay() {
+    const waypointInfo = this.journey.getCurrentWaypointInfo();
+
+    if (!waypointInfo) return;
+
+    this.terrainDisplay.textContent = waypointInfo.terrain;
   }
 
   // Update speed display

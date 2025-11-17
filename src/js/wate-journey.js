@@ -2,6 +2,7 @@
 /* journey.js - Handles the journey state and physics */
 
 import { getRandomLocation, calculateNewPosition } from "./wate-locations.js";
+import { getGeographicInfo } from "./wate-geography.js";
 
 const EARTH_CIRCUMFERENCE_KM = 40041.44; // Average of polar and equatorial
 const SCALE_PX_PER_KM = 10; // 10 pixels = 1 kilometer
@@ -23,6 +24,15 @@ export class Journey {
     this.startLocation = getRandomLocation();
     // For now, we'll travel due east (90 degrees)
     this.bearing = 90;
+
+    this.waypoints = [];
+    this.waypointsReady = false;
+
+    // Start generating waypoints (don't await here)
+    this.generateWaypoints().then(() => {
+      this.waypointsReady = true;
+      console.log("✅ Waypoints ready!");
+    });
 
     // Travel modes
     this.travelMode = "freeScroll"; // "freeScroll" or "cruiseControl"
@@ -236,6 +246,49 @@ export class Journey {
   // Get current cruise mode
   getCurrentCruiseMode() {
     return this.cruiseModes[this.currentCruiseModeIndex];
+  }
+
+  async generateWaypoints() {
+    console.log("🗺️ Generating waypoints with geographic data...");
+    const startTime = performance.now();
+
+    const totalKm = 40041.44;
+    const interval = 100; // Check every 100km
+
+    for (let km = 0; km <= totalKm; km += interval) {
+      const position = calculateNewPosition(
+        this.startLocation.lat,
+        this.startLocation.lng,
+        this.bearing,
+        km
+      );
+
+      // Get geographic info for this point (now async)
+      const geoInfo = await getGeographicInfo(position.lat, position.lng);
+
+      this.waypoints.push({
+        km,
+        ...position,
+        ...geoInfo,
+      });
+    }
+
+    const endTime = performance.now();
+    console.log(
+      `✅ Generated ${this.waypoints.length} waypoints in ${Math.round(
+        endTime - startTime
+      )}ms`
+    );
+  }
+
+  // Get waypoint info for current position
+  getCurrentWaypointInfo() {
+    if (!this.waypointsReady || this.waypoints.length === 0) {
+      return null;
+    }
+    const currentKm = Math.abs(this.distance);
+    const index = Math.round(currentKm / 100);
+    return this.waypoints[index] || this.waypoints[0];
   }
 
   // Get distance markers that should be visible

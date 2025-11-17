@@ -488,6 +488,14 @@ button span {
   }
 }
 
+.terrain-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  font-family: var(--script-font);
+  text-transform: lowercase;
+}
+
 // Mobile-first responsive styles
 @media (min-width: 769px) {
   // Tablet and up
