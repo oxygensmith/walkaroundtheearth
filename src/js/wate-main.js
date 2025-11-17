@@ -12,11 +12,64 @@ class WalkAroundTheEarth {
     this.originIcon = document.getElementById("origin-icon");
 
     this.setupEventListeners();
+    this.setupVisibilityTracking();
     this.startAnimationLoop();
 
     console.log("🌍 Walk Around the Earth initialized");
     console.log(`Earth circumference: ${40041.44} km`);
     console.log(`Scale: 10px = 1km`);
+  }
+
+  // In main.js - add to WalkAroundTheEarth constructor
+
+  setupVisibilityTracking() {
+    // Only track time away in cruise control mode
+    let hiddenTime = null;
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        // Window just became hidden - record the time
+        if (this.journey.getTravelMode() === "cruiseControl") {
+          hiddenTime = performance.now();
+          console.log("⏸️ Window hidden, pausing journey...");
+        }
+      } else {
+        // Window just became visible - calculate missed distance
+        if (hiddenTime && this.journey.getTravelMode() === "cruiseControl") {
+          const elapsedMs = performance.now() - hiddenTime;
+          const elapsedHours = elapsedMs / (1000 * 60 * 60);
+
+          const cruiseMode = this.journey.getCurrentCruiseMode();
+          const missedKm = cruiseMode.speed * elapsedHours;
+
+          console.log(
+            `⏩ Catching up: ${elapsedMs / 1000}s away = ${missedKm.toFixed(
+              6
+            )} km`
+          );
+
+          // Add the missed distance
+          this.journey.distance += missedKm;
+
+          // Show a brief notification
+          this.showCatchupMessage(elapsedMs / 1000, missedKm);
+
+          hiddenTime = null;
+        }
+      }
+    });
+  }
+
+  showCatchupMessage(seconds, km) {
+    // Create a temporary message showing the catch-up
+    const msg = document.createElement("div");
+    msg.className = "catchup-message";
+    msg.textContent = `Traveled ${km.toFixed(3)} km while away (${Math.round(
+      seconds
+    )}s)`;
+    document.body.appendChild(msg);
+
+    setTimeout(() => msg.remove(), 3000);
   }
 
   setupEventListeners() {
