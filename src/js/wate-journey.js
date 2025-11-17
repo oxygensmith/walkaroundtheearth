@@ -53,16 +53,42 @@ export class Journey {
     this.currentThrottleIndex = 0; // Start with no limit
 
     // Cruise Control travel modes
+    // In journey.js - update cruiseModes array
     this.cruiseModes = [
-      { name: "Walking", speed: 5, icon: "fa-person-walking" },
-      { name: "Running", speed: 10, icon: "fa-person-running" },
-      { name: "Bicycle", speed: 15, icon: "fa-person-biking" },
-      { name: "Car", speed: 100, icon: "fa-car-side" },
-      { name: "Light Aircraft", speed: 220, icon: "fa-plane" },
-      { name: "Commercial Airliner", speed: 900, icon: "fa-plane" },
-      { name: "Speed of sound (avg)", speed: 1225, icon: "fa-volume-high" },
-      { name: "Space Shuttle (LEO)", speed: 28000, icon: "fa-rocket" },
-      { name: "Voyager I", speed: 61000, icon: "fa-satellite" },
+      { name: "Garden Snail", speed: 0.048, decimals: 3, icon: "fa-" },
+      { name: "Sloth", speed: 0.24, decimals: 2, icon: "fa-" },
+      { name: "Turtle", speed: 0.4, decimals: 1, icon: "fa-" },
+      { name: "Carpenter Ant", speed: 0.8, decimals: 1, icon: "fa-" },
+      { name: "Walking", speed: 5, decimals: 1, icon: "fa-person-walking" },
+      { name: "Running", speed: 10, decimals: 0, icon: "fa-person-running" },
+      { name: "Bicycle", speed: 15, decimals: 0, icon: "fa-person-biking" },
+      { name: "Car", speed: 100, decimals: 0, icon: "fa-car-side" },
+      { name: "Light Aircraft", speed: 220, decimals: 0, icon: "fa-plane" },
+      {
+        name: "Commercial Airliner",
+        speed: 900,
+        decimals: 0,
+        icon: "fa-plane",
+      },
+      {
+        name: "Speed of sound (avg)",
+        speed: 1225,
+        decimals: 0,
+        icon: "fa-volume-high",
+      },
+      {
+        name: "Space Shuttle (LEO)",
+        speed: 28000,
+        decimals: 0,
+        icon: "fa-rocket",
+      },
+      { name: "Voyager I", speed: 61000, decimals: 0, icon: "fa-satellite" },
+      {
+        name: "Continental Drift",
+        speed: 0.000004,
+        decimals: 6,
+        icon: "fa-mountain",
+      },
     ];
     this.currentCruiseModeIndex = 0;
   }

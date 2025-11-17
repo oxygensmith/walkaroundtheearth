@@ -168,31 +168,22 @@ export class Renderer {
   updateSpeed(speed) {
     // Check if we're in cruise control mode
     if (this.journey.getTravelMode() === "cruiseControl") {
-      // Display the exact cruise speed (no calculation needed)
+      // Display the exact cruise speed with specified decimals
       const cruiseMode = this.journey.getCurrentCruiseMode();
       const cruiseSpeed = cruiseMode.speed;
+      const decimals =
+        cruiseMode.decimals !== undefined ? cruiseMode.decimals : 0;
 
-      let formattedSpeed;
-      if (cruiseSpeed >= 1000) {
-        formattedSpeed = Math.round(cruiseSpeed).toLocaleString();
-      } else if (cruiseSpeed >= 10) {
-        formattedSpeed = Math.round(cruiseSpeed).toString();
-      } else {
-        formattedSpeed = cruiseSpeed.toFixed(1);
-      }
-
+      const formattedSpeed = cruiseSpeed.toFixed(decimals);
       this.speedValue.textContent = `${formattedSpeed} km/h`;
     } else {
+      // Free scroll mode: use calculated speed with auto-formatting
       let formattedSpeed;
-
       if (speed >= 1000) {
-        // For speeds 1000+ km/h, show as integer with thousands separator
         formattedSpeed = Math.round(speed).toLocaleString();
       } else if (speed >= 10) {
-        // For speeds 10-999 km/h, show as integer
         formattedSpeed = Math.round(speed).toString();
       } else {
-        // For speeds under 10 km/h, show one decimal place
         formattedSpeed = speed.toFixed(1);
       }
 
@@ -213,21 +204,47 @@ export class Renderer {
     if (this.journey.getTravelMode() === "cruiseControl") {
       const cruiseMode = this.journey.getCurrentCruiseMode();
       displaySpeed = cruiseMode.speed;
+      // No threshold check for cruise control - always show time
+      const formattedTime = formatTimeToCircumnavigate(displaySpeed);
+      this.timeDisplay.textContent = formattedTime;
     } else {
-      // In free scroll, use the calculated speed
+      // In free scroll, use the calculated speed with threshold
       displaySpeed = speed;
+
+      // Only show time if moving at a reasonable speed
+      if (displaySpeed < 0.1) {
+        this.timeDisplay.textContent = "—";
+      } else {
+        const formattedTime = formatTimeToCircumnavigate(displaySpeed);
+        this.timeDisplay.textContent = formattedTime;
+      }
     }
-
-    const formattedTime = formatTimeToCircumnavigate(displaySpeed);
-    // console.log(`Speed: ${speed.toFixed(2)} km/h | Time: ${formattedTime}`);
-    this.timeDisplay.textContent = formattedTime;
   }
-
-  // Add this new method:
   updateMeterDisplay() {
     const distanceKm = Math.abs(this.journey.getDistance());
-    const meters = Math.floor(distanceKm * 1000); // Convert km to whole meters
-    this.meterValue.textContent = `${meters.toLocaleString()} m`;
+    const meters = distanceKm * 1000; // Convert km to meters (but don't floor yet)
+
+    // In cruise control, adjust precision based on speed
+    if (this.journey.getTravelMode() === "cruiseControl") {
+      const cruiseMode = this.journey.getCurrentCruiseMode();
+
+      // For extremely slow speeds, show decimal places
+      if (cruiseMode.speed < 0.001) {
+        // Continental drift and similar - show 6 decimals
+        this.meterValue.textContent = `${meters.toFixed(6)} m`;
+      } else if (cruiseMode.speed < 1) {
+        // Snail, sloth, turtle - show 2 decimals
+        this.meterValue.textContent = `${meters.toFixed(2)} m`;
+      } else {
+        // Normal speeds - whole meters
+        this.meterValue.textContent = `${Math.floor(
+          meters
+        ).toLocaleString()} m`;
+      }
+    } else {
+      // Free scroll mode - whole meters
+      this.meterValue.textContent = `${Math.floor(meters).toLocaleString()} m`;
+    }
   }
 
   // Update origin icon rotation based on velocity

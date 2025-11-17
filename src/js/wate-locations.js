@@ -96,7 +96,7 @@ export function formatCoordinates(lat, lng) {
 export function formatTimeToCircumnavigate(speedKmPerHour) {
   const EARTH_CIRCUMFERENCE = 40041.44; // km
 
-  if (speedKmPerHour < 0.1) {
+  if (speedKmPerHour < 0.000001) {
     return "—";
   }
 
