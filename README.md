@@ -26,19 +26,20 @@ By forcing visitors to _feel_ distances rather than just read numbers, we hope t
 
 ## Planned Features
 
-### Phase 1: Direction & Location
+### Phase 1: Geographic Data
 
-- [ ] Geolocation detection or manual lat/long entry
-- [ ] Bearing/direction selector (0-360°)
-- [ ] Great circle route calculation from starting point
-
-### Phase 2: Geographic Data
-
+- ✅ Land/Ocean detection with Natural Earth Data
 - [ ] Integration with OpenStreetMap APIs
 - [ ] Display of places along the journey path
 - [ ] Biome/terrain type identification
 - [ ] Ocean names and depths when over water
 - [ ] Country borders and nearest settlements
+
+### Phase 2: Direction & Location
+
+- [ ] Geolocation detection or manual lat/long entry
+- [ ] Bearing/direction selector (0-360°)
+- [ ] Great circle route calculation from starting point
 
 ### Phase 3: Rich Context
 
