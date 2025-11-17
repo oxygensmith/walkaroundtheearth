@@ -23,7 +23,7 @@ export const journeyMessages = [
   },
   {
     km: 850,
-    text: "This journey around the equator is the longest great circle, because the Earth bulges in the middle. If you were to circle the globe over the North and South Poles, it would be 67.154 km less distance.",
+    text: "This journey around the equator is the longest great circle, because the Earth bulges in the middle. If you were to circle the globe over the North and South Poles, it would be a 67.154 km shorter trip.",
   },
   {
     km: 1000,
@@ -34,15 +34,27 @@ export const journeyMessages = [
     text: "The distance between two points on Earth is calculated with the Haversine formula, to account for the fact that it's a sphere.|It's been in use by sailors since the early 1800s.",
   },
   {
-    km: 10010.32,
+    km: 5000,
+    text: "At a brisk walking pace of 5 km/h, this journey would take about 334 days of continuous walking.|Better to just scroll.",
+  },
+  {
+    km: 10010.22,
     text: "Can you believe that you've made it a quarter of the way?",
   },
   {
-    km: 20020.64,
+    km: 11241,
+    text: "You've just passed the distance of the longest land-only straight line on Earth.|From here on, any real walking route would require a boat.",
+  },
+  {
+    km: 20020.72,
     text: "You've reached the halfway point in your circumnavigation, called the ANTIPODE. Congratulations.",
   },
   {
-    km: 38041.44,
+    km: 30031.08,
+    text: "Three-quarters of the way around. The finish line is in sight.|Well, 10,010 km away. But still.",
+  },
+  {
+    km: 38037.3,
     text: "You've almost made it. Keep going.",
   },
 ];
