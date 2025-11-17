@@ -62,7 +62,7 @@ export class Renderer {
   // Update the distance counter
   updateDistanceDisplay() {
     const distance = Math.abs(this.journey.getDistance());
-    this.distanceValue.textContent = Math.round(distance).toLocaleString();
+    this.distanceValue.textContent = Math.floor(distance).toLocaleString();
   }
 
   // Update visible distance markers
