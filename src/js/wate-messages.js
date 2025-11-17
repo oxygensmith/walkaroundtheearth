@@ -59,3 +59,21 @@ export const journeyMessages = [
     text: "You've almost made it. Keep going.",
   },
 ];
+
+// Not in use yet - conditional messages.
+// Messages that show facts based on speed when you enter one,
+// or encourage you try one.
+
+// Track which speeds user has tried, some functon
+const triedSpeeds = new Set();
+
+// After being in one mode for 30 seconds, suggest another
+if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
+  showDriftingMessage(
+    "Try Continental Drift mode. At walking speed, a year passes in 1.75 seconds. At continental drift, a second takes 7 years."
+  );
+}
+
+// Contientnal drift:
+// "Weird how your brain sees this moving but it feels motionless.
+// Yet this 'motionless' force broken apart Pangea, created the Himalayas, and opened the Atlantic Ocean."
