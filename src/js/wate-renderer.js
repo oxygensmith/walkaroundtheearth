@@ -21,6 +21,8 @@ export class Renderer {
     this.originIcon = document.getElementById("origin-icon");
     this.terrainDisplay = document.getElementById("terrain-display");
     this.viewportWidth = window.innerWidth;
+    this.timeElapsedDisplay = document.getElementById("time-elapsed-display");
+    this.showingElapsed = true;
 
     // Track which markers are currently rendered
     this.renderedMarkers = new Map();
@@ -32,6 +34,14 @@ export class Renderer {
     window.addEventListener("resize", () => {
       this.viewportWidth = window.innerWidth;
     });
+
+    // Make time elapsed clickable
+    if (this.timeElapsedDisplay) {
+      this.timeElapsedDisplay.style.cursor = "pointer";
+      this.timeElapsedDisplay.addEventListener("click", () => {
+        this.showingElapsed = !this.showingElapsed;
+      });
+    }
   }
 
   // Main render function called each frame
@@ -44,6 +54,7 @@ export class Renderer {
     this.updateCoordinates();
     this.updateOriginIconRotation();
     this.updateMeterDisplay();
+    this.updateTimeElapsed();
 
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
@@ -91,6 +102,54 @@ export class Renderer {
 
       // Update position
       element.style.left = `${marker.offset}px`;
+    }
+  }
+
+  updateTimeElapsed() {
+    if (!this.timeElapsedDisplay) return;
+
+    if (this.showingElapsed) {
+      // Show elapsed time
+      const elapsed = this.journey.getElapsedTime();
+      const formatted = this.formatDuration(elapsed);
+      this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
+    } else {
+      // Show remaining time (only in cruise control)
+      if (this.journey.getTravelMode() === "cruiseControl") {
+        const remaining = this.journey.getTimeRemaining();
+        if (remaining) {
+          const formatted = this.formatDuration(remaining);
+          this.timeElapsedDisplay.textContent = `Remaining: ${formatted}`;
+        } else {
+          this.timeElapsedDisplay.textContent = "—";
+        }
+      } else {
+        this.timeElapsedDisplay.textContent = "Remaining: —";
+      }
+    }
+  }
+
+  formatDuration(ms) {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const years = Math.floor(days / 365.25);
+
+    if (years > 1) {
+      const remainingDays = Math.floor(days % 365.25);
+      return `${years}y ${remainingDays}d`;
+    } else if (days > 1) {
+      const remainingHours = hours % 24;
+      return `${days}d ${remainingHours}h`;
+    } else if (hours > 1) {
+      const remainingMinutes = minutes % 60;
+      return `${hours}h ${remainingMinutes}m`;
+    } else if (minutes > 1) {
+      const remainingSeconds = seconds % 60;
+      return `${minutes}m ${remainingSeconds}s`;
+    } else {
+      return `${seconds}s`;
     }
   }
 

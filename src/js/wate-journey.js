@@ -20,23 +20,6 @@ export class Journey {
     this.lastDistance = 0; // For speed calculation
     this.lastTime = performance.now(); // For speed calculation
 
-    // Select a random starting location
-    this.startLocation = getRandomLocation();
-    // For now, we'll travel due east (90 degrees)
-    this.bearing = 90;
-
-    this.waypoints = [];
-    this.waypointsReady = false;
-
-    // Start generating waypoints (don't await here)
-    this.generateWaypoints().then(() => {
-      this.waypointsReady = true;
-      console.log("✅ Waypoints ready!");
-    });
-
-    // Travel modes
-    this.travelMode = "freeScroll"; // "freeScroll" or "cruiseControl"
-
     // Throttle settings for Free Scroll mode
     this.throttleLevels = [
       { level: 0, maxSpeed: null, label: "No Limit" },
@@ -91,6 +74,57 @@ export class Journey {
       },
     ];
     this.currentCruiseModeIndex = 0;
+
+    // Try to load saved state first
+    const savedState = this.loadState();
+
+    if (savedState) {
+      // Restore from saved state
+      this.startLocation = savedState.startLocation;
+      this.bearing = savedState.bearing;
+      this.distance = savedState.distance;
+      this.travelMode = savedState.travelMode;
+      this.currentCruiseModeIndex = savedState.currentCruiseModeIndex;
+      this.currentThrottleIndex = savedState.currentThrottleIndex;
+
+      // Calculate distance traveled while away (if in cruise control)
+      if (this.travelMode === "cruiseControl") {
+        const elapsedMs = Date.now() - savedState.lastSaveTime;
+        const elapsedHours = elapsedMs / (1000 * 60 * 60);
+        const cruiseMode = this.cruiseModes[this.currentCruiseModeIndex];
+        const distanceTraveled = cruiseMode.speed * elapsedHours;
+
+        this.distance += distanceTraveled;
+
+        console.log(`⏩ Traveled ${distanceTraveled.toFixed(6)} km while away`);
+
+        // Store this info to show in UI
+        this.returnInfo = {
+          timeAway: elapsedMs,
+          distanceTraveled: distanceTraveled,
+        };
+      }
+    } else {
+      // No saved state - start fresh
+      this.travelMode = "freeScroll"; // "freeScroll" or "cruiseControl"
+      this.startLocation = getRandomLocation();
+      this.bearing = 90;
+    }
+
+    if (savedState && savedState.journeyStartTime) {
+      this.journeyStartTime = savedState.journeyStartTime;
+    } else {
+      this.journeyStartTime = Date.now();
+    }
+
+    this.waypoints = [];
+    this.waypointsReady = false;
+
+    // Start generating waypoints (don't await here)
+    this.generateWaypoints().then(() => {
+      this.waypointsReady = true;
+      console.log("✅ Waypoints ready!");
+    });
   }
 
   // Convert distance in km to pixel offset
@@ -353,5 +387,80 @@ export class Journey {
     }
 
     return markers;
+  }
+
+  // Save current journey state
+  saveState() {
+    const state = {
+      distance: this.distance,
+      startLocation: this.startLocation,
+      bearing: this.bearing,
+      travelMode: this.travelMode,
+      currentCruiseModeIndex: this.currentCruiseModeIndex,
+      currentThrottleIndex: this.currentThrottleIndex,
+      lastSaveTime: Date.now(),
+      journeyStartTime: this.journeyStartTime,
+      waypointsReady: this.waypointsReady,
+      version: "1.0",
+    };
+
+    localStorage.setItem("wate-journey", JSON.stringify(state));
+    console.log("💾 Journey saved");
+  }
+
+  // Load saved journey state
+  loadState() {
+    console.log("🔍 Checking localStorage for saved journey...");
+    const saved = localStorage.getItem("wate-journey");
+    console.log("🔍 Raw localStorage value:", saved);
+
+    if (!saved) {
+      console.log("✅ No saved state found - starting fresh");
+      return null;
+    }
+
+    try {
+      const state = JSON.parse(saved);
+      console.log("📂 Found saved journey:", state);
+      return state;
+    } catch (e) {
+      console.error("Failed to load journey state:", e);
+      return null;
+    }
+  }
+
+  // Clear saved state
+  // Clear saved state
+  clearState() {
+    console.log("🗑️ Clearing journey state...");
+    localStorage.removeItem("wate-journey");
+
+    // Double-check it's really gone
+    const check = localStorage.getItem("wate-journey");
+    console.log("🔍 After removal, localStorage has:", check);
+
+    if (check === null) {
+      console.log("✅ Journey state successfully cleared from localStorage");
+    } else {
+      console.error("❌ WARNING: State still in localStorage after removal!");
+    }
+  }
+
+  getElapsedTime() {
+    return Date.now() - this.journeyStartTime;
+  }
+
+  getTimeRemaining() {
+    const EARTH_CIRCUMFERENCE = 40041.44;
+    const distanceRemaining = EARTH_CIRCUMFERENCE - Math.abs(this.distance);
+
+    // Get current speed
+    if (this.getTravelMode() === "cruiseControl") {
+      const cruiseMode = this.getCurrentCruiseMode();
+      const hoursRemaining = distanceRemaining / cruiseMode.speed;
+      return hoursRemaining * 60 * 60 * 1000; // Convert to ms
+    }
+
+    return null; // Can't calculate in free scroll mode
   }
 }
