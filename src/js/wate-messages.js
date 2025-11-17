@@ -64,8 +64,9 @@ export const journeyMessages = [
 // Messages that show facts based on speed when you enter one,
 // or encourage you try one.
 
-// Track which speeds user has tried, some functon
-const triedSpeeds = new Set();
+// Track which speeds user has tried, some function. Something like:
+
+/* const triedSpeeds = new Set();
 
 // After being in one mode for 30 seconds, suggest another
 if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
@@ -73,6 +74,7 @@ if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
     "Try Continental Drift mode. At walking speed, a year passes in 1.75 seconds. At continental drift, a second takes 7 years."
   );
 }
+  */
 
 // Contientnal drift:
 // "Weird how your brain sees this moving but it feels motionless.
