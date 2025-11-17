@@ -19,11 +19,11 @@ export const journeyMessages = [
   },
   {
     km: 725,
-    text: "At least it's the most famous great circle.",
+    text: "At least you're on the most famous great circle.",
   },
   {
     km: 850,
-    text: "This journey around the equator is the longest great circle, because the Earth bulges in the middle. If you were to circle the globe over the North and South Poles, it would be a 67.154 km shorter trip.",
+    text: "This journey around the equator is the longest great circle, because the Earth bulges in the middle. If you were to circle the globe over the North and South Poles, your trip would be 67.154 km shorter.",
   },
   {
     km: 1000,
