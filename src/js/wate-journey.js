@@ -50,6 +50,7 @@ export class Journey {
       { name: "Car", speed: 100, icon: "fa-car-side" },
       { name: "Light Aircraft", speed: 220, icon: "fa-plane" },
       { name: "Commercial Airliner", speed: 900, icon: "fa-plane" },
+      { name: "Speed of sound (avg)", speed: 1225, icon: "fa-volume-high" },
       { name: "Space Shuttle (LEO)", speed: 28000, icon: "fa-rocket" },
       { name: "Voyager I", speed: 61000, icon: "fa-satellite" },
     ];
