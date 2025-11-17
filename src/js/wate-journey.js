@@ -1,6 +1,7 @@
-// journey.js - Handles the journey state and physics
+/* Walk Around the Earth */
+/* journey.js - Handles the journey state and physics */
 
-import { getRandomLocation, calculateNewPosition } from "./locations.js";
+import { getRandomLocation, calculateNewPosition } from "./wate-locations.js";
 
 const EARTH_CIRCUMFERENCE_KM = 40041.44; // Average of polar and equatorial
 const SCALE_PX_PER_KM = 10; // 10 pixels = 1 kilometer
@@ -47,7 +48,10 @@ export class Journey {
       { name: "Running", speed: 10, icon: "fa-person-running" },
       { name: "Bicycle", speed: 15, icon: "fa-person-biking" },
       { name: "Car", speed: 100, icon: "fa-car-side" },
-      { name: "Plane", speed: 900, icon: "fa-plane" },
+      { name: "Light Aircraft", speed: 220, icon: "fa-plane" },
+      { name: "Commercial Airliner", speed: 900, icon: "fa-plane" },
+      { name: "Space Shuttle (LEO)", speed: 28000, icon: "fa-rocket" },
+      { name: "Voyager I", speed: 61000, icon: "fa-satellite" },
     ];
     this.currentCruiseModeIndex = 0;
   }

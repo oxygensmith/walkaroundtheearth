@@ -1,4 +1,5 @@
-// messages.js - Journey messages that appear at specific distances
+/* Walk Around the Earth */
+/* messages.js - Journey messages that appear at specific distances */
 
 export const journeyMessages = [
   {
@@ -43,7 +44,7 @@ export const journeyMessages = [
   },
   {
     km: 11241,
-    text: "You've just passed the distance of the longest land-only straight line on Earth.|From here on, any real walking route would require a boat.",
+    text: "You've just passed the distance of the longest land-only straight line on Earth.|It runs between SAGRES, PORTUGAL and JINJIANG, CHINA.|From here on, any real walking route would require a boat.",
   },
   {
     km: 20020.72,

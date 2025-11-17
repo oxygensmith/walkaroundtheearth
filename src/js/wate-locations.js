@@ -1,25 +1,50 @@
-// locations.js - Equatorial locations and geographic calculations
+/* Walk Around the Earth */
+/* locations.js - Equatorial locations and geographic calculations */
 
 export const EQUATORIAL_LOCATIONS = [
   {
     name: "Quito, Ecuador",
     lat: -0.1807,
     lng: -78.4678,
+    antipode: {
+      lat: 0.1807,
+      lng: 101.5322,
+      location: "Somewhere in the South China Sea, between Borneo and Sumatra",
+      type: "ocean",
+    },
   },
   {
     name: "Macapá, Brazil",
     lat: 0.0389,
     lng: -51.0664,
+    antipode: {
+      lat: -0.0389,
+      lng: 128.9336,
+      location: "In the ocean northeast of Indonesia, near Halmahera Island",
+      type: "ocean",
+    },
   },
   {
     name: "Pontianak, Indonesia",
     lat: -0.0263,
     lng: 109.3425,
+    antipode: {
+      lat: 0.0263,
+      lng: -70.6575,
+      location: "In the Amazon rainforest, Colombia (near the Brazil border)",
+      type: "land",
+    },
   },
   {
     name: "Nanyuki, Kenya",
     lat: 0.0167,
     lng: 37.0667,
+    antipode: {
+      lat: -0.0167,
+      lng: -142.9333,
+      location: "In the Pacific Ocean, southeast of Hawaii",
+      type: "ocean",
+    },
   },
 ];
 
@@ -53,7 +78,7 @@ export function calculateNewPosition(startLat, startLng, bearing, distanceKm) {
 
   return {
     lat: (lat2 * 180) / Math.PI,
-    lng: ((lng2 * 180) / Math.PI + 540) % 360 - 180, // Normalize to -180 to 180
+    lng: (((lng2 * 180) / Math.PI + 540) % 360) - 180, // Normalize to -180 to 180
   };
 }
 
@@ -94,10 +119,14 @@ export function formatTimeToCircumnavigate(speedKmPerHour) {
   const years = Math.floor(totalDays / daysPerYear);
   remaining -= years * daysPerYear * hoursPerDay * minutesPerHour;
 
-  const months = Math.floor((remaining / minutesPerHour / hoursPerDay) / daysPerMonth);
+  const months = Math.floor(
+    remaining / minutesPerHour / hoursPerDay / daysPerMonth
+  );
   remaining -= months * daysPerMonth * hoursPerDay * minutesPerHour;
 
-  const weeks = Math.floor((remaining / minutesPerHour / hoursPerDay) / daysPerWeek);
+  const weeks = Math.floor(
+    remaining / minutesPerHour / hoursPerDay / daysPerWeek
+  );
   remaining -= weeks * daysPerWeek * hoursPerDay * minutesPerHour;
 
   const days = Math.floor(remaining / minutesPerHour / hoursPerDay);
@@ -111,12 +140,16 @@ export function formatTimeToCircumnavigate(speedKmPerHour) {
   // Build output string with up to 2 most significant units
   const parts = [];
 
-  if (years > 0) parts.push(`${years} year${years !== 1 ? 's' : ''}`);
-  if (months > 0) parts.push(`${months} month${months !== 1 ? 's' : ''}`);
-  if (weeks > 0 && years === 0) parts.push(`${weeks} week${weeks !== 1 ? 's' : ''}`);
-  if (days > 0 && years === 0 && months === 0) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
-  if (hours > 0 && years === 0 && months === 0 && weeks === 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
-  if (minutes > 0 && years === 0 && months === 0 && weeks === 0 && days === 0) parts.push(`${minutes} min${minutes !== 1 ? 's' : ''}`);
+  if (years > 0) parts.push(`${years} year${years !== 1 ? "s" : ""}`);
+  if (months > 0) parts.push(`${months} month${months !== 1 ? "s" : ""}`);
+  if (weeks > 0 && years === 0)
+    parts.push(`${weeks} week${weeks !== 1 ? "s" : ""}`);
+  if (days > 0 && years === 0 && months === 0)
+    parts.push(`${days} day${days !== 1 ? "s" : ""}`);
+  if (hours > 0 && years === 0 && months === 0 && weeks === 0)
+    parts.push(`${hours} hour${hours !== 1 ? "s" : ""}`);
+  if (minutes > 0 && years === 0 && months === 0 && weeks === 0 && days === 0)
+    parts.push(`${minutes} min${minutes !== 1 ? "s" : ""}`);
 
   // Return up to 2 parts
   const displayParts = parts.slice(0, 2);
@@ -125,5 +158,5 @@ export function formatTimeToCircumnavigate(speedKmPerHour) {
     return "< 1 min";
   }
 
-  return displayParts.join(' ') + ' to circle Earth';
+  return displayParts.join(" ") + " to circle Earth";
 }

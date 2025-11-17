@@ -1,7 +1,11 @@
-// renderer.js - Handles visual updates and DOM manipulation
+/* Walk Around the Earth */
+/* renderer.js - Handles visual updates and DOM manipulation */
 
-import { formatCoordinates, formatTimeToCircumnavigate } from "./locations.js";
-import { journeyMessages } from "./messages.js";
+import {
+  formatCoordinates,
+  formatTimeToCircumnavigate,
+} from "./wate-locations.js";
+import { journeyMessages } from "./wate-messages.js";
 
 export class Renderer {
   constructor(journey) {
@@ -11,7 +15,8 @@ export class Renderer {
     this.distanceMarkers = document.getElementById("distance-markers");
     this.projectTitle = document.querySelector(".project-title");
     this.coordinatesDisplay = document.getElementById("coordinates-display");
-    this.speedDisplay = document.getElementById("speed-display");
+    this.speedValue = document.getElementById("speed-value");
+    this.meterValue = document.getElementById("meter-value");
     this.timeDisplay = document.getElementById("time-display");
     this.originIcon = document.getElementById("origin-icon");
     this.viewportWidth = window.innerWidth;
@@ -37,6 +42,7 @@ export class Renderer {
     this.updateProjectTitle();
     this.updateCoordinates();
     this.updateOriginIconRotation();
+    this.updateMeterDisplay();
 
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
@@ -149,20 +155,38 @@ export class Renderer {
 
   // Update speed display
   updateSpeed(speed) {
-    let formattedSpeed;
+    // Check if we're in cruise control mode
+    if (this.journey.getTravelMode() === "cruiseControl") {
+      // Display the exact cruise speed (no calculation needed)
+      const cruiseMode = this.journey.getCurrentCruiseMode();
+      const cruiseSpeed = cruiseMode.speed;
 
-    if (speed >= 1000) {
-      // For speeds 1000+ km/h, show as integer with thousands separator
-      formattedSpeed = Math.round(speed).toLocaleString();
-    } else if (speed >= 10) {
-      // For speeds 10-999 km/h, show as integer
-      formattedSpeed = Math.round(speed).toString();
+      let formattedSpeed;
+      if (cruiseSpeed >= 1000) {
+        formattedSpeed = Math.round(cruiseSpeed).toLocaleString();
+      } else if (cruiseSpeed >= 10) {
+        formattedSpeed = Math.round(cruiseSpeed).toString();
+      } else {
+        formattedSpeed = cruiseSpeed.toFixed(1);
+      }
+
+      this.speedValue.textContent = `${formattedSpeed} km/h`;
     } else {
-      // For speeds under 10 km/h, show one decimal place
-      formattedSpeed = speed.toFixed(1);
-    }
+      let formattedSpeed;
 
-    this.speedDisplay.textContent = `${formattedSpeed} km/h`;
+      if (speed >= 1000) {
+        // For speeds 1000+ km/h, show as integer with thousands separator
+        formattedSpeed = Math.round(speed).toLocaleString();
+      } else if (speed >= 10) {
+        // For speeds 10-999 km/h, show as integer
+        formattedSpeed = Math.round(speed).toString();
+      } else {
+        // For speeds under 10 km/h, show one decimal place
+        formattedSpeed = speed.toFixed(1);
+      }
+
+      this.speedValue.textContent = `${formattedSpeed} km/h`;
+    }
   }
 
   // Update time to circumnavigate display
@@ -172,9 +196,27 @@ export class Renderer {
       return;
     }
 
-    const formattedTime = formatTimeToCircumnavigate(speed);
+    let displaySpeed;
+
+    // In cruise control, use the exact cruise mode speed
+    if (this.journey.getTravelMode() === "cruiseControl") {
+      const cruiseMode = this.journey.getCurrentCruiseMode();
+      displaySpeed = cruiseMode.speed;
+    } else {
+      // In free scroll, use the calculated speed
+      displaySpeed = speed;
+    }
+
+    const formattedTime = formatTimeToCircumnavigate(displaySpeed);
     // console.log(`Speed: ${speed.toFixed(2)} km/h | Time: ${formattedTime}`);
     this.timeDisplay.textContent = formattedTime;
+  }
+
+  // Add this new method:
+  updateMeterDisplay() {
+    const distanceKm = Math.abs(this.journey.getDistance());
+    const meters = Math.floor(distanceKm * 1000); // Convert km to whole meters
+    this.meterValue.textContent = `${meters.toLocaleString()} m`;
   }
 
   // Update origin icon rotation based on velocity
@@ -234,7 +276,7 @@ export class Renderer {
         messages.push({
           km: message.km,
           text: message.text,
-          offset: this.journey.kmToPixels(message.km)
+          offset: this.journey.kmToPixels(message.km),
         });
       }
     }
@@ -248,7 +290,7 @@ export class Renderer {
     div.className = "journey-message";
 
     // Split text by pipe character and create paragraphs
-    const paragraphs = message.text.split('|');
+    const paragraphs = message.text.split("|");
 
     paragraphs.forEach((paragraph, index) => {
       const p = document.createElement("p");

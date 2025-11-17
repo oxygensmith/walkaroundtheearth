@@ -1,7 +1,8 @@
-// main.js - Application entry point
+/* Walk Around the Earth */
+/* main.js - Application entry point */
 
-import { Journey } from "./journey.js";
-import { Renderer } from "./renderer.js";
+import { Journey } from "./wate-journey.js";
+import { Renderer } from "./wate-renderer.js";
 
 class WalkAroundTheEarth {
   constructor() {
