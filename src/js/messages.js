@@ -3,7 +3,7 @@
 export const journeyMessages = [
   {
     km: 0,
-    text: "A 'great circle' is a type of circumnavigation that has the same radius as the Earth itself, the maximum distance you can travel in a straight line - 40,041 km.",
+    text: "A 'great circle' is a type of circumnavigation that has the same radius as the Earth itself.|It's the maximum distance you can travel in a straight line - about 40,041 km.",
   },
   {
     km: 150,
