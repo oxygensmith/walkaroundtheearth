@@ -55,10 +55,6 @@ export class Journey {
     // Cruise Control travel modes
     // In journey.js - update cruiseModes array
     this.cruiseModes = [
-      { name: "Garden Snail", speed: 0.048, decimals: 3, icon: "fa-" },
-      { name: "Sloth", speed: 0.24, decimals: 2, icon: "fa-" },
-      { name: "Turtle", speed: 0.4, decimals: 1, icon: "fa-" },
-      { name: "Carpenter Ant", speed: 0.8, decimals: 1, icon: "fa-" },
       { name: "Walking", speed: 5, decimals: 1, icon: "fa-person-walking" },
       { name: "Running", speed: 10, decimals: 0, icon: "fa-person-running" },
       { name: "Bicycle", speed: 15, decimals: 0, icon: "fa-person-biking" },
@@ -83,6 +79,10 @@ export class Journey {
         icon: "fa-rocket",
       },
       { name: "Voyager I", speed: 61000, decimals: 0, icon: "fa-satellite" },
+      { name: "Carpenter Ant", speed: 0.8, decimals: 1, icon: "fa-" },
+      { name: "Turtle", speed: 0.4, decimals: 1, icon: "fa-" },
+      { name: "Sloth", speed: 0.24, decimals: 2, icon: "fa-" },
+      { name: "Garden Snail", speed: 0.048, decimals: 3, icon: "fa-" },
       {
         name: "Continental Drift",
         speed: 0.000004,
