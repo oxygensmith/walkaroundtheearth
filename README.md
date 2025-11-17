@@ -4,7 +4,7 @@ An interactive web experience that lets you take a contemplative journey around 
 
 ## Concept
 
-Inspired by [If the Moon Were Only 1 Pixel](https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html) and the film _Koyaanisqatsi_, this project aims to create a similar sense of awe and scale — but focused on Earth itself rather than the cosmos.
+Inspired by Josh Worth's [If the Moon Were Only 1 Pixel](https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html) and the film _Koyaanisqatsi_, this project aims to create a similar sense of awe and scale — but focused on Earth itself rather than the cosmos.
 
 By forcing visitors to _feel_ distances rather than just read numbers, we hope to reveal:
 
