@@ -33,6 +33,22 @@
   --info-font: var(--font-base);
   --message-font: var(--font-base);
   --terrain-font: var(--font-base);
+
+  // Icons
+  --icon-size-sm: 16px;
+  --icon-size-base: 24px;
+  --icon-size-lg: 32px;
+  --icon-size-xl: 48px;
+
+  --icon-color-default: currentColor;
+  --icon-color-origin: #ffffff;
+  --icon-color-danger: #ff6b6b;
+  --icon-color-success: #51cf66;
+  --icon-color-warning: #ffd93d;
+  --icon-color-info: #6bcb77;
+  --icon-color-muted: #999;
+  --color-icon: var(--color-text);
+  --color-icon-dim: var(--color-text-dim);
 }
 
 * {
@@ -58,10 +74,64 @@ body {
   }
 }
 
+// icons
+
+.icon {
+  display: inline-block;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
+  fill: var(--color-icon);
+  vertical-align: -0.125em; // Slight adjustment for better alignment with text
+  flex-shrink: 0; // Prevents icon from shrinking in flex containers
+
+  // Size modifiers
+  &--sm {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+
+  &--lg {
+    width: var(--icon-size-lg);
+    height: var(--icon-size-lg);
+  }
+
+  &--xl {
+    width: var(--icon-size-xl);
+    height: var(--icon-size-xl);
+  }
+
+  // Color modifiers (these override the inherited color)
+  &--danger {
+    color: var(--icon-color-danger);
+  }
+
+  &--success {
+    color: var(--icon-color-success);
+  }
+
+  &--warning {
+    color: var(--icon-color-warning);
+  }
+
+  &--info {
+    color: var(--icon-color-info);
+  }
+
+  &--muted {
+    color: var(--icon-color-muted);
+  }
+}
+
 button,
 button span {
   font-family: var(--btn-font);
+  text-transform: uppercase;
 }
+button .icon {
+  fill: var(--color--icon);
+  margin-right: 7px;
+}
+/* Journey styles */
 
 .journey-container {
   width: 100vw;
@@ -105,7 +175,7 @@ button span {
 
   i {
     font-size: 18px;
-    color: var(--color-horizon);
+    color: #fff;
   }
 }
 
@@ -247,6 +317,8 @@ button span {
     }
   }
 }
+
+/* controls */
 
 .controls {
   position: fixed;
@@ -443,7 +515,7 @@ button span {
     color: var(--color-text);
   }
 
-  .credits-container.expanded & i {
+  .credits-container.expanded & svg {
     transform: rotate(180deg);
   }
 }
