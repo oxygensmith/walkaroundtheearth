@@ -3,6 +3,7 @@
 
 import { Journey } from "./wate-journey.js";
 import { Renderer } from "./wate-renderer.js";
+import { showGreeting, hideWelcome } from "./wate-messages.js";
 
 // Utility function to wait
 function delay(ms) {
@@ -28,7 +29,6 @@ class WalkAroundTheEarth {
 
     this.setupEventListeners();
     this.setupVisibilityTracking();
-    // this.startAnimationLoop();
     this.startAutoSave();
 
     // Check if this is a restored journey
@@ -44,6 +44,7 @@ class WalkAroundTheEarth {
       );
     } else {
       // New journey - wait for start button
+      showGreeting();
       this.restoreUIState();
     }
 
@@ -210,7 +211,7 @@ class WalkAroundTheEarth {
     startButton.addEventListener("click", () => {
       if (!this.hasStarted) {
         this.hasStarted = true;
-        startButton.classList.add("hidden");
+        hideWelcome();
         this.startAnimationLoop();
         console.log("🚶 Journey started!");
       }

@@ -60,6 +60,87 @@ export const journeyMessages = [
   },
 ];
 
+// Welcome message components
+const welcomeIntro =
+  "|Ever wanted to walk around the entire planet? Or run or bike?|Now's as good as any other time.";
+const welcomePreButton = "|Just click";
+const welcomePostButton =
+  "and you'll be off! And... quickly getting a sense of how long it will take you.";
+
+// Generate time-based greeting
+function getGreeting() {
+  const now = new Date();
+  const hour = now.getHours();
+
+  // Determine time of day
+  let timeOfDay;
+  if (hour >= 5 && hour < 12) {
+    timeOfDay = "morning";
+  } else if (hour >= 12 && hour < 17) {
+    timeOfDay = "afternoon";
+  } else if (hour >= 17 && hour < 21) {
+    timeOfDay = "evening";
+  } else {
+    timeOfDay = "night";
+  }
+
+  // Format date and time
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const dateStr = now.toLocaleDateString("en-US", dateOptions);
+
+  const timeOptions = { hour: "numeric", minute: "2-digit", hour12: true };
+  const timeStr = now.toLocaleTimeString("en-US", timeOptions);
+
+  return `Good ${timeOfDay}.<br />It's ${dateStr} and ${timeStr} where you are.`;
+}
+
+// Compose full welcome message
+export function getWelcomeMessage() {
+  return {
+    greeting: getGreeting(),
+    intro: welcomeIntro,
+    preButton: welcomePreButton,
+    postButton: welcomePostButton,
+  };
+}
+
+// Utility function to convert pipe-separated text to HTML paragraphs
+export function formatMessageText(text) {
+  return text
+    .split("|")
+    .map((line) => `${line.trim()}<br />`)
+    .join("");
+}
+
+export function showGreeting() {
+  const message = getWelcomeMessage();
+  document.getElementById("welcome-greeting").innerHTML = formatMessageText(
+    message.greeting
+  );
+  document.getElementById("welcome-intro").innerHTML = formatMessageText(
+    message.intro
+  );
+  document.getElementById("welcome-pre-button").innerHTML = formatMessageText(
+    message.preButton
+  );
+  document.getElementById("welcome-post-button").innerHTML = formatMessageText(
+    message.postButton
+  );
+}
+
+export function hideWelcome() {
+  document.querySelectorAll(".dismissible").forEach((el) => {
+    el.classList.add("hidden");
+  });
+  // Show distance display
+  document.getElementById("distance-display").classList.remove("hidden");
+}
+
 // Not in use yet - conditional messages.
 // Messages that show facts based on speed when you enter one,
 // or encourage you try one.

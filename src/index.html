@@ -29,15 +29,23 @@
         <div class="project-title">Walk Around the Earth</div>
 
         <div class="odometer-container">
-          <div class="distance-display">
+          <div class="welcome-message dismissible" id="welcome-message">
+            <div id="welcome-greeting"></div>
+            <div id="welcome-intro"></div>
+            <div id="welcome-pre-button"></div>
+          </div>
+          <button class="start-button dismissible" id="start-button">
+            <svg class="icon icon--sm"><use xlink:href="#icon-start"/></svg> Start Journey
+          </button>
+          <div class="welcome-message dismissible" id="welcome-post-button"></div>
+          
+          <div id="distance-display" class="distance-display hidden">
             <span class="distance-value writing-font" id="distance-value"
               >0</span
             >
             <span class="distance-unit writing-font">km from home</span>
           </div>
-          <button class="start-button" id="start-button">
-            <svg class="icon icon--sm"><use xlink:href="#icon-start"/></svg> Start Journey
-          </button>
+          
           <div class="instructions writing-font">
             Click and drag to move • Scroll to travel
           </div>
