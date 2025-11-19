@@ -141,7 +141,202 @@ export function hideWelcome() {
   document.getElementById("distance-display").classList.remove("hidden");
 }
 
-// Not in use yet - conditional messages.
+// TODO: Time-triggered message sequences (triggered by elapsed seconds)
+export const timeSequences = [
+  {
+    triggerSeconds: 3,
+    id: "onboarding",
+    skippable: true,
+    messages: [
+      { text: "And so it begins.", duration: 3 },
+      {
+        text: "Even though you've already travelled at least a few meters, you've probably already noticed that getting around the world is going to take awhile.",
+        duration: 6,
+      },
+      {
+        text: "Feel free to get on a bike or into a car or something faster with the controls below.",
+        duration: 5,
+      },
+      { text: "It's still going to take you awhile.", duration: 3 },
+      {
+        text: "You've probably noticed that in this trip around Earth, we've made you very focussed.",
+        duration: 4,
+      },
+      {
+        text: "We've removed the need for you to eat, sleep and rest - and a lot of other obstacles.",
+        duration: 5,
+      },
+      {
+        text: "In a real straight-line journey around the planet, you'd also have the problem of walking (or driving) into the ocean.",
+        duration: 6,
+      },
+      {
+        text: "For this trip, though, please enjoy your magic sidewalk.",
+        duration: 4,
+      },
+      {
+        text: "P.S. Don't worry about sitting here and staring at the screen for days, weeks or months. You can reload this page, close the browser, or even turn the computer on and off, and it'll remember where you're at in your journey.",
+        duration: 8,
+      },
+      { text: "Just don't clear cookies.", duration: 3 },
+      {
+        text: "You can voluntarily restart by clicking the Restart button below.",
+        duration: 4,
+      },
+      { text: "Have fun!", duration: 3 },
+    ],
+  },
+  {
+    triggerSeconds: 60, // 1 minute after onboarding
+    id: "great-circle-intro",
+    skippable: true,
+    messages: [
+      {
+        text: "A 'great circle' is a type of circumnavigation that has the same radius as the Earth itself.",
+        duration: 5,
+      },
+      {
+        text: "It's the maximum distance you can travel in a straight line - about 40,041 km.",
+        duration: 4,
+      },
+      {
+        text: "All lines of longitude and the equator are 'great circle routes.'",
+        duration: 4,
+      },
+      {
+        text: "Actually, any straightline path around the earth that comes back to its starting point - as long the circle that it makes would slice through the exact center of the earth - is a great circle route.",
+        duration: 7,
+      },
+      {
+        text: "Later, you'll be able to set waypoints and your angle of travel.",
+        duration: 4,
+      },
+      { text: "But for now, this journey is equatorial.", duration: 3 },
+      { text: "At least you're on the most famous great circle.", duration: 3 },
+    ],
+  },
+];
+
+// Distance-triggered message sequences (triggered by km traveled)
+export const distanceSequences = [
+  {
+    triggerKm: 500,
+    id: "haversine",
+    skippable: true,
+    messages: [
+      {
+        text: "The distance between two points on Earth is calculated with the Haversine formula, to account for the fact that it's a sphere.",
+        duration: 6,
+      },
+      {
+        text: "It's been in use by sailors since the early 1800s.",
+        duration: 3,
+      },
+    ],
+  },
+  {
+    triggerKm: 998,
+    id: "approaching-1000",
+    skippable: true,
+    messages: [
+      {
+        text: "This journey around the equator is the longest great circle, because the Earth bulges in the middle.",
+        duration: 5,
+      },
+      {
+        text: "If you were to circle the globe over the North and South Poles, your trip would be 67.154 km shorter.",
+        duration: 5,
+      },
+      { text: "We'll have some fun with destinations later.", duration: 3 },
+      {
+        text: "In the meantime, you're coming up on 1000 KM. Congratulations.",
+        duration: 4,
+      },
+    ],
+  },
+  {
+    triggerKm: 5000,
+    id: "five-thousand",
+    skippable: true,
+    messages: [
+      { text: "Congratulations on your first 5000km.", duration: 3 },
+      {
+        text: "If you were in walking mode this whole time, at 5 km/h, this journey would take about 334 days of continuous walking.",
+        duration: 6,
+      },
+      {
+        text: "Probably good that we've given you magic walking, at least.",
+        duration: 4,
+      },
+    ],
+  },
+  {
+    triggerKm: 10010.22,
+    id: "quarter-way",
+    skippable: true,
+    messages: [
+      {
+        text: "Can you believe that you've made it a quarter of the way?",
+        duration: 4,
+      },
+    ],
+  },
+  {
+    triggerKm: 11241,
+    id: "longest-land",
+    skippable: true,
+    messages: [
+      {
+        text: "You've just passed the distance of the longest land-only straight line on Earth.",
+        duration: 5,
+      },
+      {
+        text: "It runs between Sagres, Portugal and Jinjiang, China.",
+        duration: 4,
+      },
+      {
+        text: "From here on, any real walking route would require a boat.",
+        duration: 4,
+      },
+    ],
+  },
+  {
+    triggerKm: 20020.72,
+    id: "antipode",
+    skippable: true,
+    messages: [
+      {
+        text: "You've reached the halfway point in your circumnavigation, called the ANTIPODE. Congratulations.",
+        duration: 5,
+      },
+    ],
+  },
+  {
+    triggerKm: 30031.08,
+    id: "three-quarters",
+    skippable: true,
+    messages: [
+      {
+        text: "Three-quarters of the way around. The finish line is in sight.",
+        duration: 4,
+      },
+      { text: "Well, 10,010 km away. But still.", duration: 3 },
+    ],
+  },
+  {
+    triggerKm: 40000,
+    id: "almost-there",
+    skippable: true,
+    messages: [
+      { text: "40000 km! Incredible!", duration: 3 },
+      { text: "You've almost made it. Keep going.", duration: 3 },
+    ],
+  },
+];
+
+// IDEA SCRATCHPAD
+
+// Not in use yet - time/distance messages.
 // Messages that show facts based on speed when you enter one,
 // or encourage you try one.
 
@@ -160,23 +355,3 @@ if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
 // Contientnal drift:
 // "Weird how your brain sees this moving but it feels motionless.
 // Yet this 'motionless' force broken apart Pangea, created the Himalayas, and opened the Atlantic Ocean."
-
-/* onboarding messages: 
-/* "And you're off!"
-/* "Even though you've aleady walked ___ meters, you've probably already noticed that 
-walking around the world is going to take awhile." */
-
-/* Feel free to get on a bike or into a car. It's still going to take you awhile. */
-
-/* You've probably noticed that for this trip, we've made you very focused. 
-We've removed the need for you to eat, sleep and rest - and a lot of other obstacles. */
-
-/* In a real straight-line journey around the earth, you'd also have the problem of walking 
-(or driving) into the ocean, and other obstacles. 
-
-For this trip, though, please enjoy your magic sidewalk." */
-
-/* Don't worry about sitting here and staring at the screen for __duration__. You can close the browser and come back and it'll remember where you are. */
-/* No log in necssary - just don't clear the browser's cookies! */
-
-/* idea: title changes to walk (strike through) DRIVE around the earth */
