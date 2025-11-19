@@ -366,12 +366,13 @@ export class Journey {
     const startKm = this.distance - viewportKm;
     const endKm = this.distance + viewportKm;
 
-    // Generate 100km markers
-    const start100 = Math.floor(startKm / 100) * 100;
-    const end100 = Math.ceil(endKm / 100) * 100;
+    // Generate 10km markers (changed from 100km)
+    const start10 = Math.floor(startKm / 10) * 10;
+    const end10 = Math.ceil(endKm / 10) * 10;
 
-    for (let km = start100; km <= end100; km += 100) {
+    for (let km = start10; km <= end10; km += 10) {
       const isMajor = km % 1000 === 0;
+      const isHundred = km % 100 === 0;
       const isAntipodal =
         Math.abs(Math.abs(km) - EARTH_CIRCUMFERENCE_KM / 2) < 0.1;
       const isOrigin = km === 0;
@@ -384,8 +385,10 @@ export class Journey {
           : isAntipodal
           ? "antipodal"
           : isMajor
-          ? "major"
-          : "minor",
+          ? "major" // 1000km - white/thick
+          : isHundred
+          ? "hundred" // 100km - medium
+          : "minor", // 10km - thin
         label:
           isMajor || isAntipodal || isOrigin
             ? Math.abs(km).toLocaleString()

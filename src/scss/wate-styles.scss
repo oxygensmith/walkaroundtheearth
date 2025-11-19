@@ -13,7 +13,8 @@
   --color-earth: #2a5a8a;
   --color-horizon: #ffffff;
   --color-marker-minor: #666666;
-  --color-marker-major: #cccccc;
+  --color-marker-hundred: #777777;
+  --color-marker-major: #aaaaaa;
   --color-text: #ffffff;
   --color-text-invert: #000000;
   --color-text-dim: #999999;
@@ -259,13 +260,19 @@ button .icon {
 
   &.minor {
     width: 1px;
-    height: 20px;
+    height: 10px;
     background: var(--color-marker-minor);
+  }
+
+  &.hundred {
+    width: 1px;
+    height: 30px; // Medium - every 100km
+    background: var(--color-marker-hundred);
   }
 
   &.major {
     width: 2px;
-    height: 40px;
+    height: 50px; // Thick & lighter - every 1000km
     background: var(--color-marker-major);
 
     .marker-label {

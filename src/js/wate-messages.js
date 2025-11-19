@@ -165,3 +165,18 @@ if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
 /* "And you're off!"
 /* "Even though you've aleady walked ___ meters, you've probably already noticed that 
 walking around the world is going to take awhile." */
+
+/* Feel free to get on a bike or into a car. It's still going to take you awhile. */
+
+/* You've probably noticed that for this trip, we've made you very focused. 
+We've removed the need for you to eat, sleep and rest - and a lot of other obstacles. */
+
+/* In a real straight-line journey around the earth, you'd also have the problem of walking 
+(or driving) into the ocean, and other obstacles. 
+
+For this trip, though, please enjoy your magic sidewalk." */
+
+/* Don't worry about sitting here and staring at the screen for __duration__. You can close the browser and come back and it'll remember where you are. */
+/* No log in necssary - just don't clear the browser's cookies! */
+
+/* idea: title changes to walk (strike through) DRIVE around the earth */
