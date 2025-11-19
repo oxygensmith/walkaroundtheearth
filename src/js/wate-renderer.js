@@ -310,7 +310,8 @@ export class Renderer {
   updateOriginIconRotation() {
     const velocity = this.journey.velocity;
 
-    if (Math.abs(velocity) < 0.01) {
+    /* future flipping script */
+    /* if (Math.abs(velocity) < 0.01) {
       // Not moving - no rotation
       this.originIcon.style.setProperty("--fa-rotate-angle", "0deg");
     } else if (velocity > 0) {
@@ -319,7 +320,7 @@ export class Renderer {
     } else {
       // Traveling left
       this.originIcon.style.setProperty("--fa-rotate-angle", "-90deg");
-    }
+    } */
   }
 
   // Update visible journey messages

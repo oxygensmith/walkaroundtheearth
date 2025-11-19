@@ -71,10 +71,9 @@ class WalkAroundTheEarth {
 
       // Update control label
       const cruiseMode = this.journey.getCurrentCruiseMode();
-      controlLabel.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i> ${cruiseMode.name}`;
-
+      controlLabel.innerHTML = `<svg class="icon icon--sm"><use xlink:href="#icon-${cruiseMode.icon}"/></svg> ${cruiseMode.name}`;
       // Update origin icon
-      this.originIcon.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i>`;
+      this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-${cruiseMode.icon}"/></svg>`;
 
       // Hide instructions
       instructions.style.display = "none";
@@ -268,9 +267,9 @@ class WalkAroundTheEarth {
       cruiseBtn.classList.add("active");
       freeScrollBtn.classList.remove("active");
       const cruiseMode = this.journey.getCurrentCruiseMode();
-      controlLabel.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i> ${cruiseMode.name}`;
       this.originIcon.className = "mode--cruise";
-      this.originIcon.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i>`;
+      controlLabel.innerHTML = `<svg class="icon icon--sm"><use xlink:href="#icon-${cruiseMode.icon}"/></svg> ${cruiseMode.name}`;
+      this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-${cruiseMode.icon}"/></svg>`;
       instructions.style.display = "none";
     });
 
@@ -282,8 +281,8 @@ class WalkAroundTheEarth {
         // Icon stays as our UFO icon
       } else {
         const cruiseMode = this.journey.cycleCruiseMode();
-        controlLabel.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i> ${cruiseMode.name}`;
-        this.originIcon.innerHTML = `<i class="fa-solid ${cruiseMode.icon}"></i>`; // Match the cruiseBtn approach
+        controlLabel.innerHTML = `<svg class="icon icon--sm"><use xlink:href="#icon-${cruiseMode.icon}"/></svg> ${cruiseMode.name}`;
+        this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-${cruiseMode.icon}"/></svg>`;
       }
     });
 
