@@ -160,3 +160,8 @@ if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
 // Contientnal drift:
 // "Weird how your brain sees this moving but it feels motionless.
 // Yet this 'motionless' force broken apart Pangea, created the Himalayas, and opened the Atlantic Ocean."
+
+/* onboarding messages: 
+/* "And you're off!"
+/* "Even though you've aleady walked ___ meters, you've probably already noticed that 
+walking around the world is going to take awhile." */

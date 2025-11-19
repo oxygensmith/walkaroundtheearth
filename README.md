@@ -90,8 +90,9 @@ This project prioritizes **contemplative experience over speed**:
 ## Inspiration
 
 - [If the Moon Were Only 1 Pixel](https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html) - Josh Worth's masterpiece on cosmic scale
+- Childrens' books by [Oliver Jeffers](https://oliverjeffers.com/) and Randall Munroe's [XKCD](https://xkcd.com)
 - [Neal.fun](https://neal.fun) - Playful, educational web experiences
-- _Koyaanisqatsi_ (1982) - Godfrey Reggio's meditation on Earth and humanity
+- [_Koyaanisqatsi_](https://en.wikipedia.org/wiki/Koyaanisqatsi) (1982) - Godfrey Reggio's meditation on Earth and humanity
 
 ## License
 
