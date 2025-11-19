@@ -92,7 +92,7 @@ export async function getGeographicInfo(lat, lng) {
 
   return {
     isLand: onLand,
-    terrain: onLand ? "Land" : "Ocean",
+    terrain: onLand ? "on Land" : "over Ocean",
     lat,
     lng,
   };
