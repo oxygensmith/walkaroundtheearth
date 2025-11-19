@@ -12,6 +12,16 @@ export const EQUATORIAL_LOCATIONS = [
       location: "Somewhere in the South China Sea, between Borneo and Sumatra",
       type: "ocean",
     },
+    unsplash: "https://unsplash.com/s/photos/quito",
+    facts: {
+      f01: "Quito is built on the slopes of the Pichincha Volcano! (yes, it's active).",
+      f02: "And the nearby Mindo Cloud Forest is a home to rare wildlife.",
+      f03: "Including th olinguito, a small mammal discovered only in 2013.",
+      f04: "Quito was the very first city to be declared a UNESCO World Cultural Heritage Site due to its exceptionally well-preserved historic center and rich architectural fusion of Spanish, Italian, Moorish, Flemish, and indigenous influences.",
+      f05: "It gets called 'Mitad del Mundo' (“Middle of the World”), and there's a monument and museum marking the general location of the equator.",
+      f06: "However, modern GPS shows the real equator line is a short distance away—there's actually a yellow line for you to straddle both hemispheres.",
+      f07: "Which is the line you're following if you're doing the equator path.",
+    },
   },
   {
     name: "Macapá, Brazil",
