@@ -141,7 +141,8 @@ export function hideWelcome() {
   document.getElementById("distance-display").classList.remove("hidden");
 }
 
-// TODO: Time-triggered message sequences (triggered by elapsed seconds)
+// Time-triggered message sequences (triggered by elapsed seconds)
+// TODO: Integrate into project.
 export const timeSequences = [
   {
     triggerSeconds: 3,
@@ -217,7 +218,8 @@ export const timeSequences = [
   },
 ];
 
-// Distance-triggered message sequences (triggered by km traveled)
+// Time-triggered message sequences (triggered by km travelled)
+// TODO: Integrate into project.
 export const distanceSequences = [
   {
     triggerKm: 500,
@@ -334,6 +336,7 @@ export const distanceSequences = [
   },
 ];
 
+/*
 // IDEA SCRATCHPAD
 
 // Not in use yet - time/distance messages.
@@ -352,6 +355,6 @@ if (!triedSpeeds.has("continental-drift") && timeInCurrentMode > 30) {
 }
   */
 
-// Contientnal drift:
-// "Weird how your brain sees this moving but it feels motionless.
-// Yet this 'motionless' force broken apart Pangea, created the Himalayas, and opened the Atlantic Ocean."
+/* Continentnal drift:
+   Weird how your brain sees this moving but it feels motionless.
+// Yet this 'motionless' force broken apart Pangea, created the Himalayas, and opened the Atlantic Ocean." */
