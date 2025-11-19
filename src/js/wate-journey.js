@@ -109,6 +109,7 @@ export class Journey {
           timeAway: elapsedMs,
           distanceTraveled: distanceTraveled,
         };
+        document.getElementById("distance-display").classList.remove("hidden");
       }
     } else {
       // No saved state - start fresh
