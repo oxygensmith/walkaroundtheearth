@@ -122,7 +122,7 @@ export class Journey {
     if (savedState && savedState.journeyStartTime) {
       this.journeyStartTime = savedState.journeyStartTime;
     } else {
-      this.journeyStartTime = Date.now();
+      this.journeyStartTime = null; // not Date.now() - don't set date until start is clicked
     }
 
     this.waypoints = [];
@@ -133,6 +133,14 @@ export class Journey {
       this.waypointsReady = true;
       console.log("✅ Waypoints ready!");
     });
+  }
+
+  // Add method to start the journey
+  startJourney() {
+    if (!this.journeyStartTime) {
+      this.journeyStartTime = Date.now();
+      console.log("🚀 Journey started at:", new Date(this.journeyStartTime));
+    }
   }
 
   // Convert distance in km to pixel offset
@@ -440,7 +448,6 @@ export class Journey {
     }
   }
 
-  // Clear saved state
   // Clear saved state
   clearState() {
     console.log("🗑️ Clearing journey state...");

@@ -211,6 +211,7 @@ class WalkAroundTheEarth {
     startButton.addEventListener("click", () => {
       if (!this.hasStarted) {
         this.hasStarted = true;
+        this.journey.startJourney();
         hideWelcome();
         this.startAnimationLoop();
         console.log("🚶 Journey started!");

@@ -22,7 +22,8 @@ export class Renderer {
     this.terrainDisplay = document.getElementById("terrain-display");
     this.viewportWidth = window.innerWidth;
     this.timeElapsedDisplay = document.getElementById("time-elapsed-display");
-    this.showingElapsed = true;
+    this.timeDisplayMode = "elapsed";
+    // this.showingElapsed = true;
 
     // Track which markers are currently rendered
     this.renderedMarkers = new Map();
@@ -39,7 +40,27 @@ export class Renderer {
     if (this.timeElapsedDisplay) {
       this.timeElapsedDisplay.style.cursor = "pointer";
       this.timeElapsedDisplay.addEventListener("click", () => {
-        this.showingElapsed = !this.showingElapsed;
+        // Cycle through three modes
+        switch (this.timeDisplayMode) {
+          case "elapsed":
+            this.timeDisplayMode = "remaining";
+            console.log("Time elapsed: Switched to remaining time.");
+            break;
+          case "remaining":
+            this.timeDisplayMode = "started";
+            console.log("Time elapsed: Switched to start time.");
+            break;
+          case "started":
+            this.timeDisplayMode = "elapsed";
+            console.log("Time elapsed: Switched to elapsed time.");
+            break;
+          default:
+            this.timeDisplayMode = "elapsed";
+            console.log("Default condition: Switched to elapsed time.");
+        }
+
+        // NEW - force immediate update
+        this.updateTimeElapsed();
       });
     }
   }
@@ -108,25 +129,65 @@ export class Renderer {
   updateTimeElapsed() {
     if (!this.timeElapsedDisplay) return;
 
-    if (this.showingElapsed) {
-      // Show elapsed time
-      const elapsed = this.journey.getElapsedTime();
-      const formatted = this.formatDuration(elapsed);
-      this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
-    } else {
-      // Show remaining time (only in cruise control)
-      if (this.journey.getTravelMode() === "cruiseControl") {
-        const remaining = this.journey.getTimeRemaining();
-        if (remaining) {
-          const formatted = this.formatDuration(remaining);
-          this.timeElapsedDisplay.textContent = `Remaining: ${formatted}`;
+    switch (this.timeDisplayMode) {
+      case "elapsed": {
+        // Show elapsed time
+        const elapsed = this.journey.getElapsedTime();
+        const formatted = this.formatDuration(elapsed);
+        this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
+        break;
+      }
+      case "remaining": {
+        // Show remaining time (only in cruise control)
+        if (this.journey.getTravelMode() === "cruiseControl") {
+          const remaining = this.journey.getTimeRemaining();
+          if (remaining) {
+            const formatted = this.formatDuration(remaining);
+            this.timeElapsedDisplay.textContent = `Remaining: ${formatted}`;
+          } else {
+            this.timeElapsedDisplay.textContent = "Remaining: —";
+          }
         } else {
-          this.timeElapsedDisplay.textContent = "—";
+          this.timeElapsedDisplay.textContent = "Remaining: —";
         }
-      } else {
-        this.timeElapsedDisplay.textContent = "Remaining: —";
+        break;
+      }
+      case "started": {
+        // Show start date/time
+        if (this.journey.journeyStartTime) {
+          const startDate = new Date(this.journey.journeyStartTime);
+          const formatted = this.formatStartTime(startDate);
+          this.timeElapsedDisplay.textContent = `Began: ${formatted}`;
+        } else {
+          this.timeElapsedDisplay.textContent = "Not started";
+        }
+        break;
+      }
+      default: {
+        const elapsed = this.journey.getElapsedTime();
+        const formatted = this.formatDuration(elapsed);
+        this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
       }
     }
+  }
+
+  formatStartTime(date) {
+    const dateOptions = {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    const dateStr = date.toLocaleDateString("en-US", dateOptions);
+
+    const timeOptions = {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    };
+    const timeStr = date.toLocaleTimeString("en-US", timeOptions);
+
+    return `${dateStr}, ${timeStr}`;
   }
 
   formatDuration(ms) {
