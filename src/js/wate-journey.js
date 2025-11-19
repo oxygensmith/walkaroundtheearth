@@ -112,7 +112,8 @@ export class Journey {
       }
     } else {
       // No saved state - start fresh
-      this.travelMode = "freeScroll"; // "freeScroll" or "cruiseControl"
+      this.travelMode = "cruiseControl"; // "freeScroll" or "cruiseControl"
+      this.currentCruiseModeIndex = 0; // walking is first
       this.startLocation = getRandomLocation();
       this.bearing = 90;
     }

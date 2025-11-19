@@ -15,6 +15,7 @@ class WalkAroundTheEarth {
     this.renderer = new Renderer(this.journey);
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
+    this.hasStarted = false;
 
     console.log(
       "🔍 Journey travel mode on init:",
@@ -27,18 +28,23 @@ class WalkAroundTheEarth {
 
     this.setupEventListeners();
     this.setupVisibilityTracking();
-    this.startAnimationLoop();
+    // this.startAnimationLoop();
     this.startAutoSave();
 
-    // Restore UI state to match journey state
-    this.restoreUIState();
-
-    // Show welcome back message if returning
+    // Check if this is a restored journey
     if (this.journey.returnInfo) {
+      // Journey was already in progress - auto-start
+      this.hasStarted = true;
+      document.getElementById("start-button").classList.add("hidden");
+      this.startAnimationLoop();
+      // Show welcome back message if returning
       this.showWelcomeBackMessage(
         this.journey.returnInfo.timeAway,
         this.journey.returnInfo.distanceTraveled
       );
+    } else {
+      // New journey - wait for start button
+      this.restoreUIState();
     }
 
     console.log("🌍 Walk Around the Earth initialized");
@@ -55,13 +61,6 @@ class WalkAroundTheEarth {
     const controlBtn = document.getElementById("control-btn");
     const controlLabel = document.getElementById("control-label");
     const instructions = document.querySelector(".instructions");
-
-    console.log("🎨 Found elements:", {
-      freeScrollBtn,
-      cruiseBtn,
-      controlLabel,
-      instructions,
-    });
 
     if (this.journey.getTravelMode() === "cruiseControl") {
       console.log("🎨 Setting cruise control UI...");
@@ -188,6 +187,7 @@ class WalkAroundTheEarth {
 
   setupEventListeners() {
     // Mode switcher
+    const startButton = document.getElementById("start-button");
     const freeScrollBtn = document.getElementById("mode-freescroll");
     const cruiseBtn = document.getElementById("mode-cruise");
     const controlBtn = document.getElementById("control-btn");
@@ -206,6 +206,15 @@ class WalkAroundTheEarth {
     const restartContainer = document.getElementById("restart-container");
     const restartCancel = document.getElementById("restart-cancel");
     const restartConfirm = document.getElementById("restart-confirm");
+
+    startButton.addEventListener("click", () => {
+      if (!this.hasStarted) {
+        this.hasStarted = true;
+        startButton.classList.add("hidden");
+        this.startAnimationLoop();
+        console.log("🚶 Journey started!");
+      }
+    });
 
     // set up handler for credits toggle.
     creditsToggle.addEventListener("click", () => {
