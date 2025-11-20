@@ -8,7 +8,7 @@
 }
 
 :root {
-  // Colors
+  // Colors, night (default)
   --color-bg: #0a0a0a;
   --color-earth: #2a5a8a;
   --color-horizon: #ffffff;
@@ -19,6 +19,13 @@
   --color-text-invert: #000000;
   --color-text-dim: #999999;
   --color-origin: #ff6b6b;
+
+  // Smooth transitions between themes
+  transition: background-color 2s ease, color 2s ease;
+
+  * {
+    transition: background-color 2s ease, color 2s ease, border-color 2s ease;
+  }
 
   // Spacing
   --viewport-height: 100vh;
@@ -66,16 +73,43 @@
   }
 }
 
+:root[data-theme="dawn"] {
+  // Dawn: Purple/pink/orange gradient feeling
+  --color-bg: #2d1b3d;
+  --color-bg-secondary: #3d2550;
+  --color-text: #f0e6ff;
+  --color-text-secondary: #b8a3d9;
+  --color-horizon: #ff8c42;
+  --color-earth: #5a7ba8;
+  --color-marker-minor: #8866aa;
+  --color-marker-major: #d4a5ff;
+  --color-origin: #ff6b9d;
+}
+
 :root[data-theme="day"] {
-  // Day mode
-  --color-bg: #f5f5f5;
-  --color-horizon: #000000;
+  // Day: Bright blues and warm tones
+  --color-bg: #87ceeb;
+  --color-bg-secondary: #a8d8ea;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #4a4a4a;
+  --color-horizon: #ffd700;
+  --color-earth: #4a90e2;
   --color-marker-minor: #999999;
-  --color-marker-hundred: #888888;
-  --color-marker-major: #555555;
-  --color-text: #000000;
-  --color-text-invert: #ffffff;
-  --color-text-dim: #666666;
+  --color-marker-major: #333333;
+  --color-origin: #ff6b6b;
+}
+
+:root[data-theme="dusk"] {
+  // Day: Bright blues and warm tones
+  --color-bg: #3d2847;
+  --color-bg-secondary: #4a3055;
+  --color-text: #ffe8d6;
+  --color-text-secondary: #d4a894;
+  --color-horizon: #ff6b35;
+  --color-earth: #6a5a8a;
+  --color-marker-minor: #aa7788;
+  --color-marker-major: #ffb088;
+  --color-origin: #ff4757;
 }
 
 * {

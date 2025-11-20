@@ -22,14 +22,14 @@ export class SequenceManager {
     container.id = "sequence-container";
     container.className = "sequence-container";
     document.body.appendChild(container);
-    console.log("✨ Creating sequence display.");
+    // console.log("✨ Creating sequence display.");
 
     // Message display
     const messageDisplay = document.createElement("div");
     messageDisplay.id = "sequence-message";
     messageDisplay.className = "sequence-message hidden";
     container.appendChild(messageDisplay);
-    console.log("✨ Created message display.");
+    // console.log("✨ Created message display.");
 
     // Skip button
     const skipButton = document.createElement("button");
@@ -38,7 +38,7 @@ export class SequenceManager {
     skipButton.innerHTML = 'Skip <i class="fa-solid fa-forward"></i>';
     skipButton.addEventListener("click", () => this.skipSequence());
     container.appendChild(skipButton);
-    console.log("✨ Created skip button.");
+    // console.log("✨ Created skip button.");
 
     this.container = container;
     this.messageDisplay = messageDisplay;
@@ -48,7 +48,7 @@ export class SequenceManager {
   // Check for triggered sequences (called each frame)
   update() {
     if (this.currentSequence) {
-      console.log("⏸️ Currently showing sequence, skipping check"); // DEBUG
+      /* console.log("⏸️ Currently showing sequence, skipping check"); // DEBUG */
       return; // Already showing a sequence
     }
     // Check time-based triggers
@@ -56,7 +56,7 @@ export class SequenceManager {
 
     // Only log every second to avoid spam
     if (Math.floor(elapsedSeconds) !== this.lastLoggedSecond) {
-      console.log(`⏱️ Elapsed: ${elapsedSeconds.toFixed(1)}s`);
+      // console.log(`⏱️ Elapsed: ${elapsedSeconds.toFixed(1)}s`);
       this.lastLoggedSecond = Math.floor(elapsedSeconds);
     }
 
@@ -65,16 +65,16 @@ export class SequenceManager {
       const hasTriggered = this.triggeredSequences.has(sequenceKey);
       const shouldTrigger = elapsedSeconds >= sequence.triggerSeconds;
 
-      console.log(
+      /*)console.log(
         `🔍 Checking ${sequence.id}: elapsed=${elapsedSeconds.toFixed(
           1
         )}s, trigger=${
           sequence.triggerSeconds
         }s, hasTriggered=${hasTriggered}, shouldTrigger=${shouldTrigger}`
-      );
+      ); */
 
       if (!hasTriggered && shouldTrigger) {
-        console.log(`🎬 TRIGGERING TIME SEQUENCE: ${sequence.id}`);
+        /* console.log(`🎬 TRIGGERING TIME SEQUENCE: ${sequence.id}`); */
         this.startSequence(sequence, sequenceKey);
         return;
       }
@@ -89,11 +89,11 @@ export class SequenceManager {
         !this.triggeredSequences.has(sequenceKey) &&
         distance >= sequence.triggerKm
       ) {
-        console.log(
+        /* console.log(
           `🎬 TRIGGERING DISTANCE SEQUENCE: ${
             sequence.id
           } at ${distance.toFixed(2)}km`
-        );
+        ); */
         this.startSequence(sequence, sequenceKey);
         return;
       }
@@ -102,15 +102,15 @@ export class SequenceManager {
 
   // Start showing a sequence
   startSequence(sequence, sequenceKey) {
-    console.log(`🎬 Starting sequence: ${sequence.id}`);
-    console.log(`📝 Sequence has ${sequence.messages.length} messages`);
+    /* console.log(`🎬 Starting sequence: ${sequence.id}`);
+    console.log(`📝 Sequence has ${sequence.messages.length} messages`); */
     this.currentSequence = sequence;
     this.currentMessageIndex = 0;
     this.triggeredSequences.add(sequenceKey);
 
     // Show skip button if skippable
     if (sequence.skippable) {
-      console.log("⏭️ Sequence is skippable, showing skip button");
+      /*  console.log("⏭️ Sequence is skippable, showing skip button"); */
       this.skipButton.classList.remove("hidden");
     }
 
@@ -120,39 +120,39 @@ export class SequenceManager {
   // Show the next message in the current sequence
   showNextMessage() {
     if (!this.currentSequence) {
-      console.log("❌ No current sequence in showNextMessage");
+      /* console.log("❌ No current sequence in showNextMessage"); */
       return;
     }
 
     const message = this.currentSequence.messages[this.currentMessageIndex];
 
     if (!message) {
-      console.log("✅ Sequence complete");
+      /* console.log("✅ Sequence complete"); */
       this.endSequence();
       return;
     }
-    console.log(
+    /* console.log(
       `💬 Showing message ${this.currentMessageIndex + 1}/${
         this.currentSequence.messages.length
       }: "${message.text.substring(0, 50)}..."`
-    );
-    console.log(`⏱️ Duration: ${message.duration}s`);
+    ); */
+    // console.log(`⏱️ Duration: ${message.duration}s`);
 
     // Display message with fade in
     this.messageDisplay.textContent = message.text;
-    console.log("🔍 messageDisplay element:", this.messageDisplay);
+    /* console.log("🔍 messageDisplay element:", this.messageDisplay);
     console.log(
       "🔍 messageDisplay classList before:",
       Array.from(this.messageDisplay.classList)
-    );
+    ); */
 
     this.messageDisplay.classList.remove("hidden");
     this.messageDisplay.classList.add("fade-in");
 
-    console.log(
+    /* console.log(
       "🔍 messageDisplay classList after:",
       Array.from(this.messageDisplay.classList)
-    );
+    ); */
 
     // Schedule fade out and next message
     this.messageTimeout = setTimeout(() => {
@@ -171,7 +171,7 @@ export class SequenceManager {
 
   // Skip to end of current sequence
   skipSequence() {
-    console.log("⏭️ Skipping sequence");
+    /* console.log("⏭️ Skipping sequence"); */
     if (this.messageTimeout) {
       clearTimeout(this.messageTimeout);
     }
@@ -201,9 +201,9 @@ export class SequenceManager {
   restoreState(triggeredSequences) {
     if (triggeredSequences) {
       this.triggeredSequences = new Set(triggeredSequences);
-      console.log(
+      /*   console.log(
         `📋 Restored ${triggeredSequences.length} triggered sequences`
-      );
+      ); */
     }
   }
 }

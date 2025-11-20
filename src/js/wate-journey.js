@@ -209,14 +209,14 @@ export class Journey {
     this.distance += deltaKm;
 
     // Wrap at antipodal point (half circumference in either direction)
-    const halfCircumference = EARTH_CIRCUMFERENCE_KM / 2;
+    /* const halfCircumference = EARTH_CIRCUMFERENCE_KM / 2;
     if (this.distance > halfCircumference) {
       this.distance = halfCircumference - (this.distance - halfCircumference);
       this.velocity = 0;
     } else if (this.distance < -halfCircumference) {
       this.distance = -halfCircumference - (this.distance + halfCircumference);
       this.velocity = 0;
-    }
+    } */
   }
 
   // Handle mouse/touch drag start

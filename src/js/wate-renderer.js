@@ -6,6 +6,7 @@ import {
   formatTimeToCircumnavigate,
 } from "./wate-locations.js";
 import { journeyMessages } from "./wate-messages.js";
+import { getTimeOfDay, applyTheme } from "./wate-daynight.js";
 
 export class Renderer {
   constructor(journey) {
@@ -23,6 +24,8 @@ export class Renderer {
     this.viewportWidth = window.innerWidth;
     this.timeElapsedDisplay = document.getElementById("time-elapsed-display");
     this.timeDisplayMode = "elapsed";
+    this.currentTimeOfDay = null;
+    this.themeCheckCounter = 0;
     // this.showingElapsed = true;
 
     // Track which markers are currently rendered
@@ -83,6 +86,7 @@ export class Renderer {
     this.updateTimeToCircumnavigate(currentSpeed);
 
     this.updateTerrainDisplay();
+    this.updateTheme();
   }
 
   // Update the journey line position
@@ -382,6 +386,22 @@ export class Renderer {
       // Traveling left
       this.originIcon.style.setProperty("--fa-rotate-angle", "-90deg");
     } */
+  }
+
+  // Add this method to renderer.js
+  updateTheme() {
+    // Only check every 60 frames (once per second at 60fps)
+    this.themeCheckCounter++;
+
+    if (this.themeCheckCounter % 60 === 0) {
+      const position = this.journey.getCurrentPosition();
+      const timeOfDay = getTimeOfDay(position.lat, position.lng);
+
+      if (timeOfDay !== this.currentTimeOfDay) {
+        applyTheme(timeOfDay);
+        this.currentTimeOfDay = timeOfDay;
+      }
+    }
   }
 
   // Update visible journey messages
