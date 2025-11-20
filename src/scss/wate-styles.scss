@@ -24,10 +24,10 @@
   --viewport-height: 100vh;
   --origin-size: 40px;
   --horizon-thickness: 2px;
+  --action-position--v: 60%;
 
   // Scale: 10px = 1km
   --scale: 10;
-  --script-font: "Walter Turncoat", cursive;
   --font-base: "Walter Turncoat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   --title-font: var(--font-base);
@@ -35,6 +35,7 @@
   --info-font: var(--font-base);
   --message-font: var(--font-base);
   --terrain-font: var(--font-base);
+  --script-font: "Walter Turncoat", cursive;
 
   // Icons
   --icon-size-sm: 16px;
@@ -159,7 +160,7 @@ button .icon {
 .origin-marker {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: var(--action-position--v);
   transform: translate(-50%, -50%);
   z-index: 100;
   display: flex;
@@ -198,7 +199,7 @@ button .icon {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  top: var(--action-position--v);
   height: var(--horizon-thickness);
   background: var(--color-horizon);
   transform: translateY(-50%);
@@ -209,7 +210,7 @@ button .icon {
 .journey-line {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: var(--action-position--v);
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
@@ -413,7 +414,18 @@ button .icon {
   transition: transform 0.3s ease-out;
 }
 
-.info-display {
+.location-and-features {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 150;
+}
+
+.time-and-distance-display {
   position: fixed;
   bottom: 40px;
   right: 40px;
@@ -860,7 +872,7 @@ button .icon {
 
 .sequence-container {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 250;
@@ -876,7 +888,7 @@ button .icon {
 .sequence-message {
   background: rgba(0, 0, 0, 0.9);
   color: var(--color-text);
-  padding: 24px 32px;
+  padding: 0 8px;
   border-radius: 8px;
   font-size: 18px;
   line-height: 1.6;
@@ -899,12 +911,13 @@ button .icon {
 }
 
 .sequence-skip {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--color-marker-major);
+  background: rgba(255, 255, 255, 0);
+  border: 0px;
   border-radius: 4px;
   color: var(--color-text);
-  padding: 8px 16px;
-  font-size: 14px;
+  opacity: 0.6;
+  padding: 4px 8px;
+  font-size: 11px;
   font-family: var(--btn-font);
   cursor: pointer;
   pointer-events: auto;
@@ -914,8 +927,8 @@ button .icon {
   gap: 8px;
 
   &:hover {
+    opacity: 1;
     background: rgba(255, 255, 255, 0.15);
-    border-color: var(--color-text);
   }
 
   &.hidden {

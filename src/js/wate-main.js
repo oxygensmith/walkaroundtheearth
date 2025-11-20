@@ -3,6 +3,7 @@
 
 import { Journey } from "./wate-journey.js";
 import { Renderer } from "./wate-renderer.js";
+import { SequenceManager } from "./wate-sequences.js";
 import { showGreeting, hideWelcome } from "./wate-messages.js";
 
 // Utility function to wait
@@ -14,6 +15,8 @@ class WalkAroundTheEarth {
   constructor() {
     this.journey = new Journey();
     this.renderer = new Renderer(this.journey);
+    this.sequenceManager = new SequenceManager(this.journey);
+    console.log("🎬 SequenceManager created:", this.sequenceManager);
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
     this.hasStarted = false;
@@ -35,9 +38,14 @@ class WalkAroundTheEarth {
     if (this.journey.returnInfo) {
       // Journey was already in progress - auto-start
       this.hasStarted = true;
-      document.getElementById("start-button").classList.add("hidden");
+      hideWelcome();
+
+      // Restore triggered sequences
+      if (this.journey.triggeredSequences) {
+        this.sequenceManager.restoreState(this.journey.triggeredSequences);
+      }
+
       this.startAnimationLoop();
-      // Show welcome back message if returning
       this.showWelcomeBackMessage(
         this.journey.returnInfo.timeAway,
         this.journey.returnInfo.distanceTraveled
@@ -49,8 +57,6 @@ class WalkAroundTheEarth {
     }
 
     console.log("🌍 Walk Around the Earth initialized");
-    console.log(`Earth circumference: ${40041.44} km`);
-    console.log(`Scale: 10px = 1km`);
   }
 
   restoreUIState() {
@@ -361,6 +367,7 @@ class WalkAroundTheEarth {
     const animate = () => {
       this.journey.update();
       this.renderer.render();
+      this.sequenceManager.update(); // NEW - check for triggered sequences
       requestAnimationFrame(animate);
     };
 
@@ -371,8 +378,8 @@ class WalkAroundTheEarth {
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
-    new WalkAroundTheEarth();
+    window.walkApp = new WalkAroundTheEarth();
   });
 } else {
-  new WalkAroundTheEarth();
+  window.walkApp = new WalkAroundTheEarth();
 }

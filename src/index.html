@@ -10,6 +10,7 @@
   <body>
     <main class="journey-container">
       <div class="journey-viewport">
+        
         <div class="origin-marker">
           <div class="origin-circle">
             <div id="origin-icon" class="origin-icon-wrapper">
@@ -21,7 +22,6 @@
         </div>
 
         <div class="horizon-line"></div>
-
         <div class="journey-line" id="journey-line">
           <div class="distance-markers" id="distance-markers"></div>
         </div>
@@ -49,16 +49,19 @@
           <div class="instructions writing-font">
             Click and drag to move • Scroll to travel
           </div>
-        </div>
+        </div><!-- ends odometer container -->
 
-        <div class="info-display">
+        <div class="location-and-features">
           <div class="coordinates-display" id="coordinates-display">
             0.0000°N, 0.0000°E
           </div>
           <div class="terrain-display" id="terrain-display">—</div>
+        </div>
+        
+        <div class="time-and-distance-display">
           <div class="speed-display" id="speed-display">
-            <span id="speed-value">0 km/h</span> |
-            <span id="meter-value">0 m</span>
+            <span id="meter-value">0 m</span> |
+            <span id="speed-value">0 km/h</span>
           </div>
           <div class="time-display" id="time-display">—</div>
           <div class="time-elapsed-display" id="time-elapsed-display">—</div>

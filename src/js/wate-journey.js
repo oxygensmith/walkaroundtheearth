@@ -420,6 +420,7 @@ export class Journey {
       lastSaveTime: Date.now(),
       journeyStartTime: this.journeyStartTime,
       waypointsReady: this.waypointsReady,
+      triggeredSequences: window.walkApp?.sequenceManager?.saveState() || [],
       version: "1.0",
     };
 
