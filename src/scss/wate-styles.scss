@@ -52,6 +52,18 @@
   --icon-color-muted: #999;
   --color-icon: var(--color-text);
   --color-icon-dim: var(--color-text-dim);
+
+  // Control spacing - mobile first
+  --control-spacing-x: 12px;
+  --control-spacing-y: 12px;
+  @media (min-width: 768px) {
+    --control-spacing-x: 24px;
+    --control-spacing-y: 24px;
+  }
+  @media (min-width: 992px) {
+    --control-spacing-x: 32px;
+    --control-spacing-y: 32px;
+  }
 }
 
 * {
@@ -401,8 +413,8 @@ button .icon {
 
 .project-title {
   position: fixed;
-  left: 40px;
-  top: 40px;
+  top: var(--control-spacing-y);
+  left: var(--control-spacing-x);
   font-family: var(--title-font);
   font-size: 28px;
   font-weight: 400;
@@ -416,8 +428,8 @@ button .icon {
 
 .location-and-features {
   position: fixed;
-  top: 40px;
-  right: 40px;
+  top: var(--control-spacing-y);
+  right: var(--control-spacing-x);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -427,8 +439,8 @@ button .icon {
 
 .time-and-distance-display {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: var(--control-spacing-y);
+  right: var(--control-spacing-x);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -459,8 +471,8 @@ button .icon {
 
 .travel-controls {
   position: fixed;
-  bottom: 40px;
-  left: 40px;
+  bottom: var(--control-spacing-y);
+  left: var(--control-spacing-x);
   display: flex;
   flex-direction: column;
   gap: 12px;
