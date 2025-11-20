@@ -293,9 +293,10 @@ button .icon {
   width: 400px;
   max-width: 90vw;
   padding: 20px 24px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
+
+  background: var(--color-bg);
   color: var(--color-text);
+  border-radius: 8px;
   font-size: 16px;
   line-height: 1.6;
   font-family: var(--message-font);
@@ -766,7 +767,7 @@ button .icon {
   top: 120px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--color-bg);
   color: var(--color-text);
   padding: 12px 24px;
   border-radius: 4px;
