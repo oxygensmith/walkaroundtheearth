@@ -948,14 +948,15 @@ button .icon {
 .sequence-message {
   background: var(--color-bg);
   color: var(--color-text);
-  padding: 0 8px;
+  border: 1px solid var(--color-text);
+  padding: 4px 12px;
   border-radius: 8px;
   font-size: 18px;
   line-height: 1.6;
   text-align: center;
   font-family: var(--message-font);
   pointer-events: auto;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  // box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 
   &.hidden {
     display: none;
