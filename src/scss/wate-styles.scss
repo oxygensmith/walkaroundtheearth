@@ -91,11 +91,12 @@
   --color-bg: #87ceeb;
   --color-bg-secondary: #a8d8ea;
   --color-text: #1a1a1a;
+  --color-text-dim: #101010;
   --color-text-secondary: #4a4a4a;
-  --color-horizon: #ffd700;
+  --color-horizon: #1a1a1a;
   --color-earth: #4a90e2;
-  --color-marker-minor: #999999;
-  --color-marker-major: #333333;
+  --color-marker-minor: #333333;
+  --color-marker-major: #1a1a1a;
   --color-origin: #ff6b6b;
 }
 
@@ -791,7 +792,7 @@ button .icon {
   top: 120px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--color-bg);
   color: var(--color-text);
   padding: 16px 24px;
   border-radius: 4px;
@@ -869,7 +870,7 @@ button .icon {
 
 .restart-content {
   padding: 12px;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--color-bg);
   border: 1px solid var(--color-marker-major);
   border-radius: 4px;
   color: var(--color-text);
@@ -910,7 +911,7 @@ button .icon {
     color: var(--color-text);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--color-bg);
     }
   }
 
@@ -944,7 +945,7 @@ button .icon {
 }
 
 .sequence-message {
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--color-bg);
   color: var(--color-text);
   padding: 0 8px;
   border-radius: 8px;
@@ -969,24 +970,24 @@ button .icon {
 }
 
 .sequence-skip {
-  background: rgba(255, 255, 255, 0);
-  border: 0px;
-  border-radius: 4px;
-  color: var(--color-text);
-  opacity: 0.6;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-family: var(--btn-font);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+  background: var(--color-bg);
+  border: 0px;
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: 11px;
+  font-family: var(--btn-font);
+  opacity: 0.6;
+  padding: 4px 8px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
 
   &:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--color-bg);
   }
 
   &.hidden {
