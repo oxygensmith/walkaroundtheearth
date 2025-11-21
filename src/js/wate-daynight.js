@@ -51,29 +51,41 @@ export function getSunTimes(lat, lng, date = new Date()) {
   const solarNoon = 720 - 4 * lng;
 
   return {
-    dawnStart: minutesToTime(solarNoon - 4 * hourAngleCivil), // Civil twilight begins
-    sunrise: minutesToTime(solarNoon - 4 * hourAngleSun), // Sun rises
-    sunset: minutesToTime(solarNoon + 4 * hourAngleSun), // Sun sets
-    duskEnd: minutesToTime(solarNoon + 4 * hourAngleCivil), // Civil twilight ends
+    dawnStart: minutesToTime(solarNoon - 4 * hourAngleCivil, date), // Pass date
+    sunrise: minutesToTime(solarNoon - 4 * hourAngleSun, date), // Pass date
+    sunset: minutesToTime(solarNoon + 4 * hourAngleSun, date), // Pass date
+    duskEnd: minutesToTime(solarNoon + 4 * hourAngleCivil, date), // Pass date
     isPolarNight: false,
     isPolarDay: false,
   };
 }
 
-function minutesToTime(minutes) {
-  const hours = Math.floor(minutes / 60) % 24;
-  const mins = Math.floor(minutes % 60);
-  const now = new Date();
-  return new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      hours,
-      mins,
-      0
-    )
-  );
+// Update minutesToTime to use the provided date
+function minutesToTime(minutes, date) {
+  let totalMinutes = Math.floor(minutes);
+
+  // Handle negative minutes (previous day)
+  let dayOffset = 0;
+  while (totalMinutes < 0) {
+    totalMinutes += 1440; // 24 * 60
+    dayOffset--;
+  }
+
+  // Handle minutes beyond 24 hours (next day)
+  while (totalMinutes >= 1440) {
+    totalMinutes -= 1440;
+    dayOffset++;
+  }
+
+  const hours = Math.floor(totalMinutes / 60);
+  const mins = totalMinutes % 60;
+
+  // Create date with proper day offset
+  const result = new Date(date);
+  result.setUTCDate(date.getUTCDate() + dayOffset);
+  result.setUTCHours(hours, mins, 0, 0);
+
+  return result;
 }
 
 // Get current time of day phase
