@@ -81,6 +81,12 @@ export class Journey {
     ];
     this.currentCruiseModeIndex = 0;
 
+    // Virtual time system
+    this.virtualTime = Date.now(); // Start at current real time
+    this.lastUpdateTime = performance.now();
+    this.timeScale = 1; // Real-time by default (can adjust for testing/pause)
+    this.isPaused = false;
+
     // Try to load saved state first
     const savedState = this.loadState();
 
@@ -111,12 +117,14 @@ export class Journey {
         };
         document.getElementById("distance-display").classList.remove("hidden");
       }
+      this.virtualTime = savedState.virtualTime || Date.now();
     } else {
       // No saved state - start fresh
       this.travelMode = "cruiseControl"; // "freeScroll" or "cruiseControl"
       this.currentCruiseModeIndex = 0; // walking is first
       this.startLocation = getRandomLocation();
       this.bearing = 90;
+      this.virtualTime = Date.now();
     }
 
     if (savedState && savedState.journeyStartTime) {
@@ -133,6 +141,34 @@ export class Journey {
       this.waypointsReady = true;
       console.log("✅ Waypoints ready!");
     });
+  }
+
+  updateVirtualTime() {
+    if (this.isPaused) return; // Don't advance time when paused
+
+    const now = performance.now();
+    const deltaMs = now - this.lastUpdateTime;
+    this.lastUpdateTime = now;
+
+    // Advance virtual time
+    const virtualDeltaMs = deltaMs * this.timeScale;
+    this.virtualTime += virtualDeltaMs;
+  }
+
+  getVirtualTime() {
+    return new Date(this.virtualTime);
+  }
+
+  // Add pause/resume methods
+  pause() {
+    this.isPaused = true;
+    console.log("⏸️ Journey paused");
+  }
+
+  resume() {
+    this.isPaused = false;
+    this.lastUpdateTime = performance.now(); // Reset to avoid time jump
+    console.log("▶️ Journey resumed");
   }
 
   // Add method to start the journey
@@ -165,6 +201,7 @@ export class Journey {
 
   // Update position based on velocity (called each frame)
   update() {
+    this.updateVirtualTime();
     // Cruise Control mode: maintain constant speed
     if (this.travelMode === "cruiseControl") {
       const cruiseMode = this.cruiseModes[this.currentCruiseModeIndex];
@@ -419,6 +456,7 @@ export class Journey {
       currentThrottleIndex: this.currentThrottleIndex,
       lastSaveTime: Date.now(),
       journeyStartTime: this.journeyStartTime,
+      virtualTime: this.virtualTime, // NEW
       waypointsReady: this.waypointsReady,
       triggeredSequences: window.walkApp?.sequenceManager?.saveState() || [],
       version: "1.0",

@@ -170,3 +170,57 @@ export function formatTimeToCircumnavigate(speedKmPerHour) {
 
   return displayParts.join(" ") + " to circle Earth";
 }
+
+export function getLocalSolarTime(lng, virtualTime, showSeconds = true) {
+  const date = new Date(virtualTime);
+
+  // Solar time: 15° longitude = 1 hour
+  const hoursFromUTC = lng / 15;
+
+  const utcHours = date.getUTCHours();
+  const utcMinutes = date.getUTCMinutes();
+  const utcSeconds = date.getUTCSeconds();
+
+  let solarHours = utcHours + hoursFromUTC;
+
+  // Normalize to 0-24 range
+  while (solarHours < 0) solarHours += 24;
+  while (solarHours >= 24) solarHours -= 24;
+
+  const hours = Math.floor(solarHours);
+  const fractionalHours = solarHours % 1;
+
+  // Calculate minutes from fractional hours, then add UTC minutes
+  let totalMinutes = Math.floor(fractionalHours * 60) + utcMinutes;
+
+  // Handle minute overflow
+  let extraHours = 0;
+  if (totalMinutes >= 60) {
+    extraHours = Math.floor(totalMinutes / 60);
+    totalMinutes = totalMinutes % 60;
+  }
+
+  let finalHours = hours + extraHours;
+  if (finalHours >= 24) finalHours -= 24;
+
+  const minutes = totalMinutes;
+  const seconds = utcSeconds;
+
+  // Format as 12-hour time
+  const period = finalHours >= 12 ? "PM" : "AM";
+  const displayHours = finalHours % 12 || 12;
+
+  const timeString = showSeconds
+    ? `${displayHours}:${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")} ${period}`
+    : `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+
+  return {
+    formatted: timeString,
+    hours: finalHours,
+    minutes,
+    seconds,
+    period,
+  };
+}

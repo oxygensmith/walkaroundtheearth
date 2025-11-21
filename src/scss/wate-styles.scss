@@ -704,7 +704,39 @@ button .icon {
   }
 }
 
-.terrain-display {
+.period-and-terrain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  font-family: var(--info-font);
+  text-transform: uppercase;
+
+  .separator {
+    opacity: 0.5;
+  }
+}
+
+.solar-time-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--info-font);
+  opacity: 0.8;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-text);
+    opacity: 1;
+  }
+}
+
+.terrain-display,
+.period-display {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-dim);
@@ -829,6 +861,14 @@ button .icon {
   &:hover {
     color: var(--color-text);
   }
+}
+
+.departed-from-display {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  font-family: var(--info-font);
 }
 
 .restart-toggle {

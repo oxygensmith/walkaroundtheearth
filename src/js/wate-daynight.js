@@ -77,15 +77,23 @@ function minutesToTime(minutes) {
 }
 
 // Get current time of day phase
-export function getTimeOfDay(lat, lng) {
-  const now = new Date();
-  const times = getSunTimes(lat, lng, now);
+export function getTimeOfDay(lat, lng, date = new Date()) {
+  // const now = new Date();
+  const times = getSunTimes(lat, lng, date); // use provided date
+
+  console.log(
+    `🌅 Sun times for lat=${lat.toFixed(2)}, lng=${lng.toFixed(2)}:`,
+    `Dawn: ${times.dawnStart?.toUTCString()},`,
+    `Sunrise: ${times.sunrise?.toUTCString()},`,
+    `Sunset: ${times.sunset?.toUTCString()},`,
+    `Dusk: ${times.duskEnd?.toUTCString()}`
+  );
 
   // Handle polar conditions
   if (times.isPolarDay) return "day";
   if (times.isPolarNight) return "night";
 
-  const currentUTC = now.getTime();
+  const currentUTC = date.getTime();
 
   if (
     currentUTC >= times.dawnStart.getTime() &&

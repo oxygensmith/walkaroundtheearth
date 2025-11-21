@@ -4,6 +4,7 @@
 import {
   formatCoordinates,
   formatTimeToCircumnavigate,
+  getLocalSolarTime,
 } from "./wate-locations.js";
 import { journeyMessages } from "./wate-messages.js";
 import { getTimeOfDay, applyTheme } from "./wate-daynight.js";
@@ -25,8 +26,16 @@ export class Renderer {
     this.timeElapsedDisplay = document.getElementById("time-elapsed-display");
     this.timeDisplayMode = "elapsed";
     this.currentTimeOfDay = null;
+    this.solarTimeDisplay = document.getElementById("solar-time-display");
+    this.showingSolarTime = true; // Track which time is showing
     this.themeCheckCounter = 0;
+    this.departedFromDisplay = document.getElementById("departed-from-display");
+    this.periodDisplay = document.getElementById("period-display");
+
     // this.showingElapsed = true;
+
+    // Set departure city immediately
+    this.updateDepartedFrom();
 
     // Track which markers are currently rendered
     this.renderedMarkers = new Map();
@@ -38,6 +47,15 @@ export class Renderer {
     window.addEventListener("resize", () => {
       this.viewportWidth = window.innerWidth;
     });
+
+    // Make solar time display clickable
+    if (this.solarTimeDisplay) {
+      this.solarTimeDisplay.style.cursor = "pointer";
+      this.solarTimeDisplay.addEventListener("click", () => {
+        this.showingSolarTime = !this.showingSolarTime;
+        this.updateSolarTime(); // Immediate update
+      });
+    }
 
     // Make time elapsed clickable
     if (this.timeElapsedDisplay) {
@@ -86,6 +104,8 @@ export class Renderer {
     this.updateTimeToCircumnavigate(currentSpeed);
 
     this.updateTerrainDisplay();
+    this.updatePeriodDisplay();
+    this.updateSolarTime();
     this.updateTheme();
   }
 
@@ -99,6 +119,15 @@ export class Renderer {
   updateDistanceDisplay() {
     const distance = Math.abs(this.journey.getDistance());
     this.distanceValue.textContent = Math.floor(distance).toLocaleString();
+  }
+
+  updatePeriodDisplay() {
+    if (!this.periodDisplay) return;
+
+    // Use the current theme state
+    if (this.currentTimeOfDay) {
+      this.periodDisplay.textContent = this.currentTimeOfDay.toUpperCase();
+    }
   }
 
   // Update visible distance markers
@@ -138,7 +167,7 @@ export class Renderer {
         // Show elapsed time
         const elapsed = this.journey.getElapsedTime();
         const formatted = this.formatDuration(elapsed);
-        this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
+        this.timeElapsedDisplay.innerHTML = `Elapsed: ${formatted}`;
         break;
       }
       case "remaining": {
@@ -147,12 +176,12 @@ export class Renderer {
           const remaining = this.journey.getTimeRemaining();
           if (remaining) {
             const formatted = this.formatDuration(remaining);
-            this.timeElapsedDisplay.textContent = `Remaining: ${formatted}`;
+            this.timeElapsedDisplay.innerHTML = `Remaining: ${formatted}`;
           } else {
-            this.timeElapsedDisplay.textContent = "Remaining: —";
+            this.timeElapsedDisplay.innerHTML = "Remaining: —";
           }
         } else {
-          this.timeElapsedDisplay.textContent = "Remaining: —";
+          this.timeElapsedDisplay.innerHTML = "Remaining: —";
         }
         break;
       }
@@ -161,9 +190,9 @@ export class Renderer {
         if (this.journey.journeyStartTime) {
           const startDate = new Date(this.journey.journeyStartTime);
           const formatted = this.formatStartTime(startDate);
-          this.timeElapsedDisplay.textContent = `Began: ${formatted}`;
+          this.timeElapsedDisplay.innerHTML = `Began: ${formatted}`;
         } else {
-          this.timeElapsedDisplay.textContent = "Not started";
+          this.timeElapsedDisplay.innerHTML = "Not started";
         }
         break;
       }
@@ -216,6 +245,13 @@ export class Renderer {
     } else {
       return `${seconds}s`;
     }
+  }
+
+  updateDepartedFrom() {
+    if (!this.departedFromDisplay) return;
+
+    const departureCity = this.journey.getStartLocation().name;
+    this.departedFromDisplay.innerHTML = `(departed from: ${departureCity})`;
   }
 
   // Create a marker DOM element
@@ -395,12 +431,35 @@ export class Renderer {
 
     if (this.themeCheckCounter % 60 === 0) {
       const position = this.journey.getCurrentPosition();
-      const timeOfDay = getTimeOfDay(position.lat, position.lng);
+      const virtualTime = this.journey.getVirtualTime();
+      const timeOfDay = getTimeOfDay(position.lat, position.lng, virtualTime);
 
       if (timeOfDay !== this.currentTimeOfDay) {
         applyTheme(timeOfDay);
         this.currentTimeOfDay = timeOfDay;
       }
+    }
+  }
+
+  updateSolarTime() {
+    if (!this.solarTimeDisplay) return;
+
+    if (this.showingSolarTime) {
+      // Show solar time at current position
+      const position = this.journey.getCurrentPosition();
+      const virtualTime = this.journey.getVirtualTime();
+      const solarTime = getLocalSolarTime(position.lng, virtualTime);
+      this.solarTimeDisplay.textContent = `Solar Time: ${solarTime.formatted}`;
+    } else {
+      // Show user's local time (real-world)
+      const now = new Date();
+      const localTime = now.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+      this.solarTimeDisplay.textContent = `Your Time: ${localTime}`;
     }
   }
 
@@ -472,4 +531,41 @@ export class Renderer {
 
     return div;
   }
+}
+
+export function getLocalSolarTime(lng, virtualTime) {
+  const date = new Date(virtualTime);
+
+  // Solar time: 15° longitude = 1 hour
+  const hoursFromUTC = lng / 15;
+
+  // Get UTC time from virtual time
+  const utcHours = date.getUTCHours();
+  const utcMinutes = date.getUTCMinutes();
+  const utcSeconds = date.getUTCSeconds();
+
+  // Calculate local solar time
+  let solarHours = utcHours + hoursFromUTC;
+
+  // Normalize to 0-24 range
+  while (solarHours < 0) solarHours += 24;
+  while (solarHours >= 24) solarHours -= 24;
+
+  const hours = Math.floor(solarHours);
+  const minutes = Math.floor((solarHours % 1) * 60 + utcMinutes);
+  const seconds = utcSeconds;
+
+  // Format as 12-hour time
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 || 12;
+
+  return {
+    formatted: `${displayHours}:${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")} ${period}`,
+    hours,
+    minutes,
+    seconds,
+    period,
+  };
 }
