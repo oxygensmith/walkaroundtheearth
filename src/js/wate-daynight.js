@@ -108,6 +108,10 @@ export function getTimeOfDay(lat, lng, date = new Date()) {
 
   const currentUTC = date.getTime();
 
+  // Duration of sunrise/sunset periods in milliseconds
+  const SUNRISE_DURATION = 20 * 60 * 1000; // 20 minutes
+  const SUNSET_DURATION = 20 * 60 * 1000; // 20 minutes
+
   if (
     currentUTC >= times.dawnStart.getTime() &&
     currentUTC < times.sunrise.getTime()
@@ -115,9 +119,19 @@ export function getTimeOfDay(lat, lng, date = new Date()) {
     return "dawn";
   } else if (
     currentUTC >= times.sunrise.getTime() &&
-    currentUTC < times.sunset.getTime()
+    currentUTC < times.sunrise.getTime() + SUNRISE_DURATION
+  ) {
+    return "sunrise";
+  } else if (
+    currentUTC >= times.sunrise.getTime() + SUNRISE_DURATION &&
+    currentUTC < times.sunset.getTime() - SUNSET_DURATION
   ) {
     return "day";
+  } else if (
+    currentUTC >= times.sunset.getTime() - SUNSET_DURATION &&
+    currentUTC < times.sunset.getTime()
+  ) {
+    return "sunset";
   } else if (
     currentUTC >= times.sunset.getTime() &&
     currentUTC < times.duskEnd.getTime()

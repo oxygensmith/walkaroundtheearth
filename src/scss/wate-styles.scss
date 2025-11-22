@@ -10,29 +10,6 @@
 }
 
 :root {
-  // Colors, night (default)
-  --color-bg: #0a0a0a;
-  --color-earth: #2a5a8a;
-  --color-horizon: #ffffff;
-  --color-text: #ffffff;
-  --color-text--invert: #000000;
-  --color-text--dim: #999999;
-  --color-origin: #ff6b6b;
-
-  // markers
-  --color-marker--thousand: #aaaaaa;
-  --color-marker--hundred: #777777;
-  --color-marker--ten: #666666;
-  --color-marker--one: #666666;
-  --color-marker--tenth: #666666;
-
-  // Smooth transitions between themes
-  transition: background-color 2s ease, color 2s ease;
-
-  * {
-    transition: background-color 2s ease, color 2s ease, border-color 2s ease;
-  }
-
   // Spacing
   --viewport-height: 100vh;
   --origin-size: 40px;
@@ -77,6 +54,29 @@
     --control-spacing-x: 32px;
     --control-spacing-y: 32px;
   }
+
+  // Colors, night (default)
+  --color-bg: #0a0a0a;
+  --color-earth: #2a5a8a;
+  --color-horizon: #ffffff;
+  --color-text: #ffffff;
+  --color-text--invert: #000000;
+  --color-text--dim: #999999;
+  --color-origin: #ff6b6b;
+
+  // markers
+  --color-marker--thousand: #aaaaaa;
+  --color-marker--hundred: #777777;
+  --color-marker--ten: #666666;
+  --color-marker--one: #666666;
+  --color-marker--tenth: #666666;
+
+  // Smooth transitions between themes
+  transition: background-color 2s ease, color 2s ease;
+
+  * {
+    transition: background-color 2s ease, color 2s ease, border-color 2s ease;
+  }
 }
 
 :root[data-theme="dawn"] {
@@ -96,6 +96,23 @@
   --color-marker--tenth: #8866aa;
 }
 
+:root[data-theme="sunrise"] {
+  // Sunrise: Warm golden/orange - brighter than dawn, warmer than day
+  --color-bg: #ff7f50; // Coral/salmon
+  --color-bg-secondary: #ff9e70;
+  --color-text: #2d1b1b;
+  --color-text-secondary: #5a3a3a;
+  --color-horizon: #ffd700; // Golden
+  --color-earth: #6a8aaa;
+  --color-origin: #ff6b6b;
+
+  --color-marker--thousand: #ffcc66;
+  --color-marker--hundred: #cc8844;
+  --color-marker--ten: #cc8844;
+  --color-marker--one: #cc8844;
+  --color-marker--tenth: #cc8844;
+}
+
 :root[data-theme="day"] {
   // Day: Bright blues and warm tones
   --color-bg: #87ceeb;
@@ -112,6 +129,23 @@
   --color-marker--ten: #333333;
   --color-marker--one: #333333;
   --color-marker--tenth: #333333;
+}
+
+:root[data-theme="sunset"] {
+  // Sunset: Deep orange/red - warmer than day, before dusk purples
+  --color-bg: #e85d04; // Deep orange
+  --color-bg-secondary: #dc2f02;
+  --color-text: #ffe8d6;
+  --color-text-secondary: #d4a894;
+  --color-horizon: #ff6b35; // Orange-red
+  --color-earth: #6a5a8a;
+  --color-origin: #ff4757;
+
+  --color-marker--thousand: #ffb088;
+  --color-marker--hundred: #cc7755;
+  --color-marker--ten: #cc7755;
+  --color-marker--one: #cc7755;
+  --color-marker--tenth: #cc7755;
 }
 
 :root[data-theme="dusk"] {
