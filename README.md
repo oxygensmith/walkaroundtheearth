@@ -111,7 +111,8 @@ This project prioritizes **contemplative experience over speed**:
 - Childrens' books by [Oliver Jeffers](https://oliverjeffers.com/) and Randall Munroe's [XKCD](https://xkcd.com)
 - [Neal.fun](https://neal.fun) - Playful, educational web experiences
 - [_Koyaanisqatsi_](https://en.wikipedia.org/wiki/Koyaanisqatsi) (1982) - Godfrey Reggio's meditation on Earth and humanity
-- Jon Hopkins' ["Open Eye Signal"](https://www.youtube.com/watch?v=Q04ILDXe3QE)
+- Music: Jon Hopkins' ["Open Eye Signal"](https://www.youtube.com/watch?v=Q04ILDXe3QE)
+- Performance Art: ["The Great Wall Walk"](https://www.theartnewspaper.com/2019/09/17/it-was-painful-it-was-hardship-marina-abramovic-on-her-ill-fated-epic-walk-towards-ulay-across-the-great-wall-of-china) by Marina Abramovic and Ulay
 
 ## License
 
