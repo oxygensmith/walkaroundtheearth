@@ -1,19 +1,34 @@
 # Walk Around the Earth
 
-An interactive web experience that lets you take a contemplative journey around planet Earth, experiencing the true scale of our world through slow, deliberate movement.
+An idea prompted from when my kid was three, who frequently asked me how long it would take to get to the North Pole or other faraway locations from our city, as I would pull him around the city in his wagon.
+
+Walk Around the Earth is intended to be an interactive web experience that lets you take a contemplative journey around planet Earth, experiencing the true scale of our world through slow, deliberate movement.
+
+It's early days for this project, but the larger, loftier goal I have in mind is not just to measure time and space, but to make virtual circumnavigators fall in love with the Earth.
 
 ## Concept
 
 Inspired by Josh Worth's [If the Moon Were Only 1 Pixel](https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html) and the film _Koyaanisqatsi_, this project aims to create a similar sense of awe and scale — focused on Earth itself, rather than the cosmos.
 
-By forcing visitors to _feel_ distances rather than just read numbers, we hope to reveal:
+By forcing visitors to _feel_ distances rather than just read numbers, I hope users experience:
 
 - How much of Earth is ocean
 - How settlement clusters across continents
 - The true vastness of biomes like the Pacific or Sahara
-- The incredible diversity packed into our 40,041 km circumference
+- The incredible diversity packed into even one 40,041 km circumference
 
 ## Current Status
+
+Unless I've utterly broken it, the project is in its best form here:
+[https://walkaroundtheearth.netlify.app](https://walkaroundtheearth.netlify.app)
+
+**Known issues being debugged**
+
+- [ ] Spacing of messages.
+- [ ] Not all sim data gets wiped/restored when you click restart.
+- [ ] Mobile 'version' is a trainwreck. Many interface improvements to come.
+- [ ] Distance 'wraparound' for 'km from home' needs to exist. We're on a sphere!
+- [ ] Continuous deployment on Netlify stopped working a short while ago. Investigating.
 
 **Version 0.1** - Core scrolling mechanics implemented:
 
