@@ -8,6 +8,7 @@ import {
 } from "./wate-locations.js";
 import { journeyMessages } from "./wate-messages.js";
 import { getTimeOfDay, applyTheme, getSunTimes } from "./wate-daynight.js";
+import { calculateNewPosition } from "./wate-locations.js";
 
 export class Renderer {
   constructor(journey) {
@@ -209,10 +210,8 @@ export class Renderer {
   }
 
   updateNextTransition() {
-    // time to next dawn, sunrise, sunset, dusk based on position / solar time
     if (!this.nextTransitionDisplay) return;
 
-    // Only show in cruise control mode
     if (this.journey.getTravelMode() !== "cruiseControl") {
       this.nextTransitionDisplay.style.display = "none";
       return;
@@ -220,44 +219,62 @@ export class Renderer {
 
     this.nextTransitionDisplay.style.display = "block";
 
-    const position = this.journey.getCurrentPosition();
-    const virtualTime = this.journey.getVirtualTime();
-    const times = getSunTimes(position.lat, position.lng, virtualTime);
-    const currentUTC = virtualTime.getTime();
+    const cruiseMode = this.journey.getCurrentCruiseMode();
+    const speed = cruiseMode.speed; // km/h
     const currentTimeOfDay = getTimeOfDay(
-      position.lat,
-      position.lng,
-      virtualTime
+      this.journey.getCurrentPosition().lat,
+      this.journey.getCurrentPosition().lng,
+      this.journey.getVirtualTime()
     );
 
-    // Find next transition
-    let nextTransition, nextTime, nextName;
+    // Simulate forward to find when theme changes
+    let simulatedDistance = this.journey.distance;
+    let simulatedTime = this.journey.virtualTime;
+    const timeStep = 60 * 60 * 1000; // 1 hour in ms
+    const distanceStep = speed; // km per hour
 
-    if (currentTimeOfDay === "night") {
-      nextTime = times.dawnStart;
-      nextName = "Dawn";
-    } else if (currentTimeOfDay === "dawn") {
-      nextTime = times.sunrise;
-      nextName = "Sunrise";
-    } else if (currentTimeOfDay === "day") {
-      nextTime = times.sunset;
-      nextName = "Sunset";
-    } else if (currentTimeOfDay === "dusk") {
-      nextTime = times.duskEnd;
-      nextName = "Night";
+    let steps = 0;
+    const maxSteps = 48; // Don't simulate more than 48 hours
+
+    while (steps < maxSteps) {
+      simulatedDistance += distanceStep;
+      simulatedTime += timeStep;
+
+      const futurePosition = calculateNewPosition(
+        this.journey.getStartLocation().lat,
+        this.journey.getStartLocation().lng,
+        this.journey.bearing,
+        simulatedDistance
+      );
+
+      const futureTimeOfDay = getTimeOfDay(
+        futurePosition.lat,
+        futurePosition.lng,
+        new Date(simulatedTime)
+      );
+
+      if (futureTimeOfDay !== currentTimeOfDay) {
+        // Found the transition!
+        const msUntil = simulatedTime - this.journey.virtualTime;
+        const kmUntil = speed * (msUntil / (1000 * 60 * 60));
+
+        const nextPeriodName =
+          futureTimeOfDay.charAt(0).toUpperCase() + futureTimeOfDay.slice(1);
+
+        this.nextTransitionDisplay.innerHTML = `
+        Next: ${nextPeriodName} in ${this.formatDuration(msUntil)}<br>
+        <span style="font-size: 12px; opacity: 0.7;">${kmUntil.toFixed(
+          1
+        )} km away</span>
+      `;
+        return;
+      }
+
+      steps++;
     }
 
-    const msUntil = nextTime.getTime() - currentUTC;
-    const hoursUntil = msUntil / (1000 * 60 * 60);
-
-    // Use cruise mode speed (constant)
-    const cruiseMode = this.journey.getCurrentCruiseMode();
-    const speed = cruiseMode.speed;
-    const kmUntil = speed * hoursUntil;
-
-    this.nextTransitionDisplay.innerHTML = `
-    Next ${nextName} in ${this.formatDuration(msUntil)}<br>
-    ${kmUntil.toFixed(1)} km away`;
+    // Fallback if no transition found
+    this.nextTransitionDisplay.innerHTML = `No transition in next 48h`;
   }
 
   formatStartTime(date) {
