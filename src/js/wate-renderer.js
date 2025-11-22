@@ -221,6 +221,44 @@ export class Renderer {
 
     const cruiseMode = this.journey.getCurrentCruiseMode();
     const speed = cruiseMode.speed; // km/h
+
+    // SPECIAL CASE: Standing still (speed = 0 or very slow)
+    if (speed < 0.1) {
+      const position = this.journey.getCurrentPosition();
+      const virtualTime = this.journey.getVirtualTime();
+      const times = getSunTimes(position.lat, position.lng, virtualTime);
+      const currentTimeOfDay = getTimeOfDay(
+        position.lat,
+        position.lng,
+        virtualTime
+      );
+
+      let nextEventTime, nextEventName;
+
+      if (currentTimeOfDay === "night") {
+        nextEventTime = times.dawnStart;
+        nextEventName = "Dawn";
+      } else if (currentTimeOfDay === "dawn") {
+        nextEventTime = times.sunrise;
+        nextEventName = "Sunrise";
+      } else if (currentTimeOfDay === "day") {
+        nextEventTime = times.sunset;
+        nextEventName = "Sunset";
+      } else if (currentTimeOfDay === "dusk") {
+        nextEventTime = times.duskEnd;
+        nextEventName = "Night";
+      }
+
+      const msUntil = nextEventTime.getTime() - virtualTime.getTime();
+
+      this.nextTransitionDisplay.innerHTML = `
+      Next ${nextEventName} in ${this.formatDuration(msUntil)}<br>
+      Standing still
+    `;
+      return;
+    }
+
+    // NORMAL CASE: Moving - simulate forward
     const currentTimeOfDay = getTimeOfDay(
       this.journey.getCurrentPosition().lat,
       this.journey.getCurrentPosition().lng,
@@ -262,10 +300,8 @@ export class Renderer {
           futureTimeOfDay.charAt(0).toUpperCase() + futureTimeOfDay.slice(1);
 
         this.nextTransitionDisplay.innerHTML = `
-        Next: ${nextPeriodName} in ${this.formatDuration(msUntil)}<br>
-        <span style="font-size: 12px; opacity: 0.7;">${kmUntil.toFixed(
-          1
-        )} km away</span>
+        Next ${nextPeriodName} in ${this.formatDuration(msUntil)}<br>
+        ${kmUntil.toFixed(1)} km away
       `;
         return;
       }
