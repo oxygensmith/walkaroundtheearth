@@ -434,6 +434,11 @@ export class Renderer {
 
       const formattedSpeed = cruiseSpeed.toFixed(decimals);
       this.speedValue.textContent = `${formattedSpeed} km/h`;
+      if (cruiseSpeed > 100) {
+        document.body.classList.add("speed-high");
+      } else {
+        document.body.classList.remove("speed-high");
+      }
     } else {
       // Free scroll mode: use calculated speed with auto-formatting
       let formattedSpeed;

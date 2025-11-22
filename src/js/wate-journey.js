@@ -410,18 +410,19 @@ export class Journey {
   // Get distance markers that should be visible
   getVisibleMarkers(viewportWidth) {
     const markers = [];
-    const currentOffset = this.getOffset();
     const viewportKm = this.pixelsToKm(viewportWidth);
     const startKm = this.distance - viewportKm;
     const endKm = this.distance + viewportKm;
 
-    // Generate 10km markers (changed from 100km)
-    const start10 = Math.floor(startKm / 10) * 10;
-    const end10 = Math.ceil(endKm / 10) * 10;
+    // Generate 1km markers (changed from 10km)
+    const start1 = Math.floor(startKm);
+    const end1 = Math.ceil(endKm);
 
-    for (let km = start10; km <= end10; km += 10) {
+    for (let km = start1; km <= end1; km += 1) {
       const isMajor = km % 1000 === 0;
       const isHundred = km % 100 === 0;
+      const isTen = km % 10 === 0;
+      // const isOne = true; //
       const isAntipodal =
         Math.abs(Math.abs(km) - EARTH_CIRCUMFERENCE_KM / 2) < 0.1;
       const isOrigin = km === 0;
@@ -436,10 +437,12 @@ export class Journey {
           : isMajor
           ? "major" // 1000km - white/thick
           : isHundred
-          ? "hundred" // 100km - medium
-          : "minor", // 10km - thin
+          ? "hundred" // 100km - grey/medium
+          : isTen
+          ? "ten" // 10km markers
+          : "one", // new 1 km markers
         label:
-          isMajor || isAntipodal || isOrigin
+          isMajor || isHundred || isAntipodal || isOrigin
             ? Math.abs(km).toLocaleString()
             : null,
       });

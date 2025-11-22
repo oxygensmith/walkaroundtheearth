@@ -321,7 +321,8 @@ button .icon {
   top: 50%;
   transform: translate(-50%, -50%);
 
-  &.minor {
+  &.minor,
+  &.ten {
     width: 1px;
     height: 10px;
     background: var(--color-marker-minor);
@@ -331,6 +332,27 @@ button .icon {
     width: 1px;
     height: 30px; // Medium - every 100km
     background: var(--color-marker-hundred);
+    .marker-label {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--color-text-dim);
+      opacity: 0.7;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &.one {
+    width: 1px;
+    height: 5px;
+    background: var(--color-marker-minor);
+    // Hide at high speeds
+    body.speed-high & {
+      display: none;
+    }
   }
 
   &.major {
