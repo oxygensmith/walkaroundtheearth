@@ -27,7 +27,8 @@ Unless I've utterly broken it, it lives here:
 **Known issues being debugged**
 
 - [ ] Spacing of messages.
-- [ ] Not all sim data gets wiped/restored when you click restart.
+- [ ] Not all sim data gets wiped/restored when you restart.
+- [ ] Time-to-next-period is not always looking to the _next_ dawn, daytime, sunset, night etc.
 - [ ] Mobile 'version' is a trainwreck. Many interface improvements to come.
 - [ ] Distance 'wraparound' for 'km from home' needs to exist. We're on a sphere!
 - [ ] Continuous deployment on Netlify stopped working a short while ago. Investigating.

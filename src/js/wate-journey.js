@@ -8,8 +8,8 @@ import { getGeographicInfo } from "./wate-geography.js";
 // Make it exportable.
 export const EARTH_CIRCUMFERENCE_KM = 40041.44;
 
-const SCALE_PX_PER_KM = 10; // 10 pixels = 1 kilometer
-const MAX_VELOCITY = 15; // Maximum pixels per frame
+const SCALE_PX_PER_KM = 800; // 100 pixels = 1 kilometer
+const MAX_VELOCITY = 1200; // Maximum pixels per frame
 const FRICTION = 0.92; // Velocity decay (freeScroll mode only)
 const SCROLL_SENSITIVITY = 0.5; // How much scroll affects velocity
 
@@ -70,7 +70,6 @@ export class Journey {
         decimals: 0,
         icon: "shuttle",
       },
-      { name: "Voyager I", speed: 61000, decimals: 0, icon: "satellite" },
       { name: "Carpenter Ant", speed: 0.8, decimals: 1, icon: "ant" },
       { name: "Turtle", speed: 0.4, decimals: 1, icon: "turtle" },
       { name: "Sloth", speed: 0.24, decimals: 2, icon: "sloth" },
@@ -415,35 +414,40 @@ export class Journey {
     const endKm = this.distance + viewportKm;
 
     // Generate 1km markers (changed from 10km)
-    const start1 = Math.floor(startKm);
-    const end1 = Math.ceil(endKm);
+    const start = Math.floor(startKm * 10) / 10; // round to nearest .1
+    const end = Math.ceil(endKm * 10) / 10;
 
-    for (let km = start1; km <= end1; km += 1) {
-      const isMajor = km % 1000 === 0;
-      const isHundred = km % 100 === 0;
-      const isTen = km % 10 === 0;
-      // const isOne = true; //
+    for (let km = start; km <= end; km += 0.1) {
+      // round to avoid floating point issues
+      const roundedKm = Math.round(km * 10) / 10;
+
+      const isThousand = roundedKm % 1000 === 0;
+      const isHundred = roundedKm % 100 === 0;
+      const isTen = roundedKm % 10 === 0;
+      const isOne = roundedKm % 1 === 0;
       const isAntipodal =
         Math.abs(Math.abs(km) - EARTH_CIRCUMFERENCE_KM / 2) < 0.1;
-      const isOrigin = km === 0;
+      const isOrigin = Math.abs(roundedKm) < 0.05;
 
       markers.push({
-        km,
-        offset: this.kmToPixels(km),
+        km: roundedKm,
+        offset: this.kmToPixels(roundedKm),
         type: isOrigin
           ? "origin"
           : isAntipodal
           ? "antipodal"
-          : isMajor
-          ? "major" // 1000km - white/thick
+          : isThousand
+          ? "thousand" // 1000km - white/thick
           : isHundred
           ? "hundred" // 100km - grey/medium
           : isTen
           ? "ten" // 10km markers
-          : "one", // new 1 km markers
+          : isOne
+          ? "one" // 1km markers
+          : "tenth", // 0.1km markers
         label:
-          isMajor || isHundred || isAntipodal || isOrigin
-            ? Math.abs(km).toLocaleString()
+          isThousand || isHundred || isTen || isOne || isAntipodal || isOrigin
+            ? Math.abs(roundedKm).toLocaleString()
             : null,
       });
     }

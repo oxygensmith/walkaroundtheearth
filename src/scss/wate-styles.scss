@@ -14,13 +14,17 @@
   --color-bg: #0a0a0a;
   --color-earth: #2a5a8a;
   --color-horizon: #ffffff;
-  --color-marker-minor: #666666;
-  --color-marker-hundred: #777777;
-  --color-marker-major: #aaaaaa;
   --color-text: #ffffff;
-  --color-text-invert: #000000;
-  --color-text-dim: #999999;
+  --color-text--invert: #000000;
+  --color-text--dim: #999999;
   --color-origin: #ff6b6b;
+
+  // markers
+  --color-marker--thousand: #aaaaaa;
+  --color-marker--hundred: #777777;
+  --color-marker--ten: #666666;
+  --color-marker--one: #666666;
+  --color-marker--tenth: #666666;
 
   // Smooth transitions between themes
   transition: background-color 2s ease, color 2s ease;
@@ -60,7 +64,7 @@
   --icon-color-info: #6bcb77;
   --icon-color-muted: #999;
   --color-icon: var(--color-text);
-  --color-icon-dim: var(--color-text-dim);
+  --color-icon-dim: var(--color-text--dim);
 
   // Control spacing - mobile first
   --control-spacing-x: 12px;
@@ -83,9 +87,13 @@
   --color-text-secondary: #b8a3d9;
   --color-horizon: #ff8c42;
   --color-earth: #5a7ba8;
-  --color-marker-minor: #8866aa;
-  --color-marker-major: #d4a5ff;
   --color-origin: #ff6b9d;
+
+  --color-marker--thousand: #d4a5ff;
+  --color-marker--hundred: #8866aa;
+  --color-marker--ten: #8866aa;
+  --color-marker--one: #8866aa;
+  --color-marker--tenth: #8866aa;
 }
 
 :root[data-theme="day"] {
@@ -93,13 +101,17 @@
   --color-bg: #87ceeb;
   --color-bg-secondary: #a8d8ea;
   --color-text: #1a1a1a;
-  --color-text-dim: #101010;
+  --color-text--dim: #101010;
   --color-text-secondary: #4a4a4a;
   --color-horizon: #1a1a1a;
   --color-earth: #4a90e2;
-  --color-marker-minor: #333333;
-  --color-marker-major: #1a1a1a;
   --color-origin: #ff6b6b;
+
+  --color-marker--thousand: #1a1a1a;
+  --color-marker--hundred: #333333;
+  --color-marker--ten: #333333;
+  --color-marker--one: #333333;
+  --color-marker--tenth: #333333;
 }
 
 :root[data-theme="dusk"] {
@@ -110,9 +122,13 @@
   --color-text-secondary: #d4a894;
   --color-horizon: #ff6b35;
   --color-earth: #6a5a8a;
-  --color-marker-minor: #aa7788;
-  --color-marker-major: #ffb088;
   --color-origin: #ff4757;
+
+  --color-marker--thousand: #ffb088;
+  --color-marker--hundred: #aa7788;
+  --color-marker--ten: #aa7788;
+  --color-marker--one: #aa7788;
+  --color-marker--tenth: #aa7788;
 }
 
 * {
@@ -277,6 +293,10 @@ button .icon {
   height: 100%;
   will-change: transform;
   z-index: 2;
+  &.zoomed {
+    transform: translate(-50%, -50%);
+    transform: scale(2);
+  }
 }
 
 .distance-markers {
@@ -316,69 +336,62 @@ button .icon {
   }
 }
 
+.marker .marker-label {
+  // common marker-label styles
+  position: absolute;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-text--dim);
+  top: -30px;
+  font-size: 12px;
+  opacity: 1;
+}
+
 .marker {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+  color: var(--color-text--dim);
 
-  &.minor,
-  &.ten {
-    width: 1px;
-    height: 10px;
-    background: var(--color-marker-minor);
+  &.thousand {
+    width: 2px;
+    height: 50px; // Large - every 1000km
+    background: var(--color-marker--thousand);
   }
 
   &.hundred {
     width: 1px;
-    height: 30px; // Medium - every 100km
-    background: var(--color-marker-hundred);
-    .marker-label {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: var(--color-text-dim);
-      opacity: 0.7;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-    }
+    height: 40px; // Medium - every 100km
+    background: var(--color-marker--hundred);
+  }
+
+  &.ten {
+    width: 1px;
+    height: 30px;
+    background: var(--color-marker--ten);
   }
 
   &.one {
     width: 1px;
-    height: 5px;
-    background: var(--color-marker-minor);
-    // Hide at high speeds
-    body.speed-high & {
-      display: none;
-    }
+    height: 20px;
+    background: var(--color-marker--one);
   }
 
-  &.major {
-    width: 2px;
-    height: 50px; // Thick & lighter - every 1000km
-    background: var(--color-marker-major);
-
-    .marker-label {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: var(--color-text-dim);
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-    }
+  &.tenth {
+    width: 1px;
+    height: 15px;
+    background: var(--color-marker--one);
   }
 
   &.antipodal {
     width: 3px;
     height: 60px;
-    background: var(--color-earth);
+    background: var(--color--earth);
 
     .marker-label {
-      color: var(--color-earth);
+      color: var(--color--earth);
       font-weight: 700;
       font-size: 14px;
       top: -35px;
@@ -390,7 +403,7 @@ button .icon {
     height: var(--origin-size);
     border-radius: 50%;
     background: var(--color-bg);
-    border: 2px solid var(--color-marker-major);
+    border: 2px solid var(--color-origin);
 
     .marker-label {
       color: var(--color-text);
@@ -408,7 +421,7 @@ button .icon {
       left: 50%;
       transform: translateX(-50%);
       font-size: 12px;
-      color: var(--color-text-dim);
+      color: var(--color-text--dim);
       white-space: nowrap;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -472,14 +485,14 @@ button .icon {
 .distance-unit {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
 .instructions {
   font-size: 14px;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   opacity: 0.6;
 }
 
@@ -526,7 +539,7 @@ button .icon {
 .meter-display {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-variant-numeric: tabular-nums;
   font-family: var(--info-font);
 }
@@ -569,7 +582,7 @@ button .icon {
   padding: 8px 16px;
   background: transparent;
   border: none;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -626,7 +639,7 @@ button .icon {
 .credits-toggle {
   background: none;
   border: none;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-size: 13px;
   font-weight: 400;
   cursor: pointer;
@@ -659,7 +672,7 @@ button .icon {
   background: var(--icon-color-success);
   border: none;
   border-radius: 16px;
-  color: var(--color-text-invert);
+  color: var(--color-text--invert);
   font-size: 14px;
   font-family: var(--btn-font);
   font-weight: 600;
@@ -734,7 +747,7 @@ button .icon {
   gap: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-family: var(--info-font);
   text-transform: uppercase;
 
@@ -746,7 +759,7 @@ button .icon {
 .solar-time-display {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-variant-numeric: tabular-nums;
   font-family: var(--info-font);
   opacity: 0.8;
@@ -762,7 +775,7 @@ button .icon {
 .next-transition-display {
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-family: var(--info-font);
   line-height: 1.4;
   text-transform: lowercase;
@@ -778,7 +791,7 @@ button .icon {
 .period-display {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-family: var(--terrain-font);
   text-transform: lowercase;
 }
@@ -891,7 +904,7 @@ button .icon {
 .time-elapsed-display {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-variant-numeric: tabular-nums;
   font-family: var(--info-font);
   cursor: pointer;
@@ -906,14 +919,14 @@ button .icon {
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-family: var(--info-font);
 }
 
 .restart-toggle {
   background: none;
   border: none;
-  color: var(--color-text-dim);
+  color: var(--color-text--dim);
   font-size: 12px;
   font-weight: 400;
   pointer-events: all;
@@ -967,7 +980,7 @@ button .icon {
   }
 
   em {
-    color: var(--color-text-dim);
+    color: var(--color-text--dim);
     font-size: 12px;
   }
 }

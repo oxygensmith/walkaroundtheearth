@@ -16,7 +16,6 @@ class WalkAroundTheEarth {
     this.journey = new Journey();
     this.renderer = new Renderer(this.journey);
     this.sequenceManager = new SequenceManager(this.journey);
-    console.log("🎬 SequenceManager created:", this.sequenceManager);
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
     this.hasStarted = false;

@@ -434,7 +434,7 @@ export class Renderer {
 
       const formattedSpeed = cruiseSpeed.toFixed(decimals);
       this.speedValue.textContent = `${formattedSpeed} km/h`;
-      if (cruiseSpeed > 100) {
+      if (cruiseSpeed > 2000) {
         document.body.classList.add("speed-high");
       } else {
         document.body.classList.remove("speed-high");
