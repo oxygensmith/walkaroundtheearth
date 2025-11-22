@@ -4,10 +4,13 @@
 import { getRandomLocation, calculateNewPosition } from "./wate-locations.js";
 import { getGeographicInfo } from "./wate-geography.js";
 
-const EARTH_CIRCUMFERENCE_KM = 40041.44; // Average of polar and equatorial
+// Average of polar and equatorial circumferences.
+// Make it exportable.
+export const EARTH_CIRCUMFERENCE_KM = 40041.44;
+
 const SCALE_PX_PER_KM = 10; // 10 pixels = 1 kilometer
 const MAX_VELOCITY = 15; // Maximum pixels per frame
-const FRICTION = 0.92; // Velocity decay
+const FRICTION = 0.92; // Velocity decay (freeScroll mode only)
 const SCROLL_SENSITIVITY = 0.5; // How much scroll affects velocity
 
 export class Journey {

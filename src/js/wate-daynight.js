@@ -93,13 +93,14 @@ export function getTimeOfDay(lat, lng, date = new Date()) {
   // const now = new Date();
   const times = getSunTimes(lat, lng, date); // use provided date
 
-  console.log(
+  /* Uncomment if debugging sun times */
+  /* console.log(
     `🌅 Sun times for lat=${lat.toFixed(2)}, lng=${lng.toFixed(2)}:`,
     `Dawn: ${times.dawnStart?.toUTCString()},`,
     `Sunrise: ${times.sunrise?.toUTCString()},`,
     `Sunset: ${times.sunset?.toUTCString()},`,
     `Dusk: ${times.duskEnd?.toUTCString()}`
-  );
+  ); */
 
   // Handle polar conditions
   if (times.isPolarDay) return "day";

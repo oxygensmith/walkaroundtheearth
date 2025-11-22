@@ -8,7 +8,7 @@ import {
 } from "./wate-locations.js";
 import { journeyMessages } from "./wate-messages.js";
 import { getTimeOfDay, applyTheme, getSunTimes } from "./wate-daynight.js";
-import { calculateNewPosition } from "./wate-locations.js";
+import { EARTH_CIRCUMFERENCE_KM } from "./wate-journey.js";
 
 export class Renderer {
   constructor(journey) {
@@ -101,7 +101,6 @@ export class Renderer {
     this.updateOriginIconRotation();
     this.updateMeterDisplay();
     this.updateTimeElapsed();
-    this.updateNextTransition();
 
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
@@ -111,6 +110,8 @@ export class Renderer {
     this.updateTerrainDisplay();
     this.updatePeriodDisplay();
     this.updateSolarTime();
+    this.updateDepartedFrom();
+    this.updateNextTransition();
     this.updateTheme();
   }
 
@@ -210,8 +211,20 @@ export class Renderer {
   }
 
   updateNextTransition() {
+    // Time and distance to next day period event.
+    // Tricky calculation: as you cruise east, you move into time zones earlier.
+    // So you can't just grab 'time until sunset at current location.'
+    // Instead:
+    // -- account for time passing
+    // -- account for longtitudinal movement
+    // -- calculate an 'effective time to event:'
+    // effectiveHoursToEvent = hoursUntilEventAtCurrentLng / (1 + (degreesPerHour / 15)).
+    // Because east at speed X = racing toward a sunrise/sunset line that's also moving b/c of Earth's rotation.
+    // So we intersect it faster than if standing still.
+
     if (!this.nextTransitionDisplay) return;
 
+    // hide if not in a cruise control mode and get out of here
     if (this.journey.getTravelMode() !== "cruiseControl") {
       this.nextTransitionDisplay.style.display = "none";
       return;
@@ -220,97 +233,73 @@ export class Renderer {
     this.nextTransitionDisplay.style.display = "block";
 
     const cruiseMode = this.journey.getCurrentCruiseMode();
-    const speed = cruiseMode.speed; // km/h
+    const speed = cruiseMode.speed;
 
-    // SPECIAL CASE: Standing still (speed = 0 or very slow)
-    if (speed < 0.1) {
-      const position = this.journey.getCurrentPosition();
-      const virtualTime = this.journey.getVirtualTime();
-      const times = getSunTimes(position.lat, position.lng, virtualTime);
-      const currentTimeOfDay = getTimeOfDay(
-        position.lat,
-        position.lng,
-        virtualTime
-      );
-
-      let nextEventTime, nextEventName;
-
-      if (currentTimeOfDay === "night") {
-        nextEventTime = times.dawnStart;
-        nextEventName = "Dawn";
-      } else if (currentTimeOfDay === "dawn") {
-        nextEventTime = times.sunrise;
-        nextEventName = "Sunrise";
-      } else if (currentTimeOfDay === "day") {
-        nextEventTime = times.sunset;
-        nextEventName = "Sunset";
-      } else if (currentTimeOfDay === "dusk") {
-        nextEventTime = times.duskEnd;
-        nextEventName = "Night";
-      }
-
-      const msUntil = nextEventTime.getTime() - virtualTime.getTime();
-
-      this.nextTransitionDisplay.innerHTML = `
-      Next ${nextEventName} in ${this.formatDuration(msUntil)}<br>
-      Standing still
-    `;
+    // don't update if barely moving.
+    if (speed < 0.01) {
       return;
     }
 
-    // NORMAL CASE: Moving - simulate forward
+    // MOVING: Find the actual event, then calculate intersection
+    const currentPosition = this.journey.getCurrentPosition();
+    const currentVirtualTime = this.journey.getVirtualTime();
+    const currentDistance = this.journey.distance;
+
     const currentTimeOfDay = getTimeOfDay(
-      this.journey.getCurrentPosition().lat,
-      this.journey.getCurrentPosition().lng,
-      this.journey.getVirtualTime()
+      currentPosition.lat,
+      currentPosition.lng,
+      currentVirtualTime
     );
 
-    // Simulate forward to find when theme changes
-    let simulatedDistance = this.journey.distance;
-    let simulatedTime = this.journey.virtualTime;
-    const timeStep = 60 * 60 * 1000; // 1 hour in ms
-    const distanceStep = speed; // km per hour
+    // Find next event at CURRENT location
+    const times = getSunTimes(
+      currentPosition.lat,
+      currentPosition.lng,
+      currentVirtualTime
+    );
 
-    let steps = 0;
-    const maxSteps = 48; // Don't simulate more than 48 hours
+    let targetEventTime, targetEventName;
 
-    while (steps < maxSteps) {
-      simulatedDistance += distanceStep;
-      simulatedTime += timeStep;
-
-      const futurePosition = calculateNewPosition(
-        this.journey.getStartLocation().lat,
-        this.journey.getStartLocation().lng,
-        this.journey.bearing,
-        simulatedDistance
-      );
-
-      const futureTimeOfDay = getTimeOfDay(
-        futurePosition.lat,
-        futurePosition.lng,
-        new Date(simulatedTime)
-      );
-
-      if (futureTimeOfDay !== currentTimeOfDay) {
-        // Found the transition!
-        const msUntil = simulatedTime - this.journey.virtualTime;
-        const kmUntil = speed * (msUntil / (1000 * 60 * 60));
-
-        const nextPeriodName =
-          futureTimeOfDay.charAt(0).toUpperCase() + futureTimeOfDay.slice(1);
-
-        this.nextTransitionDisplay.innerHTML = `
-        Next ${nextPeriodName} in ${this.formatDuration(msUntil)}<br>
-        ${kmUntil.toFixed(1)} km away
-      `;
-        return;
-      }
-
-      steps++;
+    if (currentTimeOfDay === "night") {
+      targetEventTime = times.dawnStart;
+      targetEventName = "Dawn";
+    } else if (currentTimeOfDay === "dawn") {
+      targetEventTime = times.sunrise;
+      targetEventName = "Sunrise";
+    } else if (currentTimeOfDay === "day") {
+      targetEventTime = times.sunset;
+      targetEventName = "Sunset";
+    } else if (currentTimeOfDay === "dusk") {
+      targetEventTime = times.duskEnd;
+      targetEventName = "Night";
     }
 
-    // Fallback if no transition found
-    this.nextTransitionDisplay.innerHTML = `No transition in next 48h`;
+    // Calculate when this event will actually occur as we travel
+    // We need to account for BOTH time passing AND longitude changing
+
+    const hoursUntilEventAtCurrentLng =
+      (targetEventTime.getTime() - currentVirtualTime.getTime()) /
+      (1000 * 60 * 60);
+
+    // As we travel east, we move into earlier time zones
+    // 15° longitude = 1 hour
+    // Speed in degrees per hour
+    const degreesPerHour = (speed / EARTH_CIRCUMFERENCE_KM) * 360;
+
+    // We're chasing the event - it happens earlier as we go east
+    // Effective speed toward event = time passing + longitude change
+    const effectiveHoursToEvent =
+      hoursUntilEventAtCurrentLng / (1 + degreesPerHour / 15);
+
+    const msUntil = effectiveHoursToEvent * 60 * 60 * 1000;
+    const kmUntil = speed * effectiveHoursToEvent;
+
+    this.nextTransitionDisplay.innerHTML = `
+    Next ${targetEventName} in ${this.formatDuration(msUntil)}<br>
+    <span style="font-size: 12px; opacity: 0.7;">${kmUntil.toFixed(
+      1
+    )} km away</span>
+  `;
   }
 
   formatStartTime(date) {

@@ -207,9 +207,6 @@ class WalkAroundTheEarth {
 
     // 'Restart' controls.
     const restartToggle = document.getElementById("restart-toggle");
-    console.log("🔍 restartToggle element:", restartToggle);
-    console.log("🔍 Is it null?", restartToggle === null);
-
     const restartContainer = document.getElementById("restart-container");
     const restartCancel = document.getElementById("restart-cancel");
     const restartConfirm = document.getElementById("restart-confirm");
@@ -370,7 +367,8 @@ class WalkAroundTheEarth {
     const animate = () => {
       this.journey.update();
       this.renderer.render();
-      this.sequenceManager.update(); // NEW - check for triggered sequences
+      // check for triggered sequences
+      this.sequenceManager.update();
       requestAnimationFrame(animate);
     };
 
