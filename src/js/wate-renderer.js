@@ -7,7 +7,7 @@ import {
   getLocalSolarTime,
 } from "./wate-locations.js";
 import { journeyMessages } from "./wate-messages.js";
-import { getTimeOfDay, applyTheme } from "./wate-daynight.js";
+import { getTimeOfDay, applyTheme, getSunTimes } from "./wate-daynight.js";
 
 export class Renderer {
   constructor(journey) {
@@ -31,6 +31,9 @@ export class Renderer {
     this.themeCheckCounter = 0;
     this.departedFromDisplay = document.getElementById("departed-from-display");
     this.periodDisplay = document.getElementById("period-display");
+    this.nextTransitionDisplay = document.getElementById(
+      "next-transition-display"
+    );
 
     // this.showingElapsed = true;
 
@@ -97,6 +100,7 @@ export class Renderer {
     this.updateOriginIconRotation();
     this.updateMeterDisplay();
     this.updateTimeElapsed();
+    this.updateNextTransition();
 
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
@@ -202,6 +206,58 @@ export class Renderer {
         this.timeElapsedDisplay.textContent = `Elapsed: ${formatted}`;
       }
     }
+  }
+
+  updateNextTransition() {
+    // time to next dawn, sunrise, sunset, dusk based on position / solar time
+    if (!this.nextTransitionDisplay) return;
+
+    // Only show in cruise control mode
+    if (this.journey.getTravelMode() !== "cruiseControl") {
+      this.nextTransitionDisplay.style.display = "none";
+      return;
+    }
+
+    this.nextTransitionDisplay.style.display = "block";
+
+    const position = this.journey.getCurrentPosition();
+    const virtualTime = this.journey.getVirtualTime();
+    const times = getSunTimes(position.lat, position.lng, virtualTime);
+    const currentUTC = virtualTime.getTime();
+    const currentTimeOfDay = getTimeOfDay(
+      position.lat,
+      position.lng,
+      virtualTime
+    );
+
+    // Find next transition
+    let nextTransition, nextTime, nextName;
+
+    if (currentTimeOfDay === "night") {
+      nextTime = times.dawnStart;
+      nextName = "Dawn";
+    } else if (currentTimeOfDay === "dawn") {
+      nextTime = times.sunrise;
+      nextName = "Sunrise";
+    } else if (currentTimeOfDay === "day") {
+      nextTime = times.sunset;
+      nextName = "Sunset";
+    } else if (currentTimeOfDay === "dusk") {
+      nextTime = times.duskEnd;
+      nextName = "Night";
+    }
+
+    const msUntil = nextTime.getTime() - currentUTC;
+    const hoursUntil = msUntil / (1000 * 60 * 60);
+
+    // Use cruise mode speed (constant)
+    const cruiseMode = this.journey.getCurrentCruiseMode();
+    const speed = cruiseMode.speed;
+    const kmUntil = speed * hoursUntil;
+
+    this.nextTransitionDisplay.innerHTML = `
+    Next ${nextName} in ${this.formatDuration(msUntil)}<br>
+    ${kmUntil.toFixed(1)} km away`;
   }
 
   formatStartTime(date) {

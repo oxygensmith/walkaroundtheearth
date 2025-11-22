@@ -277,6 +277,7 @@ class WalkAroundTheEarth {
       this.originIcon.className = "mode--free";
       this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-ufo"/></svg>`;
       instructions.style.display = "block";
+      this.renderer.updateNextTransition(); // Hide it
     });
 
     cruiseBtn.addEventListener("click", () => {
@@ -288,6 +289,7 @@ class WalkAroundTheEarth {
       controlLabel.innerHTML = `<svg class="icon icon--sm"><use xlink:href="#icon-${cruiseMode.icon}"/></svg> ${cruiseMode.name}`;
       this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-${cruiseMode.icon}"/></svg>`;
       instructions.style.display = "none";
+      this.renderer.updateNextTransition(); // Show it
     });
 
     // Control button (cycles throttle or cruise mode based on current mode)
@@ -300,6 +302,7 @@ class WalkAroundTheEarth {
         const cruiseMode = this.journey.cycleCruiseMode();
         controlLabel.innerHTML = `<svg class="icon icon--sm"><use xlink:href="#icon-${cruiseMode.icon}"/></svg> ${cruiseMode.name}`;
         this.originIcon.innerHTML = `<svg class="icon"><use xlink:href="#icon-${cruiseMode.icon}"/></svg>`;
+        this.renderer.updateNextTransition(); // Show it
       }
     });
 
