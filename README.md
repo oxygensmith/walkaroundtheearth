@@ -37,8 +37,8 @@ Unless I've utterly broken it, it lives here:
 **Version 0.1** - Core scrolling mechanics implemented:
 
 - ✅ Horizontal scroll interface with throttled velocity
-- ✅ Distance tracking (10px = 1km scale)
-- ✅ Visual markers every 100km and 1000km
+- ✅ Distance tracking (400px = 1km scale)
+- ✅ Visual markers every 1km / 10km / 100km / 1000km
 - ✅ Antipodal point marking (20,020.72 km from origin)
 - ✅ Smooth momentum-based movement
 - ✅ Mouse drag and scroll wheel controls
@@ -67,6 +67,7 @@ Unless I've utterly broken it, it lives here:
 - [ ] Photography/imagery of places passed
 - [ ] Population data for settlements
 - [ ] "You are now X km from home" indicators
+- [ ] "Reached the antipode" party
 
 ### Phase 4: Polish
 
