@@ -377,6 +377,7 @@ export class Renderer {
 
   // Update project title position with drift effect
   updateProjectTitle() {
+    return; // Disabled for now
     const distance = this.journey.getDistance();
     const threshold = 150; // km before title starts drifting
 

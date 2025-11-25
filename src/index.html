@@ -52,41 +52,18 @@
           </div>
         </div><!-- ends odometer container -->
 
-        <div class="location-and-features">
-          <div class="coordinates-display" id="coordinates-display">
-            0.0000°N, 0.0000°E
-          </div>
-          
-          <div class="period-and-terrain">
-            <div class="period-display" id="period-display">—</div>
-            <span class="separator">|</span>
-            <div class="terrain-display" id="terrain-display">—</div>
-          </div>
-
-          <div class="solar-time-display" id="solar-time-display">12:00:00 PM</div>
-          <div class="next-transition-display" id="next-transition-display">—</div>
-        </div>
-        
-        <div class="time-and-distance-display">
-          <div class="speed-display" id="speed-display">
-            <span id="meter-value">0 m</span> |
-            <span id="speed-value">0 km/h</span>
-          </div>
-          <div class="time-display" id="time-display">—</div>
-          <div class="time-elapsed-display" id="time-elapsed-display">—</div>
-          <div class="departed-from-display" id="departed-from-display">--</div>
-
-          <button class="restart-toggle" id="restart-toggle">
-            <svg class="icon icon--sm"><use xlink:href="#icon-restart" /></svg
-            >Restart
-          </button>
-
-          <div class="restart-container" id="restart-container">
-            <div class="restart-content">
-              <p>Are you sure you want to restart your journey?</p>
-              <p><em>All progress will be lost.</em></p>
-              <div class="restart-buttons">
-                <button class="restart-btn restart-cancel" id="restart-cancel">
+        <div class="choice-container" id="restart-container">
+          <div class="choice-overlay"></div>
+            <div class="choice-content">
+              <div class="choice-header">
+                <h2 class="choice-title">Restart Journey</h2>
+              </div>
+              <div class="choice-body">
+                <p>Are you sure you want to restart your journey?</p>
+                <p><em>All progress will be lost.</em></p>
+              </div>
+              <div class="choice-buttons">
+                <button class="choice-btn choice-cancel" id="restart-cancel">
                   <svg class="icon icon--sm">
                     <use xlink:href="#icon-close" /></svg
                   >Cancel
@@ -101,12 +78,209 @@
                   Yes, Restart
                 </button>
               </div>
-            </div>
+            </div><!-- /.choice content -->
+          </div>
+        </div> <!-- choice container --> 
+          
+        <!--<div class="about-container" id="about-container">
+            <button class="about-toggle" id="about-toggle">
+              <svg class="icon icon--sm">
+                <use xlink:href="#icon-arrows-down" />
+              </svg>
+              about
+            </button>
+        </div> -->
+
+        <!-- old credits container -->  
+        <!-- 
+        <div class="credits-container" id="credits-container">
+            <button class="credits-toggle" id="credits-toggle">
+              <svg class="icon icon--sm">
+                <use xlink:href="#icon-arrows-down" />
+              </svg>
+              credits
+            </button>
+            
           </div>
         </div>
+      -->
+    </main>
 
-        <div class="travel-controls">
-          <div class="travel-controls-container">
+<div class="control-bar" id="control-bar">
+  <div class="control-bar-content panel-controls">
+    <div class="control-bar-section control-bar-left">
+      <button class="panel-control-btn" id="settings-toggle" aria-label="Open settings" title="Settings">
+        <svg class="icon icon--sm"><use xlink:href="#icon-settings"/></svg>
+        <span class="btn-label">Mgmt.</span>
+      </button>
+    </div>
+    <div class="control-bar-section control-bar-center">
+      <button class="panel-control-btn" id="travelmode-toggle">
+        <svg class="icon icon--sm"><use xlink:href="#icon-travelmode"/></svg>
+        <span class="btn-label">Travel</span>
+      </button>
+    </div>
+    <div class="control-bar-section control-bar-right">
+      <button class="panel-control-btn" id="console-toggle">
+        <svg class="icon icon--sm"><use xlink:href="#icon-console"/></svg>
+        <span class="btn-label">Console</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Panel (Gear Icon) -->
+<div class="panel-container" id="settings-panel" data-panel="settings">
+  <div class="panel-overlay"></div>
+  <div class="panel-content panel--slide slide-left">
+    <div class="panel-header">
+      <h2 class="panel-title">Settings</h2>
+      <button class="panel-close" aria-label="Close settings panel">
+        <svg class="icon icon--sm"><use xlink:href="#icon-close" /></svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <!-- Journey Management Tab -->
+      <section class="panel-section">
+        <h3 class="panel-section-title">Journey Management</h3>
+        <div class="panel-button-group">
+          <button class="panel-btn" id="journey-pause-btn" disabled>
+            <svg class="icon icon--sm"><use xlink:href="#icon-pause" /></svg>
+            Pause
+          </button>
+          <button class="panel-btn" id="journey-restart-btn">
+            <svg class="icon icon--sm"><use xlink:href="#icon-restart" /></svg>
+            Restart Journey
+          </button>
+          <button class="panel-btn" id="journey-save-btn" disabled>
+            <svg class="icon icon--sm"><use xlink:href="#icon-save" /></svg>
+            Save Backup
+          </button>
+          <button class="panel-btn" id="journey-load-btn" disabled>
+            <svg class="icon icon--sm"><use xlink:href="#icon-load" /></svg>
+            Load Backup
+          </button>
+          <button class="panel-btn" id="journey-share-btn" disabled>
+            <svg class="icon icon--sm"><use xlink:href="#icon-share" /></svg>
+            Share Journey
+          </button>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="panel-section">
+        <div class="panel-about-links">
+          <a href="#" class="panel-link" id="about-wate">About WATE</a>
+          <a href="#" class="panel-link" id="about-credits">Credits</a>
+          <div class="credits-content" id="credits-content">
+              <p class="mb-0 pb-0">
+                2025,
+                <a
+                  href="https://robbutz.com"
+                  target="_blank"
+                  title="Visit my site"
+                  >Rob Butz</a
+                >,
+                <a
+                  href="https://moonjoule.com"
+                  target="_blank"
+                  title="Visit Moonjoule"
+                  >Moonjoule</a
+                ><br />
+                Made with <svg class="icon icon--sm"><use xlink:href="#icon-heart"/></svg> for Morley and the
+                Earth</p>
+            </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Console Panel (Map/Stats Icon) -->
+<div class="panel-container" id="console-panel" data-panel="console">
+  <div class="panel-overlay"></div>
+  <div class="panel-content panel--slide slide-right">
+    <div class="panel-header">
+      <h2 class="panel-title">Journey Stats</h2>
+      <button class="panel-close" aria-label="Close stats panel">
+        <svg class="icon icon--sm"><use xlink:href="#icon-close" /></svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <div class="panel-section">
+
+        <div class="location-and-features">
+          <div class="coordinates-display" id="coordinates-display">
+            0.0000°N, 0.0000°E
+          </div>
+          
+          <div class="period-and-terrain">
+            <div class="period-display" id="period-display">—</div>
+            <span class="separator">|</span>
+            <div class="terrain-display" id="terrain-display">—</div>
+          </div>
+
+          <div class="solar-time-display" id="solar-time-display">12:00:00 PM</div>
+          <div class="next-transition-display" id="next-transition-display">—</div>
+        </div>
+
+        <div class="time-and-distance-display">
+          <div class="speed-display" id="speed-display">
+            <span id="meter-value">0 m</span> |
+            <span id="speed-value">0 km/h</span>
+          </div>
+          <div class="time-display" id="time-display">—</div>
+          <div class="time-elapsed-display" id="time-elapsed-display">—</div>
+          <div class="departed-from-display" id="departed-from-display">--</div>
+        </div>
+        
+        
+        <!-- <div class="panel-stat">
+          <span class="panel-stat-label">Coordinates</span>
+          <span class="panel-stat-value" id="panel-coordinates">0.0000°N, 0.0000°E</span>
+        </div>
+        <div class="panel-stat">
+          <span class="panel-stat-label">Altitude</span>
+          <span class="panel-stat-value" id="panel-altitude">0 m</span>
+        </div>
+        <div class="panel-stat">
+          <span class="panel-stat-label">Speed</span>
+          <span class="panel-stat-value" id="panel-speed">0 km/h</span>
+        </div>
+        <div class="panel-stat">
+          <span class="panel-stat-label">Solar Time</span>
+          <span class="panel-stat-value" id="panel-solar-time">12:00:00 PM</span>
+        </div>
+        <div class="panel-stat">
+          <span class="panel-stat-label">Time to Circle Earth</span>
+          <span class="panel-stat-value" id="panel-eta">—</span>
+        </div>
+        <div class="panel-stat">
+          <span class="panel-stat-label">Terrain</span>
+          <span class="panel-stat-value" id="panel-terrain">—</span>
+        </div>
+
+        -->
+
+      </div>
+    </div>
+  </div>
+</div>
+      
+<!-- Travelmode Panel (footsteps icon) -->
+<div class="panel-container" id="travelmode-panel" data-panel="travelmode">
+  <div class="panel-overlay"></div>
+  <div class="panel-content panel--slide slide-bottom">
+    <div class="panel-header">
+      <h2 class="panel-title">Travel Mode</h2>
+      <button class="panel-close" aria-label="Close travelmode panel">
+        <svg class="icon icon--sm"><use xlink:href="#icon-close" /></svg>
+      </button>
+    </div>  
+    <div class="panel-body">
+        <div class="travel-controls-container">
             <div class="mode-switcher">
               <button
                 class="mode-btn"
@@ -129,37 +303,44 @@
                 Limit</span
               >
             </button>
-          </div>
+        </div>
+    </div> 
+  </div>     
+</div>    
 
-          <div class="credits-container" id="credits-container">
-            <button class="credits-toggle" id="credits-toggle">
-              <svg class="icon icon--sm">
-                <use xlink:href="#icon-arrows-down" />
-              </svg>
-              credits
-            </button>
-            <div class="credits-content" id="credits-content">
-              <p class="mb-0 pb-0">
-                2025,
-                <a
-                  href="https://robbutz.com"
-                  target="_blank"
-                  title="Visit my site"
-                  >Rob Butz</a
-                >,
-                <a
-                  href="https://moonjoule.com"
-                  target="_blank"
-                  title="Visit Moonjoule"
-                  >Moonjoule</a
-                ><br />
-                Made with <svg class="icon icon--sm"><use xlink:href="#icon-heart"/></svg> for Morley and the
-                Earth</p>
-            </div>
-          </div>
+<!-- FUTURE: Context Layers Controls Panel (Map/Stats Icon) -->
+<div class="panel-container" id="info-overlay-controls-panel" data-panel="info-overlay">
+  <div class="panel-overlay"></div>
+  <div class="panel-content">
+    <div class="panel-header">
+      <h2 class="panel-title">Context Layers</h2>
+      <button class="panel-close" aria-label="Close context layers panel">
+        <svg class="icon icon--sm"><use xlink:href="#icon-close" /></svg>
+      </button>
+    </div>
+    <div class="panel-body">
+        <div class="panel-checkbox-group">
+          <label class="panel-checkbox-label">
+            <input type="checkbox" class="panel-checkbox" id="context-biome" />
+            <span>Biome Info</span>
+          </label>
+          <label class="panel-checkbox-label">
+            <input type="checkbox" class="panel-checkbox" id="context-settlements" />
+            <span>Settlements</span>
+          </label>
+          <label class="panel-checkbox-label">
+            <input type="checkbox" class="panel-checkbox" id="context-weather" />
+            <span>Weather</span>
+          </label>
+          <label class="panel-checkbox-label">
+            <input type="checkbox" class="panel-checkbox" id="context-photography" />
+            <span>Photography</span>
+          </label>
         </div>
       </div>
-    </main>
+    </div>
+</div>  
+
 
     <script type="module" src="js/wate-main.js"></script>
 
@@ -270,6 +451,34 @@
       </symbol>
       <symbol id="icon-turtle" viewBox="0 0 512 512">
           <path d="M181.73 343.133C134.148 342.039 67.5433 345.393 54.0726 340.776C30.9894 332.865 30.5341 313.213 32.312 265.167C34.9839 192.96 89.8122 145.012 125.742 130.864C239.089 86.2319 340.561 171.199 340.75 273.61C340.824 313.871 343.695 329.03 319.14 340.667C313.174 343.494 312.842 343.133 181.73 343.133ZM70.8494 371.108H221.029C311.427 371.108 323.528 372.986 341.346 360.121C374.706 336.034 368.424 307.054 368.825 246.943C369.128 201.433 413.841 173.871 461.298 197.288C524.029 228.24 511.628 300.895 500.223 317.038C474.249 353.8 435.842 340.634 421.625 343.197C416.661 344.092 415.345 366.881 390.856 391.504C357.397 425.148 319.141 426.264 315.164 427.104C308.185 428.576 318.062 479.232 307.938 493.888C294.257 513.694 284.433 511.636 242.083 511.462C187.843 511.24 202.511 465.174 200.329 429.328C200.098 425.531 173.345 427.688 173.184 427.838C171.436 429.47 172.68 466.611 172.303 475.734C171.16 503.378 148.729 511.969 135.411 511.558C108.305 510.721 87.6263 514.436 75.1416 505.082C56.2995 490.965 60.3602 477.239 60.0412 430.797C60.0043 425.381 50.2206 427.503 32.951 427.249C6.95863 426.865 1.84798 403.1 4.70769 392.864C11.8471 367.31 31.1319 371.108 70.8494 371.108ZM425.159 272.26C425.34 273.497 426.747 283.111 433.219 285.652C454.503 294.008 460.289 258.684 438.556 259.003C428.429 259.152 425.524 270.797 425.159 272.26Z" fill="currentColor">
+      </symbol>
+
+      <!-- new icons -->
+       <symbol id="icon-travelmode" viewBox="0 0 512 512">
+        <path d="M156.29 173.498H181.339V63.4979H156.29C128.62 63.4979 106.194 88.119 106.194 118.498C106.194 148.877 128.62 173.498 156.29 173.498ZM6 393.497C6 423.876 28.4262 448.497 56.0968 448.497H81.1452V338.497H56.0968C28.4262 338.497 6 363.119 6 393.497ZM270.151 283.498C242.825 283.498 210.536 294.773 188.172 310.997C168.768 325.074 153.324 338.497 106.194 338.497V448.497L151.226 462.221C171.742 468.478 192.72 473.496 214.09 475.155C239.678 477.14 265.439 475.731 290.472 469.827C376.169 449.614 406.775 404.858 406.775 365.997C406.775 310.997 340.882 283.498 270.151 283.498ZM390.665 42.1768C365.633 36.273 339.872 34.855 314.283 36.8487C292.914 38.5073 271.936 43.5261 251.42 49.7737L206.387 63.4979V173.498C253.51 173.498 268.961 186.921 288.366 200.998C310.73 217.223 343.019 228.498 370.345 228.498C441.075 228.498 506.968 200.998 506.968 145.998C506.968 107.137 476.362 62.3807 390.665 42.1768Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 512 512">
+        <path d="M255.195 5.60938C116.474 5.60938 4 118.124 4 256.805C4 395.567 116.474 508 255.195 508C393.917 508 506.391 395.567 506.391 256.805C506.391 118.124 393.917 5.60938 255.195 5.60938ZM255.195 117.027C278.69 117.027 297.736 136.073 297.736 159.568C297.736 183.063 278.69 202.109 255.195 202.109C231.7 202.109 212.654 183.063 212.654 159.568C212.654 136.073 231.7 117.027 255.195 117.027ZM311.917 374.299C311.917 381.012 306.475 386.454 299.762 386.454H210.628C203.916 386.454 198.474 381.012 198.474 374.299V349.99C198.474 343.278 203.916 337.835 210.628 337.835H222.783V273.011H210.628C203.916 273.011 198.474 267.569 198.474 260.856V236.547C198.474 229.835 203.916 224.392 210.628 224.392H275.453C282.165 224.392 287.608 229.835 287.608 236.547V337.835H299.762C306.475 337.835 311.917 343.278 311.917 349.99V374.299Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 512 512">
+        <path d="M492.166 225.862L475.114 226.932C469.896 187.827 454.527 152.03 431.682 122.125L444.506 110.807C451.358 104.756 451.685 94.1808 445.229 87.7245L424.276 66.7711C417.809 60.3049 407.234 60.6415 401.193 67.494L389.875 80.3076C359.97 57.4728 324.173 42.1044 285.078 36.8759L286.138 19.834C286.712 10.7139 279.464 3 270.324 3H240.676C231.536 3 224.298 10.7139 224.862 19.834L225.932 36.8858C186.827 42.1044 151.03 57.4728 121.135 80.3175L109.817 67.494C103.766 60.6415 93.1907 60.3148 86.7344 66.7711L65.7711 87.7245C59.3049 94.1907 59.6415 104.766 66.494 110.807L79.3175 122.125C56.4827 152.03 41.1143 187.827 35.8858 226.932L18.834 225.862C9.71393 225.288 2 232.536 2 241.676V271.324C2 280.464 9.71393 287.702 18.834 287.138L35.8858 286.068C41.1044 325.173 56.4728 360.97 79.3175 390.865L66.494 402.183C59.6415 408.234 59.3148 418.809 65.7711 425.266L86.7344 446.229C93.2006 452.695 103.776 452.358 109.817 445.506L121.135 432.683C151.04 455.517 186.837 470.886 225.941 476.114L224.862 493.166C224.288 502.286 231.536 510 240.676 510H270.324C279.464 510 286.702 502.286 286.138 493.166L285.068 476.114C324.173 470.896 359.97 455.527 389.875 432.683L401.193 445.506C407.243 452.358 417.819 452.685 424.276 446.229L445.239 425.266C451.705 418.799 451.368 408.224 444.516 402.183L431.692 390.865C454.527 360.96 469.896 325.163 475.124 286.068L492.176 287.138C501.296 287.712 509.01 280.464 509.01 271.324V241.676C509 232.536 501.286 225.298 492.166 225.862ZM281.088 100.647C305.655 104.677 328.253 114.174 347.661 128.156L305.457 175.974C296.813 170.587 287.316 166.527 277.117 164.141L281.088 100.647ZM229.912 100.647L233.883 164.141C223.694 166.527 214.187 170.597 205.543 175.974L163.339 128.156C182.747 114.174 205.345 104.677 229.912 100.647ZM127.156 164.349L174.984 206.543C169.597 215.187 165.537 224.694 163.141 234.883L99.647 230.912C103.677 206.345 113.174 183.757 127.156 164.349ZM99.647 282.088L163.141 278.117C165.527 288.306 169.597 297.813 174.974 306.457L127.156 348.661C113.174 329.253 103.677 306.655 99.647 282.088ZM229.912 412.353C205.345 408.323 182.747 398.826 163.339 384.844L205.533 337.016C214.177 342.403 223.684 346.463 233.873 348.859L229.912 412.353ZM255.5 288.188C238.003 288.188 223.812 273.997 223.812 256.5C223.812 239.003 238.003 224.812 255.5 224.812C272.997 224.812 287.187 239.003 287.187 256.5C287.187 273.997 272.997 288.188 255.5 288.188ZM281.088 412.353L277.117 348.859C287.306 346.473 296.813 342.403 305.457 337.016L347.651 384.844C328.243 398.826 305.655 408.323 281.088 412.353ZM383.844 348.651L336.026 306.447C341.413 297.803 345.473 288.306 347.859 278.107L411.353 282.078C407.323 306.655 397.826 329.253 383.844 348.651ZM347.859 234.883C345.473 224.694 341.403 215.187 336.016 206.543L383.844 164.349C397.826 183.757 407.323 206.355 411.353 230.922L347.859 234.883Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-share" viewBox="0 0 512 512">
+        <path d="M501.409 217.631L375.156 336.854C361.848 349.422 339.667 340.104 339.667 321.557V258.464C212.913 259.314 159.44 289.249 195.202 408.695C199.133 421.823 183.94 431.988 173.279 423.889C139.115 397.938 108.208 348.3 108.208 298.195C108.208 172 211.312 146.958 339.667 146.246V83.108C339.667 64.544 361.863 55.2559 375.156 67.8108L501.409 187.036C510.194 195.333 510.201 209.327 501.409 217.631ZM339.667 394.451V454.834H59.1111V174.278H103.751C105.168 174.277 106.57 173.99 107.873 173.434C109.176 172.877 110.353 172.063 111.333 171.04C124.443 157.391 139.596 146.588 156.059 138.008C165.817 132.922 162.201 118.167 151.197 118.167H45.0833C21.8411 118.167 3 137.008 3 160.25V468.861C3 492.104 21.8411 510.945 45.0833 510.945H353.694C376.937 510.945 395.778 492.104 395.778 468.861V391.002C395.778 383.736 388.591 378.67 381.74 381.093C372.135 384.49 361.85 385.506 351.766 384.054C345.392 383.137 339.667 388.011 339.667 394.451Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-load" viewbox="0 0 512 512">
+        <path d="M287.135 138.018V3.8335H89.8047C76.6822 3.8335 66.125 14.3907 66.125 27.5132V485.32C66.125 498.443 76.6822 509 89.8047 509H421.32C434.443 509 445 498.443 445 485.32V161.698H310.815C297.791 161.698 287.135 151.042 287.135 138.018ZM351.445 351.145H287.135V430.078C287.135 438.8 280.071 445.864 271.349 445.864H239.776C231.054 445.864 223.99 438.8 223.99 430.078V351.145H159.679C145.59 351.145 138.555 334.086 148.56 324.15L243.693 229.728C250.254 223.206 260.851 223.206 267.412 229.728L362.545 324.15C372.56 334.086 365.535 351.145 351.445 351.145ZM438.093 107.432L341.5 10.7401C337.06 6.30013 331.041 3.8335 324.727 3.8335H318.708V130.125H445V124.107C445 117.891 442.533 111.872 438.093 107.432Z" fill="currentColor"/>
+      </symbol>  
+      <symbol id="icon-pause" viewBox="0 0 512 512">
+        <path d="M180.656 454.189H96.8438C73.708 454.189 54.9375 435.419 54.9375 412.283V104.971C54.9375 81.835 73.708 63.0645 96.8438 63.0645H180.656C203.792 63.0645 222.562 81.835 222.562 104.971V412.283C222.562 435.419 203.792 454.189 180.656 454.189ZM446.062 412.283V104.971C446.062 81.835 427.292 63.0645 404.156 63.0645H320.344C297.208 63.0645 278.438 81.835 278.438 104.971V412.283C278.438 435.419 297.208 454.189 320.344 454.189H404.156C427.292 454.189 446.062 435.419 446.062 412.283Z" fill="currentColor"/>
+      </symbol>
+      <!-- Close icon -->
+      <symbol id="icon-close" viewBox="0 0 512 512">
+        <path d="M437.6 106.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 210.7 119.4 74.1c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 74.1 392.6c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L256 301.3 392.6 437.9c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 437.6 106.4z" fill="currentColor"/>
+      </symbol>
+      <!-- console icon -->
+       <symbol id="icon-console" viewbox="0 0 512 512">
+        <path d="M329.015 386.154H365.869C372.012 386.154 378.154 380.012 378.154 373.869V244.881C378.154 238.738 372.012 232.596 365.869 232.596H329.015C322.873 232.596 316.731 238.738 316.731 244.881V373.869C316.731 380.012 322.873 386.154 329.015 386.154ZM421.15 386.154H458.004C464.146 386.154 470.288 380.012 470.288 373.869V152.746C470.288 146.604 464.146 140.461 458.004 140.461H421.15C415.008 140.461 408.865 146.604 408.865 152.746V373.869C408.865 380.012 415.008 386.154 421.15 386.154ZM144.746 386.154H181.6C187.742 386.154 193.885 380.012 193.885 373.869V306.304C193.885 300.161 187.742 294.019 181.6 294.019H144.746C138.604 294.019 132.461 300.161 132.461 306.304V373.869C132.461 380.012 138.604 386.154 144.746 386.154ZM236.881 386.154H273.735C279.877 386.154 286.019 380.012 286.019 373.869V183.458C286.019 177.315 279.877 171.173 273.735 171.173H236.881C230.738 171.173 224.596 177.315 224.596 183.458V373.869C224.596 380.012 230.738 386.154 236.881 386.154ZM485.644 447.577H71.0383V155.817C71.0383 147.333 64.1666 140.461 55.6826 140.461H24.971C16.4869 140.461 9.61523 147.333 9.61523 155.817V478.288C9.61523 495.247 23.3682 509 40.3268 509H485.644C494.128 509 501 502.128 501 493.644V462.933C501 454.449 494.128 447.577 485.644 447.577Z" fill="currentColor"/>
       </symbol>
     </svg>
   </body>

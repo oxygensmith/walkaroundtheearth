@@ -1,0 +1,45 @@
+.icon {
+  display: inline-block;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
+  fill: var(--color-icon);
+  vertical-align: -0.125em; // Slight adjustment for better alignment with text
+  flex-shrink: 0; // Prevents icon from shrinking in flex containers
+
+  // Size modifiers
+  &--sm {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+
+  &--lg {
+    width: var(--icon-size-lg);
+    height: var(--icon-size-lg);
+  }
+
+  &--xl {
+    width: var(--icon-size-xl);
+    height: var(--icon-size-xl);
+  }
+
+  // Color modifiers (these override the inherited color)
+  &--danger {
+    color: var(--icon-color-danger);
+  }
+
+  &--success {
+    color: var(--icon-color-success);
+  }
+
+  &--warning {
+    color: var(--icon-color-warning);
+  }
+
+  &--info {
+    color: var(--icon-color-info);
+  }
+
+  &--muted {
+    color: var(--icon-color-muted);
+  }
+}

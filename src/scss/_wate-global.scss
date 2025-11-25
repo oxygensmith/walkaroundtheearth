@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+.dismissible {
+  &.hidden {
+    display: none;
+  }
+}
+
+// Theme elements use slow transitions:
+
+// Theme elements use slow transitions
+body,
+.journey-viewport,
+button,
+journey-viewport,
+.journey-container,
+.marker,
+.marker-label,
+.origin-circle,
+.horizon-line {
+  transition: background-color var(--transition-theme),
+    color var(--transition-theme), border-color var(--transition-theme);
+}

@@ -5,6 +5,7 @@ import { Journey } from "./wate-journey.js";
 import { Renderer } from "./wate-renderer.js";
 import { SequenceManager } from "./wate-sequences.js";
 import { showGreeting, hideWelcome } from "./wate-messages.js";
+import { PanelManager } from "./wate-panels.js";
 
 // Utility function to wait
 function delay(ms) {
@@ -19,6 +20,9 @@ class WalkAroundTheEarth {
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
     this.hasStarted = false;
+    this.panelManager = new PanelManager();
+    this.setupPanels();
+    this.setupChoiceContainer();
 
     console.log(
       "🔍 Journey travel mode on init:",
@@ -56,6 +60,293 @@ class WalkAroundTheEarth {
     }
 
     console.log("🌍 Walk Around the Earth initialized");
+  }
+
+  setupPanels() {
+    // Register Settings Panel
+    this.settingsPanel = this.panelManager.registerPanel({
+      panelId: "settings-panel",
+      toggleBtnId: "settings-toggle",
+      animationType: "slide", // or 'fade'
+      position: "bottom",
+      exclusive: true,
+      overlay: true,
+      onOpen: () => console.log("Settings opened"),
+      onClose: () => console.log("Settings closed"),
+    });
+
+    // Register Travelmode Panel
+    this.travelModePanel = this.panelManager.registerPanel({
+      panelId: "travelmode-panel",
+      toggleBtnId: "travelmode-toggle",
+      animationType: "slide", // or 'fade'
+      // position: "bottom",
+      exclusive: true,
+      overlay: false,
+      onOpen: () => console.log("Travelmode panel opened"),
+      onClose: () => console.log("Travelmode closed"),
+    });
+
+    // Register Console Panel
+    this.consolePanel = this.panelManager.registerPanel({
+      panelId: "console-panel",
+      toggleBtnId: "console-toggle",
+      animationType: "slide", // or 'fade'
+      // position: "right",
+      exclusive: true,
+      overlay: true,
+      onOpen: () => console.log("Console panel opened"),
+      onClose: () => console.log("Console closed"),
+    });
+
+    // Journey Management Controls:
+    // Setup journey management button listeners
+    this.settingsPanel.onButtonClick("journey-pause-btn", () => {
+      this.togglePause();
+    });
+
+    this.settingsPanel.onButtonClick("journey-restart-btn", () => {
+      this.showRestartConfirmation();
+    });
+
+    this.settingsPanel.onButtonClick("journey-save-btn", () => {
+      this.journey.saveState();
+      this.showNotification("Journey saved!");
+    });
+
+    this.settingsPanel.onButtonClick("journey-load-btn", () => {
+      this.loadSavedJourney();
+    });
+
+    this.settingsPanel.onButtonClick("journey-share-btn", () => {
+      this.shareJourney();
+    });
+
+    // Setup context layer toggles
+    this.settingsPanel.onCheckboxChange("context-biome", (e) => {
+      this.renderer.showBiomeInfo = e.target.checked;
+      console.log("Biome info:", e.target.checked);
+    });
+
+    this.settingsPanel.onCheckboxChange("context-settlements", (e) => {
+      this.renderer.showSettlements = e.target.checked;
+      console.log("Settlements:", e.target.checked);
+    });
+
+    this.settingsPanel.onCheckboxChange("context-weather", (e) => {
+      this.renderer.showWeather = e.target.checked;
+      console.log("Weather:", e.target.checked);
+    });
+
+    this.settingsPanel.onCheckboxChange("context-photography", (e) => {
+      this.renderer.showPhotography = e.target.checked;
+      console.log("Photography:", e.target.checked);
+    });
+
+    // Setup About links
+    this.settingsPanel.onLinkClick("about-wate", () => {
+      this.showAboutModal();
+    });
+
+    this.settingsPanel.onLinkClick("about-credits", () => {
+      this.showCreditsModal();
+    });
+  }
+
+  // Called when journey info panel opens
+  updateConsoleStats() {
+    const position = this.journey.getCurrentPosition();
+    const waypointInfo = this.journey.getCurrentWaypointInfo();
+
+    this.consolePanel.updateStat(
+      "panel-coordinates",
+      `${position.lat.toFixed(4)}°${
+        position.lat >= 0 ? "N" : "S"
+      }, ${position.lng.toFixed(4)}°${position.lng >= 0 ? "E" : "W"}`
+    );
+
+    this.consolePanel.updateStat(
+      "panel-altitude",
+      `${Math.floor(Math.abs(this.journey.distance) * 1000).toLocaleString()} m`
+    );
+
+    this.consolePanel.updateStat(
+      "panel-speed",
+      `${this.renderer.speedValue.textContent}`
+    );
+
+    this.consolePanel.updateStat(
+      "panel-solar-time",
+      `${this.renderer.solarTimeDisplay.textContent}`
+    );
+
+    this.consolePanel.updateStat(
+      "panel-eta",
+      `${this.renderer.timeDisplay.textContent}`
+    );
+
+    this.consolePanel.updateStat(
+      "panel-terrain",
+      waypointInfo ? waypointInfo.terrain : "—"
+    );
+  }
+
+  togglePause() {
+    if (this.journey.isPaused) {
+      this.journey.resume();
+      console.log("Journey resumed");
+    } else {
+      this.journey.pause();
+      console.log("Journey paused");
+    }
+  }
+
+  showRestartConfirmation() {
+    // Close settings panel
+    this.settingsPanel.close();
+
+    // Show choice container
+    const choiceContainer = document.getElementById("restart-container");
+    choiceContainer.classList.add("visible");
+
+    // Prevent body scroll
+    document.body.style.overflow = "hidden";
+  }
+
+  hideRestartConfirmation() {
+    // Hide choice container
+    const choiceContainer = document.getElementById("restart-container");
+    choiceContainer.classList.remove("visible");
+
+    // Re-enable body scroll
+    document.body.style.overflow = "";
+  }
+
+  setupChoiceContainer() {
+    const choiceContainer = document.getElementById("restart-container");
+    const choiceOverlay = document.querySelector(".choice-overlay");
+    const cancelBtn = document.getElementById("restart-cancel");
+    const confirmBtn = document.getElementById("restart-confirm");
+
+    // Close on cancel button
+    cancelBtn.addEventListener("click", () => {
+      this.hideRestartConfirmation();
+    });
+
+    // Close on overlay click
+    choiceOverlay.addEventListener("click", () => {
+      this.hideRestartConfirmation();
+    });
+
+    // Handle restart confirmation
+    confirmBtn.addEventListener("click", async () => {
+      console.log("🗑️ Clearing journey state...");
+
+      // CRITICAL: Stop auto-save first!
+      if (this.autoSaveInterval) {
+        clearInterval(this.autoSaveInterval);
+        console.log("⏸️ Auto-save stopped");
+      }
+
+      // Remove the beforeunload listener
+      window.removeEventListener("beforeunload", this.saveBeforeUnload);
+      console.log("⏸️ beforeunload listener removed");
+
+      // Now clear the state
+      this.journey.clearState();
+
+      const check = localStorage.getItem("wate-journey");
+      console.log("🔍 After clear, localStorage has:", check);
+
+      if (check === null) {
+        location.replace(location.href);
+      } else {
+        console.error("❌ Failed to clear state!");
+      }
+    });
+
+    // ESC key to close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && choiceContainer.classList.contains("visible")) {
+        this.hideRestartConfirmation();
+      }
+    });
+  }
+
+  /* if (
+      confirm(
+        "Are you sure you want to restart your journey? All progress will be lost."
+      )
+    ) {
+      this.journey.clearState();
+      location.replace(location.href);
+    }
+  */
+
+  loadSavedJourney() {
+    const saved = this.journey.loadState();
+    if (saved) {
+      this.showNotification("Journey loaded!");
+      this.settingsPanel.close();
+    } else {
+      this.showNotification("No saved journey found");
+    }
+  }
+
+  shareJourney() {
+    const distance = Math.floor(this.journey.distance);
+    const elapsed = this.renderer.formatDuration(this.journey.getElapsedTime());
+    const startLocation = this.journey.getStartLocation().name;
+
+    const shareText = `I've travelled ${distance} km around Earth in ${elapsed}, starting from ${startLocation}! 🌍`;
+    const shareUrl = `${
+      window.location.origin
+    }?distance=${distance}&elapsed=${this.journey.getElapsedTime()}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareText + "\n" + shareUrl).then(() => {
+      this.showNotification("Journey link copied!");
+    });
+
+    // Or use native share API if available
+    if (navigator.share) {
+      navigator.share({
+        title: "Walk Around the Earth",
+        text: shareText,
+        url: shareUrl,
+      });
+    }
+  }
+
+  showNotification(message) {
+    // Create a temporary notification
+    const notification = document.createElement("div");
+    notification.className = "notification";
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--color-text);
+      color: var(--color-bg);
+      padding: 12px 20px;
+      border-radius: 4px;
+      z-index: 2000;
+      animation: fadeInOut 3s ease;
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  }
+
+  showAboutModal() {
+    console.log("Show About WATE modal");
+    // Implement modal for About
+  }
+
+  showCreditsModal() {
+    console.log("Show Credits modal");
+    // Implement modal for Credits
   }
 
   restoreUIState() {
@@ -201,8 +492,8 @@ class WalkAroundTheEarth {
     const instructions = document.querySelector(".instructions");
 
     // Credits toggle
-    const creditsToggle = document.getElementById("credits-toggle");
-    const creditsContainer = document.getElementById("credits-container");
+    // const creditsToggle = document.getElementById("credits-toggle");
+    // const creditsContainer = document.getElementById("credits-container");
 
     // 'Restart' controls.
     const restartToggle = document.getElementById("restart-toggle");
@@ -221,12 +512,12 @@ class WalkAroundTheEarth {
     });
 
     // set up handler for credits toggle.
-    creditsToggle.addEventListener("click", () => {
+    /* creditsToggle.addEventListener("click", () => {
       creditsContainer.classList.toggle("expanded");
-    });
+    }); */
 
     // set up handler for restart options panel toggle.
-    restartToggle.addEventListener("click", (e) => {
+    /* restartToggle.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       console.log("🔄 Restart toggle clicked!");
@@ -262,6 +553,8 @@ class WalkAroundTheEarth {
         console.error("❌ Failed to clear state!");
       }
     });
+
+    */
 
     // travel mode buttons.
     freeScrollBtn.addEventListener("click", () => {
