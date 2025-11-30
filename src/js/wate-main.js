@@ -5,6 +5,7 @@ import { Journey } from "./wate-journey.js";
 import { Renderer } from "./wate-renderer.js";
 import { SequenceManager } from "./wate-sequences.js";
 import { showGreeting, hideWelcome } from "./wate-messages.js";
+import { InfoCarousel } from "./wate-ui-infocarousel.js";
 
 // Utility function to wait
 function delay(ms) {
@@ -18,6 +19,7 @@ class WalkAroundTheEarth {
     this.sequenceManager = new SequenceManager(this.journey);
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
+    this.infoCarousel = new InfoCarousel(this.journey, this.renderer);
     this.hasStarted = false;
 
     console.log(

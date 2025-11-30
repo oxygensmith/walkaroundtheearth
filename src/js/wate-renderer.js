@@ -101,6 +101,7 @@ export class Renderer {
     this.updateOriginIconRotation();
     this.updateMeterDisplay();
     this.updateTimeElapsed();
+    this.updateBeganTimestamp();
 
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
@@ -266,12 +267,26 @@ export class Renderer {
     } else if (currentTimeOfDay === "dawn") {
       targetEventTime = times.sunrise;
       targetEventName = "Sunrise";
+    } else if (currentTimeOfDay === "sunrise") {
+      // <- Added this case
+      targetEventTime = times.sunset;
+      targetEventName = "Sunset";
     } else if (currentTimeOfDay === "day") {
       targetEventTime = times.sunset;
       targetEventName = "Sunset";
+    } else if (currentTimeOfDay === "sunset") {
+      // <- Added this case
+      targetEventTime = times.duskEnd;
+      targetEventName = "Dusk";
     } else if (currentTimeOfDay === "dusk") {
       targetEventTime = times.duskEnd;
       targetEventName = "Night";
+    }
+
+    // Safety check - if we don't have a target event, bail out
+    if (!targetEventTime) {
+      this.nextTransitionDisplay.innerHTML = "—";
+      return;
     }
 
     // Calculate when this event will actually occur as we travel
@@ -349,7 +364,7 @@ export class Renderer {
     if (!this.departedFromDisplay) return;
 
     const departureCity = this.journey.getStartLocation().name;
-    this.departedFromDisplay.innerHTML = `(departed from: ${departureCity})`;
+    this.departedFromDisplay.innerHTML = `departed from: ${departureCity}`;
   }
 
   // Create a marker DOM element
@@ -564,6 +579,30 @@ export class Renderer {
       });
       this.solarTimeDisplay.textContent = `Your Time: ${localTime}`;
     }
+  }
+
+  updateBeganTimestamp() {
+    const beganElement = document.getElementById("began-timestamp");
+    if (!beganElement) return;
+
+    if (!this.journey.journeyStartTime) {
+      beganElement.textContent = "Began: not yet started";
+      return;
+    }
+
+    const date = new Date(this.journey.journeyStartTime);
+    const dateStr = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+    const timeStr = date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    beganElement.textContent = `Began: ${dateStr} at ${timeStr}`;
   }
 
   // Update visible journey messages

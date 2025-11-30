@@ -52,29 +52,48 @@
           </div>
         </div><!-- ends odometer container -->
 
-        <div class="location-and-features">
+        <div id="info-carousel" class="info-carousel">
+  <div id="info-carousel-elements" class="info-carousel-elements">
+    <div class="info-element info-element-01" data-carousel-index="0">
+      <div class="period-and-terrain">
+        <div class="period-display" id="period-display">—</div>
+        <span class="separator">|</span>
+        <div class="terrain-display" id="terrain-display">—</div>
+      </div>
+    </div>
+    <div class="info-element info-element-02" data-carousel-index="1">
+      <div class="time-display" id="time-display">—</div>
+    </div>
+    <div class="info-element info-element-03" data-carousel-index="2">
+      <div class="departed-from-display" id="departed-from-display">—</div>
+    </div>
+    <div class="info-element info-element-04" data-carousel-index="3">
+      <div id="began-timestamp">Began: not yet started</div>
+    </div>
+  </div>
+  <button id="info-toggle" class="info-toggle">more info &gt;&gt;</button>
+</div>
+        
+        <div class="journey-stats-main" id="journey-stats-main">
           <div class="coordinates-display" id="coordinates-display">
             0.0000°N, 0.0000°E
           </div>
-          
-          <div class="period-and-terrain">
-            <div class="period-display" id="period-display">—</div>
-            <span class="separator">|</span>
-            <div class="terrain-display" id="terrain-display">—</div>
-          </div>
-
-          <div class="solar-time-display" id="solar-time-display">12:00:00 PM</div>
-          <div class="next-transition-display" id="next-transition-display">—</div>
-        </div>
-        
-        <div class="time-and-distance-display">
           <div class="speed-display" id="speed-display">
             <span id="meter-value">0 m</span> |
             <span id="speed-value">0 km/h</span>
           </div>
-          <div class="time-display" id="time-display">—</div>
+          
           <div class="time-elapsed-display" id="time-elapsed-display">—</div>
-          <div class="departed-from-display" id="departed-from-display">--</div>
+          
+          <div class="solar-time-display" id="solar-time-display">12:00:00 PM</div>
+          <div class="next-transition-display" id="next-transition-display">—</div>
+        </div>
+        
+        <div class="restart-controls">
+          
+          <!-- <div class="time-display" id="time-display">—</div> -->
+          
+          <!-- <div class="departed-from-display" id="departed-from-display">--</div> -->
 
           <button class="restart-toggle" id="restart-toggle">
             <svg class="icon icon--sm"><use xlink:href="#icon-restart" /></svg
