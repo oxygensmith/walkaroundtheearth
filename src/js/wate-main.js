@@ -6,6 +6,7 @@ import { Renderer } from "./wate-renderer.js";
 import { SequenceManager } from "./wate-sequences.js";
 import { showGreeting, hideWelcome } from "./wate-messages.js";
 import { PanelManager } from "./wate-panels.js";
+import { JourneyInfoCycler } from "./wate-journey-info-cycler.js";
 
 // Utility function to wait
 function delay(ms) {
@@ -23,6 +24,16 @@ class WalkAroundTheEarth {
     this.panelManager = new PanelManager();
     this.setupPanels();
     this.setupChoiceContainer();
+
+    this.journeyInfoCycler = new JourneyInfoCycler({
+      cycleDuration: 4500, // milliseconds (4.5 seconds)
+      journey: this.journey,
+      renderer: this.renderer,
+    });
+
+    console.log("✅ JourneyInfoCycler created:", this.journeyInfoCycler);
+    this.renderer.journeyInfoCycler = this.journeyInfoCycler;
+    console.log("✅ Wired to renderer:", this.renderer.journeyInfoCycler);
 
     console.log(
       "🔍 Journey travel mode on init:",

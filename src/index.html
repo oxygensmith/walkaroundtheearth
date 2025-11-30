@@ -29,6 +29,93 @@
 
         <div class="project-title">Walk Around the Earth</div>
 
+        <!-- Journey Info Display (Upper Right) -->
+
+        <div class="journey-info-display" id="journey-info-display">
+          <!-- Primary display: always visible -->
+          <div class="journey-info-primary">
+            <!-- Static line: Period and Terrain -->
+            <div class="journey-info-static">
+              <span class="journey-period" id="journey-period">DAY</span>
+              <span class="journey-separator">|</span>
+              <span class="journey-terrain" id="journey-terrain">OVER LAND</span>
+            </div>
+
+            <!-- Cycling text container -->
+            <div class="journey-info-cycling-container" id="journey-info-cycling-container">
+              <div class="journey-info-cycling" id="journey-info-cycling">
+                <!-- Lines will be injected here by JavaScript -->
+                <div class="journey-info-line journey-info-line--active" data-index="0">
+                  <span class="journey-info-value" id="cycling-line-0">ELAPSED TIME TO CIRCLE EARTH</span>
+                </div>
+                <div class="journey-info-line" data-index="1">
+                  <span class="journey-info-value" id="cycling-line-1">DEPARTED FROM LOCATION</span>
+                </div>
+                <div class="journey-info-line" data-index="2">
+                  <span class="journey-info-value" id="cycling-line-2">BEGAN DATE/TIME</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- More/Less toggle -->
+            <button class="journey-info-toggle" id="journey-info-toggle" title="Show more details">
+              more <span class="toggle-arrow">»</span>
+            </button>
+          </div>
+
+          <!-- Secondary display: expanded stats (initially hidden) -->
+          <div class="journey-info-expanded" id="journey-info-expanded">
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Latitude</span>
+              <span class="journey-stat-value" id="stat-latitude">0.0000°</span>
+            </div>
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Longitude</span>
+              <span class="journey-stat-value" id="stat-longitude">0.0000°</span>
+            </div>
+
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Distance Travelled</span>
+              <span class="journey-stat-value" id="stat-distance">0 km</span>
+            </div>
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Speed</span>
+              <span class="journey-stat-value" id="stat-speed">0 km/h</span>
+            </div>
+
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Elapsed Time</span>
+              <span class="journey-stat-value" id="stat-elapsed">0h 0m</span>
+            </div>
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Time Remaining</span>
+              <span class="journey-stat-value" id="stat-remaining">—</span>
+            </div>
+
+            <div class="journey-stat-spacer"></div>
+
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Solar Time</span>
+              <span class="journey-stat-value" id="stat-solar-time">12:00:00 PM</span>
+            </div>
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Next Period</span>
+              <span class="journey-stat-value" id="stat-next-period">Sunset in 6h 30m</span>
+            </div>
+            <div class="journey-stat-row">
+              <span class="journey-stat-label">Distance to Event</span>
+              <span class="journey-stat-value" id="stat-event-distance">245 km away</span>
+            </div>
+
+            <div class="journey-stat-spacer"></div>
+
+            <!-- Less Info button -->
+            <button class="journey-info-close" id="journey-info-close" title="Hide details">
+              [LESS INFO]
+            </button>
+          </div>
+        </div>
+
         <div class="odometer-container">
           <div class="welcome-message dismissible" id="welcome-message">
             <div id="welcome-greeting"></div>
@@ -104,7 +191,7 @@
           </div>
         </div>
       -->
-    </main>
+    
 
 <div class="control-bar" id="control-bar">
   <div class="control-bar-content panel-controls">
@@ -121,13 +208,15 @@
       </button>
     </div>
     <div class="control-bar-section control-bar-right">
-      <button class="panel-control-btn" id="console-toggle">
+      <button class="panel-control-btn" id="console-toggle" disabled>
         <svg class="icon icon--sm"><use xlink:href="#icon-console"/></svg>
         <span class="btn-label">Console</span>
       </button>
     </div>
   </div>
 </div>
+
+</main>
 
 <!-- Settings Panel (Gear Icon) -->
 <div class="panel-container" id="settings-panel" data-panel="settings">
@@ -235,35 +324,6 @@
           <div class="time-elapsed-display" id="time-elapsed-display">—</div>
           <div class="departed-from-display" id="departed-from-display">--</div>
         </div>
-        
-        
-        <!-- <div class="panel-stat">
-          <span class="panel-stat-label">Coordinates</span>
-          <span class="panel-stat-value" id="panel-coordinates">0.0000°N, 0.0000°E</span>
-        </div>
-        <div class="panel-stat">
-          <span class="panel-stat-label">Altitude</span>
-          <span class="panel-stat-value" id="panel-altitude">0 m</span>
-        </div>
-        <div class="panel-stat">
-          <span class="panel-stat-label">Speed</span>
-          <span class="panel-stat-value" id="panel-speed">0 km/h</span>
-        </div>
-        <div class="panel-stat">
-          <span class="panel-stat-label">Solar Time</span>
-          <span class="panel-stat-value" id="panel-solar-time">12:00:00 PM</span>
-        </div>
-        <div class="panel-stat">
-          <span class="panel-stat-label">Time to Circle Earth</span>
-          <span class="panel-stat-value" id="panel-eta">—</span>
-        </div>
-        <div class="panel-stat">
-          <span class="panel-stat-label">Terrain</span>
-          <span class="panel-stat-value" id="panel-terrain">—</span>
-        </div>
-
-        -->
-
       </div>
     </div>
   </div>

@@ -12,22 +12,30 @@ import { EARTH_CIRCUMFERENCE_KM } from "./wate-journey.js";
 
 export class Renderer {
   constructor(journey) {
+    this.viewportWidth = window.innerWidth;
+
     this.journey = journey;
     this.journeyLine = document.getElementById("journey-line");
     this.distanceValue = document.getElementById("distance-value");
     this.distanceMarkers = document.getElementById("distance-markers");
-    this.projectTitle = document.querySelector(".project-title");
-    this.coordinatesDisplay = document.getElementById("coordinates-display");
-    this.speedValue = document.getElementById("speed-value");
-    this.meterValue = document.getElementById("meter-value");
-    this.timeDisplay = document.getElementById("time-display");
     this.originIcon = document.getElementById("origin-icon");
-    this.terrainDisplay = document.getElementById("terrain-display");
-    this.viewportWidth = window.innerWidth;
-    this.timeElapsedDisplay = document.getElementById("time-elapsed-display");
+    this.projectTitle = document.querySelector(".project-title");
+    this.journeyInfoCycler = null;
+
+    this.coordinatesLatDisplay = document.getElementById("stat-latitude");
+    this.coordinatesLngDisplay = document.getElementById("stat-longitude");
+    this.speedValue = document.getElementById("stat-speed");
+    this.meterValue = document.getElementById("stat-distance");
+
+    this.terrainDisplay = document.getElementById("stat-terrain");
+
+    this.timeElapsedDisplay = document.getElementById("stat-elapsed-time");
+    this.timeRemainingDisplay = document.getElementById("stat-remaining-time");
+    this.timeDisplay = document.getElementById("time-display");
+
     this.timeDisplayMode = "elapsed";
     this.currentTimeOfDay = null;
-    this.solarTimeDisplay = document.getElementById("solar-time-display");
+    this.solarTimeDisplay = document.getElementById("stat-solar-time");
     this.showingSolarTime = true; // Track which time is showing
     this.themeCheckCounter = 0;
     this.departedFromDisplay = document.getElementById("departed-from-display");
@@ -102,6 +110,11 @@ export class Renderer {
     this.updateMeterDisplay();
     this.updateTimeElapsed();
 
+    // Only call update if it exists
+    if (this.journeyInfoCycler) {
+      this.journeyInfoCycler.update();
+    }
+
     // Calculate speed once per frame and use it for both displays
     const currentSpeed = this.journey.getSpeed();
     this.updateSpeed(currentSpeed);
@@ -113,6 +126,10 @@ export class Renderer {
     this.updateDepartedFrom();
     this.updateNextTransition();
     this.updateTheme();
+  }
+
+  destroy() {
+    this.journeyInfoCycler.destroy();
   }
 
   // Update the journey line position
@@ -406,13 +423,18 @@ export class Renderer {
     return 1 - Math.pow(1 - t, 3);
   }
 
-  // Update coordinates display
   updateCoordinates() {
     const position = this.journey.getCurrentPosition();
-    this.coordinatesDisplay.textContent = formatCoordinates(
-      position.lat,
-      position.lng
-    );
+    const latDir = position.lat >= 0 ? "N" : "S";
+    const lngDir = position.lng >= 0 ? "E" : "W";
+
+    const latEl = document.getElementById("stat-latitude");
+    const lngEl = document.getElementById("stat-longitude");
+
+    if (latEl)
+      latEl.textContent = `${Math.abs(position.lat).toFixed(4)}°${latDir}`;
+    if (lngEl)
+      lngEl.textContent = `${Math.abs(position.lng).toFixed(4)}°${lngDir}`;
   }
 
   updateTerrainDisplay() {

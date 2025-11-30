@@ -1,0 +1,288 @@
+/* Walk Around the Earth */
+/* journey-info.scss - Meditative journey information display */
+
+@keyframes cyclicFlickUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes cyclicFadeInFromBelow {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Journey Info Display Container
+.journey-info-display {
+  position: fixed;
+  top: var(--control-spacing-y);
+  right: var(--control-spacing-x);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+
+  @media (max-width: 767px) {
+    right: var(--control-spacing-x);
+    top: var(--control-spacing-y);
+    font-size: 12px;
+  }
+}
+
+// Primary Info Section
+.journey-info-primary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+// Static line (Period and Terrain)
+.journey-info-static {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-base);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text--dim);
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+    gap: 4px;
+  }
+}
+
+.journey-period,
+.journey-terrain {
+  color: var(--color-text);
+}
+
+.journey-separator {
+  opacity: 0.5;
+}
+
+// Cycling text container
+.journey-info-cycling-container {
+  position: relative;
+  height: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  @media (max-width: 767px) {
+    height: 18px;
+  }
+}
+
+.journey-info-cycling {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.journey-info-line {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: none; // No transition by default
+
+  &.journey-info-line--active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.journey-info-line--exiting {
+    animation: cyclicFlickUp 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  &.journey-info-line--entering {
+    animation: cyclicFadeInFromBelow 0.4s cubic-bezier(0, 0, 0.2, 1) forwards;
+  }
+}
+
+.journey-info-value {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-base);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+
+  @media (max-width: 767px) {
+    font-size: 11px;
+    max-width: 200px;
+  }
+}
+
+// Pause cycling on hover
+.journey-info-cycling-container:hover {
+  // Cycling pauses here via JavaScript
+}
+
+// More/Less toggle button
+.journey-info-toggle {
+  background: none;
+  border: none;
+  color: var(--color-text--dim);
+  font-size: 11px;
+  font-weight: 400;
+  font-family: var(--font-base);
+  cursor: pointer;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+  text-align: right;
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  .toggle-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    margin-left: 2px;
+  }
+
+  &.expanded .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  &.expanded {
+    color: var(--color-text);
+  }
+}
+
+// Expanded Stats Section
+.journey-info-expanded {
+  position: fixed;
+  top: calc(var(--control-spacing-y) + 80px);
+  right: var(--control-spacing-x);
+  max-width: 240px;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 12px;
+  font-family: var(--font-base);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 149;
+
+  &.visible {
+    max-height: 400px;
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (max-width: 767px) {
+    top: calc(var(--control-spacing-y) + 70px);
+    max-width: 180px;
+    font-size: 11px;
+  }
+}
+
+// Stat rows
+.journey-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  @media (max-width: 767px) {
+    padding: 4px 0;
+  }
+}
+
+.journey-stat-label {
+  color: var(--color-text--dim);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  font-size: 11px;
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+  }
+}
+
+.journey-stat-value {
+  color: var(--color-text);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  flex-shrink: 0;
+  font-size: 12px;
+
+  @media (max-width: 767px) {
+    font-size: 11px;
+  }
+}
+
+// Spacer between stat groups
+.journey-stat-spacer {
+  height: 8px;
+}
+
+// Close button
+.journey-info-close {
+  background: none;
+  border: none;
+  color: var(--color-text--dim);
+  font-size: 11px;
+  font-weight: 400;
+  font-family: var(--font-base);
+  cursor: pointer;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+  margin-top: 8px;
+  text-align: right;
+  width: 100%;
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+// Ensure text doesn't select during cycling
+.journey-info-cycling-container {
+  user-select: none;
+}
