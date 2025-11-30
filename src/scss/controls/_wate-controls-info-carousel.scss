@@ -1,0 +1,101 @@
+.info-carousel {
+  position: fixed;
+  top: var(--control-spacing-y);
+  right: var(--control-spacing-x);
+  z-index: 150;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.info-carousel-elements {
+  position: relative;
+  min-height: 20px; // Prevent layout shift
+}
+
+.info-element {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &.active {
+    position: relative;
+    color: var(--color-text);
+    opacity: var(--opacity-text-dim);
+    pointer-events: auto;
+  }
+
+  &.fade-out-up {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  &.fade-in-down {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInDown 0.4s ease forwards;
+  }
+}
+
+.info-toggle {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  font-size: 11px;
+  font-family: var(--info-font);
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+  text-transform: lowercase;
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes fadeInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

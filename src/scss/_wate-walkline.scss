@@ -1,0 +1,203 @@
+/* walkline styles:
+- display of the journey line, origin marker, distance markers, and horizon line. */
+
+.origin-marker {
+  position: absolute;
+  left: 50%;
+  top: var(--action-position--v);
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.origin-circle {
+  width: var(--origin-size);
+  height: var(--origin-size);
+  border-radius: 50%;
+  background: var(--color-origin);
+  border: 3px solid var(--color-horizon);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 18px;
+    color: #fff;
+  }
+}
+
+.origin-label {
+  font-size: 12px; // Mobile default
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  @media screen and (min-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.horizon-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--action-position--v);
+  height: var(--horizon-thickness);
+  background: var(--color-horizon);
+  transform: translateY(-50%);
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.journey-line {
+  position: absolute;
+  left: 50%;
+  top: var(--action-position--v);
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  z-index: 2;
+  &.zoomed {
+    transform: translate(-50%, -50%);
+    transform: scale(2);
+  }
+}
+
+.distance-markers {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 200px;
+  pointer-events: none;
+}
+
+.journey-message {
+  position: absolute;
+  top: calc(50% + 50px);
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: 90vw;
+  padding: 20px 24px;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--message-font);
+  text-align: center;
+  text-transform: none;
+  pointer-events: none;
+  z-index: 50;
+
+  p {
+    margin: 0;
+
+    &:not(:first-child) {
+      margin-top: 1em;
+    }
+  }
+}
+
+.marker .marker-label {
+  // common marker-label styles
+  position: absolute;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  top: -30px;
+  font-size: 12px;
+  opacity: 1;
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+
+  &.thousand {
+    width: 2px;
+    height: 50px; // Large - every 1000km
+    background: var(--color-marker--thousand);
+  }
+
+  &.hundred {
+    width: 1px;
+    height: 40px; // Medium - every 100km
+    background: var(--color-marker--hundred);
+  }
+
+  &.ten {
+    width: 1px;
+    height: 30px;
+    background: var(--color-marker--ten);
+  }
+
+  &.one {
+    width: 1px;
+    height: 20px;
+    background: var(--color-marker--one);
+  }
+
+  &.tenth {
+    width: 1px;
+    height: 15px;
+    background: var(--color-marker--one);
+  }
+
+  &.antipodal {
+    width: 3px;
+    height: 60px;
+    background: var(--color--earth);
+
+    .marker-label {
+      color: var(--color--earth);
+      font-weight: 700;
+      font-size: 14px;
+      top: -35px;
+    }
+  }
+
+  &.origin {
+    width: var(--origin-size);
+    height: var(--origin-size);
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 2px solid var(--color-origin);
+
+    .marker-label {
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 12px;
+      top: calc(-1 * (var(--origin-size) / 2) - 30px);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .marker-subtitle {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--color-text);
+      opacity: var(--opacity-text-dim);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  }
+}

@@ -1,0 +1,145 @@
+/* Styles to handle message sequencing. */
+
+.sequence-container {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 250;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.sequence-message {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  font-family: var(--message-font);
+  pointer-events: auto;
+  // box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  &.hidden {
+    display: none;
+  }
+
+  &.fade-in {
+    animation: fadeIn 0.5s ease;
+  }
+
+  &.fade-out {
+    animation: fadeOut 0.5s ease;
+  }
+}
+
+.sequence-skip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-bg);
+  border: 0px;
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: 11px;
+  font-family: var(--btn-font);
+  opacity: 0.6;
+  padding: 4px 8px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    background: var(--color-bg);
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  i {
+    font-size: 12px;
+  }
+}
+
+/* Styles to handle message sequencing. */
+
+.sequence-container {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 250;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.sequence-message {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  font-family: var(--message-font);
+  pointer-events: auto;
+  // box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  &.hidden {
+    display: none;
+  }
+
+  &.fade-in {
+    animation: fadeIn 0.5s ease;
+  }
+
+  &.fade-out {
+    animation: fadeOut 0.5s ease;
+  }
+}
+
+.sequence-skip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-bg);
+  border: 0px;
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: 11px;
+  font-family: var(--btn-font);
+  opacity: 0.6;
+  padding: 4px 8px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    background: var(--color-bg);
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  i {
+    font-size: 12px;
+  }
+}

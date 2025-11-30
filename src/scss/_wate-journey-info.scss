@@ -1,0 +1,104 @@
+.journey-stats-main {
+  position: absolute;
+  top: calc(var(--control-spacing-y) + 60px);
+  right: var(--control-spacing-x);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  opacity: 0;
+  overflow: hidden;
+  // transition: opacity 0.3 ease, max-height 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    max-height: auto;
+  }
+}
+
+.coordinates-display,
+.speed-display,
+.meter-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--info-font);
+}
+
+.speed-display {
+  opacity: 0.8;
+}
+
+.time-elapsed-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--info-font);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.period-and-terrain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .separator {
+    opacity: 0.5;
+  }
+}
+
+.solar-time-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--info-font);
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.next-transition-display {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: var(--opacity-text-dim);
+  font-family: var(--info-font);
+  line-height: 1.4;
+  text-transform: lowercase;
+  opacity: 0.7;
+  text-align: right;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+/* might not be in use */
+.variable-list {
+  list-style-type: none;
+  padding-left: 0;
+  line-height: 1;
+  .li {
+    display: block;
+  }
+  @media screen and (min-width: 768px) {
+    display: flex;
+    gap: 12px;
+    .li {
+      display: inline;
+    }
+  }
+}

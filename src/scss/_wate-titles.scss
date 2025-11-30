@@ -1,0 +1,14 @@
+.project-title {
+  position: fixed;
+  top: var(--control-spacing-y);
+  left: var(--control-spacing-x);
+  font-family: var(--title-font);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 150;
+  text-transform: uppercase;
+  transition: transform 0.3s ease-out;
+}

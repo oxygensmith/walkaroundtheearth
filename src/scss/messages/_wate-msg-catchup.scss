@@ -1,0 +1,45 @@
+// Messages that greet the user when they reload the window / page etc.
+
+.catchup-message {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: var(--message-font);
+  z-index: 300;
+  animation: fadeInOut 3s ease;
+}
+
+.welcome-back-message {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 16px 24px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  font-family: var(--message-font);
+  text-align: center;
+  z-index: 300;
+  animation: fadeInOut 5s ease;
+  line-height: 1.6;
+
+  strong {
+    font-size: 16px;
+    color: var(--color-highlight);
+  }
+  em {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+    display: block;
+  }
+}

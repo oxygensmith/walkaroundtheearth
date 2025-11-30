@@ -1,0 +1,29 @@
+// already-deprecated way of showing journey messages
+
+.journey-message {
+  position: absolute;
+  top: calc(50% + 50px);
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: 90vw;
+  padding: 20px 24px;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--message-font);
+  text-align: center;
+  text-transform: none;
+  pointer-events: none;
+  z-index: 50;
+
+  p {
+    margin: 0;
+
+    &:not(:first-child) {
+      margin-top: 1em;
+    }
+  }
+}
