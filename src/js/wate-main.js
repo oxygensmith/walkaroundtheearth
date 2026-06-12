@@ -1,5 +1,5 @@
 /* Walk Around the Earth */
-/* main.js - Application entry point */
+/* main.js - Application entry point - v02 */
 
 import { Journey } from "./wate-journey.js";
 import { Renderer } from "./wate-renderer.js";
@@ -14,13 +14,78 @@ function delay(ms) {
 
 class WalkAroundTheEarth {
   constructor() {
-    this.journey = new Journey();
-    this.renderer = new Renderer(this.journey);
-    this.sequenceManager = new SequenceManager(this.journey);
     this.isAnimating = false;
     this.originIcon = document.getElementById("origin-icon");
-    this.infoCarousel = new InfoCarousel(this.journey, this.renderer);
     this.hasStarted = false;
+
+    this.setupEventListeners();
+    this.setupVisibilityTracking();
+    this.startAutoSave();
+
+    /* this.journey = null;
+    this.renderer = null;
+    this.sequenceManager = null; */
+
+    // Check if we should resume or show start screen
+    this.setupStartScreen();
+
+    console.log("🌍 Walk Around the Earth initialized");
+  }
+
+  setupStartScreen() {
+    const startScreen = document.getElementById("start-screen");
+    const beginButton = document.getElementById("begin-journey");
+    const locationSelect = document.getElementById("start-location");
+
+    console.log("🎬 Start screen element:", startScreen);
+    console.log("🔘 Begin button:", beginButton);
+    console.log("📍 Location select:", locationSelect);
+
+    // Check for saved journey
+    const savedState = localStorage.getItem("wate-journey");
+    console.log("💾 Saved state exists:", !!savedState);
+
+    if (savedState) {
+      // Resume saved journey - skip start screen
+      console.log("▶️ Resuming saved journey...");
+      this.initializeJourney(null); // null = use saved location
+      startScreen.classList.add("hidden");
+
+      // Show welcome back message if applicable
+      if (this.journey.returnInfo) {
+        this.showWelcomeBackMessage(
+          this.journey.returnInfo.timeAway,
+          this.journey.returnInfo.distanceTraveled
+        );
+      }
+    } else {
+      // New journey - show start screen
+      console.log("🆕 Showing start screen...");
+
+      beginButton.addEventListener("click", () => {
+        console.log("🚀 Begin button clicked!");
+
+        const selectedLocation =
+          locationSelect.value === "random"
+            ? null
+            : locationSelect.options[locationSelect.selectedIndex].text;
+
+        console.log("📍 Selected location:", selectedLocation);
+
+        this.initializeJourney(selectedLocation);
+        startScreen.classList.add("hidden");
+      });
+    }
+  }
+
+  initializeJourney(selectedLocation) {
+    console.log("🎬 Initializing journey with location:", selectedLocation);
+
+    // Pass selectedLocation to Journey constructor
+    this.journey = new Journey(selectedLocation);
+    this.renderer = new Renderer(this.journey);
+    this.sequenceManager = new SequenceManager(this.journey);
+    this.infoCarousel = new InfoCarousel(this.journey, this.renderer);
 
     console.log(
       "🔍 Journey travel mode on init:",
@@ -31,15 +96,15 @@ class WalkAroundTheEarth {
       this.journey.currentCruiseModeIndex
     );
 
-    this.setupEventListeners();
-    this.setupVisibilityTracking();
-    this.startAutoSave();
+    this.isAnimating = false;
+    this.originIcon = document.getElementById("origin-icon");
+    this.hasStarted = false;
 
     // Check if this is a restored journey
     if (this.journey.returnInfo) {
       // Journey was already in progress - auto-start
       this.hasStarted = true;
-      hideWelcome();
+      // hideWelcome();
 
       // Restore triggered sequences
       if (this.journey.triggeredSequences) {
@@ -47,17 +112,19 @@ class WalkAroundTheEarth {
       }
 
       this.startAnimationLoop();
-      this.showWelcomeBackMessage(
+      /* this.showWelcomeBackMessage(
         this.journey.returnInfo.timeAway,
         this.journey.returnInfo.distanceTraveled
-      );
+      ); */
     } else {
-      // New journey - wait for start button
+      // Brand new journey - wait for start button
+      this.hasStarted = false;
       showGreeting();
-      this.restoreUIState();
     }
 
-    console.log("🌍 Walk Around the Earth initialized");
+    this.restoreUIState();
+
+    console.log("🌍 Journey initialized");
   }
 
   restoreUIState() {
@@ -259,7 +326,9 @@ class WalkAroundTheEarth {
       console.log("🔍 After clear, localStorage has:", check);
 
       if (check === null) {
-        location.replace(location.href);
+        console.log("✅ State cleared, reloading to start screen...");
+        location.reload(); // simpler?
+        // was location.replace(location.href);
       } else {
         console.error("❌ Failed to clear state!");
       }

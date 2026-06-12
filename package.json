@@ -8,8 +8,8 @@
     "build": "parcel build src/index.html"
   },
   "staticFiles": {
-      "staticPath": "static",
-      "staticOutPath": ""
+    "staticPath": "static",
+    "staticOutPath": ""
   },
   "keywords": [
     "earth",

@@ -122,9 +122,16 @@ export class Journey {
       this.virtualTime = savedState.virtualTime || Date.now();
     } else {
       // No saved state - start fresh
+      if (selectedLocation) {
+        this.startLocation =
+          EQUATORIAL_LOCATIONS.find((loc) => loc.name === selectedLocation) ||
+          getRandomLocation();
+      } else {
+        this.startLocation = getRandomLocation();
+      }
       this.travelMode = "cruiseControl"; // "freeScroll" or "cruiseControl"
       this.currentCruiseModeIndex = 0; // walking is first
-      this.startLocation = getRandomLocation();
+
       this.bearing = 90;
       this.virtualTime = Date.now();
     }

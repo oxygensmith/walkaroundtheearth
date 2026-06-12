@@ -34,6 +34,11 @@ Unless I've utterly broken it, it lives here:
 - [ ] Continuous deployment on Netlify stopped working a short while ago. Investigating.
 - [ ] Me. I have so many ideas for this sim that I summon an imaginary project manager to tell me, "not right now." Don't even suggest adding a 'constellations viewable from your location' layer yet, I'll explode.
 
+**Version 0.2** - Start screen and journey origin:
+
+- ✅ Start screen with equatorial location picker (Quito, Macapá, Pontianak, Nanyuki, or random)
+- ✅ Resume saved journey or begin fresh flow on load
+
 **Version 0.1** - Core scrolling mechanics implemented:
 
 - ✅ Horizontal scroll interface with throttled velocity

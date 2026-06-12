@@ -180,6 +180,32 @@
       </div>
     </main>
 
+    <div class="start-screen" id="start-screen">
+  <div class="start-screen-content">
+    <h1 class="start-title">Walk Around the Earth</h1>
+    
+    <div class="start-form">
+      <label for="start-location" class="start-label">Choose your starting point:</label>
+      <select id="start-location" class="start-select">
+        <option value="random">Random Equatorial Location</option>
+        <option value="quito">Quito, Ecuador</option>
+        <option value="macapa">Macapá, Brazil</option>
+        <option value="pontianak">Pontianak, Indonesia</option>
+        <option value="nanyuki">Nanyuki, Kenya</option>
+      </select>
+      
+      <button class="start-button" id="begin-journey">
+        <svg class="icon icon--sm"><use xlink:href="#icon-start"/></svg>
+        Begin Journey
+      </button>
+    </div>
+    
+    <div class="start-info">
+      <p>A contemplative journey around Earth's 40,041 km circumference.</p>
+    </div>
+  </div>
+</div>
+
     <script type="module" src="js/wate-main.js"></script>
 
     <!-- Icons - included directly for now -->
