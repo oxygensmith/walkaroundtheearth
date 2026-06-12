@@ -39,6 +39,12 @@ Unless I've utterly broken it, it lives here:
 - ✅ Start screen with equatorial location picker (Quito, Macapá, Pontianak, Nanyuki, or random)
 - ✅ Resume saved journey or begin fresh flow on load
 
+**Version 0.1.x** - UI refinements:
+
+- ✅ Main journey text displayed in a ticker
+- ✅ Statistical info moved behind a "More Info" panel
+- ✅ Dim text reworked for clarity across day periods
+
 **Version 0.1** - Core scrolling mechanics implemented:
 
 - ✅ Horizontal scroll interface with throttled velocity
